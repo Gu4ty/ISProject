@@ -20501,8 +20501,18 @@
   "RootNamespace": "ISProject",
   "Documents": [
     {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/User/Index.cshtml",
+      "TargetPath": "Views/User/Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/kike/Documents/Projects/IS/Views/Shared/_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views/Shared/_ValidationScriptsPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Product/Index.cshtml",
+      "TargetPath": "Views/Product/Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20511,8 +20521,38 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Sell/Create.cshtml",
+      "TargetPath": "Views/Sell/Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Product/Edit.cshtml",
+      "TargetPath": "Views/Product/Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Product/Details.cshtml",
+      "TargetPath": "Views/Product/Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/kike/Documents/Projects/IS/Views/Home/Privacy.cshtml",
       "TargetPath": "Views/Home/Privacy.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Product/Create.cshtml",
+      "TargetPath": "Views/Product/Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Sell/Delete.cshtml",
+      "TargetPath": "Views/Sell/Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Product/Delete.cshtml",
+      "TargetPath": "Views/Product/Delete.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20536,8 +20576,43 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Sell/Edit.cshtml",
+      "TargetPath": "Views/Sell/Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/User/Edit.cshtml",
+      "TargetPath": "Views/User/Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/kike/Documents/Projects/IS/Views/Shared/_LoginPartial.cshtml",
       "TargetPath": "Views/Shared/_LoginPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/User/Details.cshtml",
+      "TargetPath": "Views/User/Details.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/User/Create.cshtml",
+      "TargetPath": "Views/User/Create.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Sell/Index.cshtml",
+      "TargetPath": "Views/Sell/Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/User/Delete.cshtml",
+      "TargetPath": "Views/User/Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kike/Documents/Projects/IS/Views/Sell/Details.cshtml",
+      "TargetPath": "Views/Sell/Details.cshtml",
       "FileKind": "mvc"
     },
     {
