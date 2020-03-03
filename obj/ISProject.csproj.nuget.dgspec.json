@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj": {}
+    "/home/kike/Documents/Projects/IS/ISProject.csproj": {}
   },
   "projects": {
-    "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj": {
+    "/home/kike/Documents/Projects/IS/ISProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj",
+        "projectUniqueName": "/home/kike/Documents/Projects/IS/ISProject.csproj",
         "projectName": "ISProject",
-        "projectPath": "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj",
-        "packagesPath": "/home/david/.nuget/packages/",
-        "outputPath": "/media/david/Datos/3er año/IS/ISProject/obj/",
+        "projectPath": "/home/kike/Documents/Projects/IS/ISProject.csproj",
+        "packagesPath": "/home/kike/.nuget/packages/",
+        "outputPath": "/home/kike/Documents/Projects/IS/obj/",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "/home/david/.nuget/NuGet/NuGet.Config"
+          "/home/kike/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
