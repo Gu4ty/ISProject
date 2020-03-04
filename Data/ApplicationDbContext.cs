@@ -9,11 +9,8 @@ namespace ISProject.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<User> Users2 { get; set; }
-        public DbSet<NormalUser> NormalUsers { get; set; }
-        public DbSet<AdminUser> AdminUsers { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Sell> Sells { get; set; }
+        public DbSet<User> User { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
