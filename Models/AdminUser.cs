@@ -1,4 +1,4 @@
-namespace ISProject.Data.Models
+namespace ISProject.Models
 {
     public class AdminUser
     {

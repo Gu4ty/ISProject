@@ -20506,11 +20506,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Sell/Edit.cshtml",
-      "TargetPath": "Views/Sell/Edit.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Identity/Pages/_ViewStart.cshtml",
       "TargetPath": "Areas/Identity/Pages/_ViewStart.cshtml",
       "FileKind": "mvc"
@@ -20521,38 +20516,8 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Product/Delete.cshtml",
-      "TargetPath": "Views/Product/Delete.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Product/Details.cshtml",
-      "TargetPath": "Views/Product/Details.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/User/Details.cshtml",
-      "TargetPath": "Views/User/Details.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Product/Index.cshtml",
-      "TargetPath": "Views/Product/Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Identity/Pages/Account/Register.cshtml",
       "TargetPath": "Areas/Identity/Pages/Account/Register.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/User/Delete.cshtml",
-      "TargetPath": "Views/User/Delete.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/User/Index.cshtml",
-      "TargetPath": "Views/User/Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20561,33 +20526,13 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Sell/Details.cshtml",
-      "TargetPath": "Views/Sell/Details.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Shared/_ValidationScriptsPartial.cshtml",
       "TargetPath": "Views/Shared/_ValidationScriptsPartial.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Sell/Create.cshtml",
-      "TargetPath": "Views/Sell/Create.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Home/Privacy.cshtml",
       "TargetPath": "Views/Home/Privacy.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Sell/Delete.cshtml",
-      "TargetPath": "Views/Sell/Delete.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/User/Create.cshtml",
-      "TargetPath": "Views/User/Create.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20616,11 +20561,6 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Sell/Index.cshtml",
-      "TargetPath": "Views/Sell/Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/_ViewStart.cshtml",
       "TargetPath": "Views/_ViewStart.cshtml",
       "FileKind": "mvc"
@@ -20628,21 +20568,6 @@
     {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Shared/_Layout.cshtml",
       "TargetPath": "Views/Shared/_Layout.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Product/Edit.cshtml",
-      "TargetPath": "Views/Product/Edit.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/User/Edit.cshtml",
-      "TargetPath": "Views/User/Edit.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Product/Create.cshtml",
-      "TargetPath": "Views/Product/Create.cshtml",
       "FileKind": "mvc"
     }
   ],

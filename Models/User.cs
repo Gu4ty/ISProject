@@ -1,4 +1,4 @@
-namespace ISProject.Data.Models
+namespace ISProject.Models
 {
     public class User
     {
@@ -7,5 +7,7 @@ namespace ISProject.Data.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public int Raiting { get; set; }
+
+        public string PhoneNumber { get; set; }
     }
 }

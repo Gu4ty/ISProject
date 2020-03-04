@@ -371,18 +371,8 @@
 /home/kike/Documents/Projects/IS/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Details.cshtml.g.cs
 /home/kike/Documents/Projects/IS/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Edit.cshtml.g.cs
 /home/kike/Documents/Projects/IS/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Index.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Product/Create.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Product/Delete.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Product/Details.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Product/Edit.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Product/Index.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Create.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Delete.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Details.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Edit.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Sell/Index.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/User/Create.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/User/Delete.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/User/Details.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/User/Edit.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/User/Index.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/Account/Login.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/Account/Register.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/Account/_ViewImports.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/_ViewImports.cshtml.g.cs
