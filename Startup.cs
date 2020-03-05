@@ -12,6 +12,8 @@ using ISProject.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using ISProject.Services;
 
 namespace ISProject
 {
@@ -30,8 +32,12 @@ namespace ISProject
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddIdentity<IdentityUser,IdentityRole >(/*options => options.SignIn.RequireConfirmedAccount = true*/)
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddSingleton<IEmailSender,EmailSender>();
+
             services.AddControllersWithViews();
            services.AddRazorPages();
         }
