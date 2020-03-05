@@ -161,8 +161,6 @@
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/ISProject.TagHelpers.output.cache
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/ISProject.RazorCoreGenerate.cache
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/_ViewStart.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Home/Index.cshtml.g.cs
-/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Home/Privacy.cshtml.g.cs
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Shared/Error.cshtml.g.cs
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Shared/_Layout.cshtml.g.cs
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Views/Shared/_LoginPartial.cshtml.g.cs
@@ -376,3 +374,11 @@
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/Account/_ViewImports.cshtml.g.cs
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml.g.cs
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/_ViewImports.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Admin/Views/User/Index.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Identity/Pages/Account/Logout.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Admin/Views/_ViewImports.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Admin/Views/_ViewStart.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Customer/Views/Home/Index.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Customer/Views/Home/Privacy.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Customer/Views/_ViewImports.cshtml.g.cs
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/Razor/Areas/Customer/Views/_ViewStart.cshtml.g.cs

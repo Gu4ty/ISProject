@@ -20516,13 +20516,23 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Customer/Views/Home/Index.cshtml",
+      "TargetPath": "Areas/Customer/Views/Home/Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Identity/Pages/Account/Register.cshtml",
       "TargetPath": "Areas/Identity/Pages/Account/Register.cshtml",
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Home/Index.cshtml",
-      "TargetPath": "Views/Home/Index.cshtml",
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Admin/Views/_ViewImports.cshtml",
+      "TargetPath": "Areas/Admin/Views/_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Admin/Views/_ViewStart.cshtml",
+      "TargetPath": "Areas/Admin/Views/_ViewStart.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20531,8 +20541,8 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Home/Privacy.cshtml",
-      "TargetPath": "Views/Home/Privacy.cshtml",
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Identity/Pages/Account/Logout.cshtml",
+      "TargetPath": "Areas/Identity/Pages/Account/Logout.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20551,8 +20561,23 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Customer/Views/_ViewImports.cshtml",
+      "TargetPath": "Areas/Customer/Views/_ViewImports.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Customer/Views/_ViewStart.cshtml",
+      "TargetPath": "Areas/Customer/Views/_ViewStart.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Shared/_LoginPartial.cshtml",
       "TargetPath": "Views/Shared/_LoginPartial.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Admin/Views/User/Index.cshtml",
+      "TargetPath": "Areas/Admin/Views/User/Index.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -20568,6 +20593,11 @@
     {
       "FilePath": "/media/david/Datos/3er año/IS/ISProject/Views/Shared/_Layout.cshtml",
       "TargetPath": "Views/Shared/_Layout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/media/david/Datos/3er año/IS/ISProject/Areas/Customer/Views/Home/Privacy.cshtml",
+      "TargetPath": "Areas/Customer/Views/Home/Privacy.cshtml",
       "FileKind": "mvc"
     }
   ],
