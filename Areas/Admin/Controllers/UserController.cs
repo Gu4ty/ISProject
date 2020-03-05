@@ -25,7 +25,9 @@ namespace ISProject.Areas.Admin.Controllers
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             // Para ver todos los usuarios menos el q esta logueado.
-            return View(await _db.User.Where(u=>u.Id != claim.Value).ToListAsync() );
+            //return View(await _db.User.Where(u=>u.Id != claim.Value).ToListAsync() );
+            // Para ver todos los usuarios, incluido el q esta logueado
+            return View(await _db.User.ToListAsync());
         }
     }
 }
