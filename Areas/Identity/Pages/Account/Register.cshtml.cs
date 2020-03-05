@@ -129,9 +129,14 @@ namespace ISProject.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        if(role=="")
+                        if(role==""){
                             await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                            return LocalRedirect(returnUrl);
+                        }
+                        else
+                            return RedirectToAction("Index","User",new{area="Admin"});
+
+                        
                     }
                 }
                 foreach (var error in result.Errors)
