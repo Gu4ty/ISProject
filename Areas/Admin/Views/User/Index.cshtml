@@ -1,0 +1,55 @@
+@model IEnumerable<ISProject.Models.User>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<div class ="row">
+    <div class = "col-6">
+        <h2 class= "text-info">User List</h2>
+    </div>
+    <div class = "col-6 text-right">
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info">New Admin </a>
+    </div>
+</div>
+
+@if(Model.Count() > 0 )
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
+else{
+    <p>No users...</p>
+}
