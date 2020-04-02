@@ -2,7 +2,6 @@
 /media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/appsettings.json
 /media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/Properties/launchSettings.json
 /media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/ISProject.StaticWebAssets.xml
-/media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/app.db
 /media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/ISProject
 /media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/ISProject.deps.json
 /media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/ISProject.runtimeconfig.json
@@ -571,3 +570,6 @@
 /media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/obj/Debug/netcoreapp3.1/staticwebassets/ISProject.StaticWebAssets.xml
 /media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/obj/Debug/netcoreapp3.1/ISProject.dll
 /media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/obj/Debug/netcoreapp3.1/ISProject.pdb
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/ISProject.csproj.CoreCompileInputs.cache
+/media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/ISProject.genruntimeconfig.cache
+/media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/app.db

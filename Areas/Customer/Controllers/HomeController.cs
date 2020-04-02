@@ -18,12 +18,8 @@ namespace ISProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _db;
 
-        public HomeController(ApplicationDbContext db){
+        public HomeController(ApplicationDbContext db, ILogger<HomeController> logger){
             _db = db;
-        }
-
-        public HomeController(ILogger<HomeController> logger)
-        {
             _logger = logger;
         }
 
