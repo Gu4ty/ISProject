@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using ISProject.Data;
 using System;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 
 
 namespace ISProject.Models
@@ -20,7 +19,7 @@ namespace ISProject.Models
                 if(!context.User.Any()){
                     context.User.AddRange(
                         new User { UserName = "pepito@gmail.com", Email = "pepito@gmail.com",
-                            Name = "Pepito", PhoneNumber = "324222343", Raiting = 0
+                            Name = "Pepito", PhoneNumber = "324222343"
                         }
 
                     );
