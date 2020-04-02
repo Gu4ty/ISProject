@@ -88,8 +88,11 @@ namespace ISProject.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = Input.Email, Email = Input.Email,
-                    Name = Input.Name, PhoneNumber = Input.PhoneNumber, Raiting = 0
+                var user = new User { 
+                    UserName = Input.Email, 
+                    Email = Input.Email,
+                    Name = Input.Name, 
+                    PhoneNumber = Input.PhoneNumber
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -102,6 +105,10 @@ namespace ISProject.Areas.Identity.Pages.Account
                     if(!await _roleManager.RoleExistsAsync(Utils.SD.CustomerUser))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(Utils.SD.CustomerUser));
+                    }
+                    if(!await _roleManager.RoleExistsAsync(Utils.SD.SellerUser))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(Utils.SD.SellerUser));
                     }
 
                     if(role == "")

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj": {}
+    "/media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/ISProject.csproj": {}
   },
   "projects": {
-    "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj": {
+    "/media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/ISProject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj",
+        "projectUniqueName": "/media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/ISProject.csproj",
         "projectName": "ISProject",
-        "projectPath": "/media/david/Datos/3er año/IS/ISProject/ISProject.csproj",
-        "packagesPath": "/home/david/.nuget/packages/",
-        "outputPath": "/media/david/Datos/3er año/IS/ISProject/obj/",
+        "projectPath": "/media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/ISProject.csproj",
+        "packagesPath": "/home/carmen/.nuget/packages/",
+        "outputPath": "/media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/david/.nuget/NuGet/NuGet.Config"
+          "/home/carmen/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
