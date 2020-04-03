@@ -116,7 +116,7 @@ namespace ISProject.Areas.Identity.Pages.Account
                     else
                         await _userManager.AddToRoleAsync(user,role);
                     
-
+                    
                     _logger.LogInformation("User created a new account with password.");
 
                     // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

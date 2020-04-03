@@ -9,7 +9,9 @@ namespace ISProject.Models
         [Key]
         public int Id { get; set; }
         
-        public int Price { get; set; }
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Price should be greater than ${0}")]
+        public double Price { get; set; }
         public int Units { get; set; }
         
         [Required]
