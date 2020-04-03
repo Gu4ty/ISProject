@@ -16,6 +16,7 @@ namespace ISProject.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductSale> ProductSale { get; set; }
 
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
