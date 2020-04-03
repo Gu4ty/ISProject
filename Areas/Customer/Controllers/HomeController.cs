@@ -23,7 +23,6 @@ namespace ISProject.Controllers
             _logger = logger;
         }
 
-
         public async Task<IActionResult> Index()
         {
             IndexViewModel IndexVM = new IndexViewModel(){

@@ -355,8 +355,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-*.dll
-
-obj/Debug/netcoreapp3.1/
-
 app.db
+
+bin/Debug/netcoreapp3.1/
+
+obj/
