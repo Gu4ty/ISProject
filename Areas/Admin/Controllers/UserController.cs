@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ISProject.Models;
+using ISProject.Models.ViewModels;
 using ISProject.Data;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +25,12 @@ namespace ISProject.Areas.Admin.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            // Para ver todos los usuarios menos el q esta logueado.
-            //return View(await _db.User.Where(u=>u.Id != claim.Value).ToListAsync() );
-            // Para ver todos los usuarios, incluido el q esta logueado
-            return View(await _db.User.ToListAsync());
+
+            UserViewModel uvm = new UserViewModel();
+            uvm.Sellers = await _db.Seller.Where(u=>u.Id != claim.Value).ToListAsync();
+            uvm.Users = await _db.User.Where(u=>u.Id != claim.Value).ToListAsync();
+            
+            return View(uvm);
         }
     }
 }
