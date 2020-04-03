@@ -26,9 +26,27 @@ namespace ISProject.Areas.Admin.Controllers
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+            var sellerList = await _db.Seller.Where(u=>u.Id != claim.Value).ToListAsync();
+            var userList =  await _db.User.Where(u=>u.Id != claim.Value).ToListAsync();
+
+            List<User> regularUser = new List<User>();
+            bool ok = true;
+            foreach(var user in userList){
+                ok = true;
+                foreach(var seller in sellerList){
+                    if(seller.Id == user.Id){
+                        ok = false;
+                        break;
+                    }
+                }
+                if(ok){
+                    regularUser.Add(user);
+                }
+            }
+
             UserViewModel uvm = new UserViewModel();
-            uvm.Sellers = await _db.Seller.Where(u=>u.Id != claim.Value).ToListAsync();
-            uvm.Users = await _db.User.Where(u=>u.Id != claim.Value).ToListAsync();
+            uvm.Sellers = sellerList;
+            uvm.Users = regularUser;
             
             return View(uvm);
         }

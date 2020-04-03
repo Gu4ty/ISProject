@@ -85,15 +85,28 @@ namespace ISProject.Areas.Identity.Pages.Account
             string role = Request.Form["rdUserRole"].ToString();
             
             returnUrl = returnUrl ?? Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new User { 
-                    UserName = Input.Email, 
-                    Email = Input.Email,
-                    Name = Input.Name, 
-                    PhoneNumber = Input.PhoneNumber
-                };
+                dynamic user;
+                if(role == SD.SellerUser){
+                    user = new Seller{
+                        UserName = Input.Email, 
+                        Email = Input.Email,
+                        Name = Input.Name, 
+                        PhoneNumber = Input.PhoneNumber,
+                        Rating = 0
+                    };
+                }
+                else{
+                    user = new User { 
+                        UserName = Input.Email, 
+                        Email = Input.Email,
+                        Name = Input.Name, 
+                        PhoneNumber = Input.PhoneNumber
+                    };
+                }
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -111,13 +124,24 @@ namespace ISProject.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(Utils.SD.SellerUser));
                     }
 
-                    if(role == "")
+                    if(role == ""){
                         await _userManager.AddToRoleAsync(user,Utils.SD.CustomerUser);
-                    else
-                        await _userManager.AddToRoleAsync(user,role);
+                        
+                        _logger.LogInformation("User created a new account with password.");
+                        
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        return LocalRedirect(returnUrl);
+                    }
+                    else if(role == SD.ManagerUser)
+                        await _userManager.AddToRoleAsync(user,SD.ManagerUser);
+                    else if(role == SD.SellerUser)
+                        await _userManager.AddToRoleAsync(user,SD.SellerUser);
+                    else if(role == SD.CustomerUser)
+                        await _userManager.AddToRoleAsync(user,SD.CustomerUser);
                     
                     
-                    _logger.LogInformation("User created a new account with password.");
+                    return RedirectToAction("Index","User",new{area="Admin"});
+
 
                     // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -130,21 +154,21 @@ namespace ISProject.Areas.Identity.Pages.Account
                     // await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
-                    }
-                    else
-                    {
-                        if(role==""){
-                            await _signInManager.SignInAsync(user, isPersistent: false);
-                            return LocalRedirect(returnUrl);
-                        }
-                        else
-                            return RedirectToAction("Index","User",new{area="Admin"});
+                    // if (_userManager.Options.SignIn.RequireConfirmedAccount)
+                    // {
+                    //     return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
+                    // }
+                    // else
+                    // {
+                    //     if(role==""){
+                    //         await _signInManager.SignInAsync(user, isPersistent: false);
+                    //         return LocalRedirect(returnUrl);
+                    //     }
+                    //     else
+                    //         return RedirectToAction("Index","User",new{area="Admin"});
 
                         
-                    }
+                    // }
                 }
                 foreach (var error in result.Errors)
                 {
