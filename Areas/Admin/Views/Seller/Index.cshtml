@@ -1,0 +1,53 @@
+@model IEnumerable<ISProject.Models.ProductSale>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class ="row">
+    <div class = "col-6">
+        <h2 class= "text-info">Products for Sale</h2>
+    </div>
+    <div class = "col-6 text-right">
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info"> Add Product </a>
+    </div>
+</div>
+
+@if(Model.Count() > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Product.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Units)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Units)
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+}
+else{
+    <p>You are not selling any products yet...</p>
+}
