@@ -572,4 +572,3 @@
 /media/carmen/Datos/MATCOM/3er año/IS/Proyecto IS/obj/Debug/netcoreapp3.1/ISProject.pdb
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/ISProject.csproj.CoreCompileInputs.cache
 /media/david/Datos/3er año/IS/ISProject/obj/Debug/netcoreapp3.1/ISProject.genruntimeconfig.cache
-/media/david/Datos/3er año/IS/ISProject/bin/Debug/netcoreapp3.1/app.db
