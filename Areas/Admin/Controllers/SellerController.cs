@@ -34,9 +34,14 @@ namespace ISProject.Areas.Admin.Controllers
         //GET - Create
         public async Task<IActionResult> Create()
         {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
             ProductSellerViewModel ps = new ProductSellerViewModel(){
                 Products = await _db.Product.ToListAsync(),
-                ProductSale = new ProductSale()
+                ProductSale = new ProductSale{
+                    SellerId = claim.Value
+                }
             };
             return View(ps);
         }
@@ -46,10 +51,10 @@ namespace ISProject.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductSellerViewModel model)
         {
-            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            // var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            // var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            model.ProductSale.SellerId = claim.Value;
+            // model.ProductSale.SellerId = claim.Value;
 
             if(ModelState.IsValid)
             {
