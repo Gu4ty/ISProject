@@ -1,1 +1,35 @@
-﻿@model ISProject.Models.ViewModels.IndexViewModel
+﻿@model IEnumerable<ProductSale>
+
+<br /> 
+
+@if(Model.Count() > 0)
+{
+    @foreach(var item in Model)
+    {
+        <div class="border border-info rounded col-12" style="margin-bottom:10px; margin-top:10px; padding:10px">
+            <div class="row">
+                <div class="col-md-9 col-sm-12">
+                    <div class="row">
+                        <div class="col-8">
+                            <label class="text-primary" style="font-size:21px; color:maroon">@item.Product.Name</label>
+                        </div>
+                        <div class="col-4 text-right" style="color:maroon">
+                            <h4>$@item.Price</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-12 text-justify">
+                <p>@Html.Raw(item.Product.Description)</p>
+            </div>
+            <div class="col-md-3 col-sm-12 offset-md-9 text-center">
+                <a asp-action="Buy" class="btn btn-success form-control" asp-route-id="@item.Id">Buy</a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <h2>There are no products for sale yet</h2>
+}

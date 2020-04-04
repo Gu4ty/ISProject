@@ -25,11 +25,7 @@ namespace ISProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IndexViewModel IndexVM = new IndexViewModel(){
-                Products = await _db.ProductSale.ToListAsync()
-            };
-
-            return View(IndexVM);
+            return View(await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).ToListAsync());
         }
 
         public IActionResult Privacy()
