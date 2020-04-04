@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ISProject.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Identity.Core;
 using ISProject.Utils;
 
 namespace ISProject.Data
@@ -29,7 +28,8 @@ namespace ISProject.Data
         protected override void OnModelCreating (ModelBuilder modelBuilder){
             base.OnModelCreating(modelBuilder);
         
-
+        #region *******************Seeding Data*******************
+            
             for(int i=1;i<=10;i++){
                 //Seeding 10 products...
                 modelBuilder.Entity<Product>()
@@ -65,7 +65,7 @@ namespace ISProject.Data
                     NormalizedName = role
                 });
             }
-
+        #endregion
                
 
 
