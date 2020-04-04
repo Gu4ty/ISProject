@@ -1,11 +1,9 @@
 @model ISProject.Models.ViewModels.ProductSellerViewModel
 @using ISProject.Extensions
-@using System.Security.Claims
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 
 <div class ="row">
@@ -21,6 +19,8 @@
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group row">
+            @Html.HiddenFor(x => x.ProductSale.Seller)
+            @Html.HiddenFor(x => x.ProductSale.SellerId)
             <div class="col-3">
                 <label asp-for="ProductSale.ProductId" class="col-form-label"></label>
             </div>

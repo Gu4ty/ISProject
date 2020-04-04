@@ -26,7 +26,7 @@ namespace ISProject.Areas.Admin.Controllers
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            var products = await _db.ProductSale.Where(u => u.SellerId == claim.Value).ToListAsync();
+            var products = await _db.ProductSale.Include(s => s.Product).Where(u => u.SellerId == claim.Value).ToListAsync();
             
             return View(products);
         }
@@ -34,15 +34,18 @@ namespace ISProject.Areas.Admin.Controllers
         //GET - Create
         public async Task<IActionResult> Create()
         {
+            ProductSellerViewModel ps = new ProductSellerViewModel(){
+                Products = await _db.Product.ToListAsync(),
+                ProductSale = new ProductSale()
+            };
+
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            ProductSellerViewModel ps = new ProductSellerViewModel(){
-                Products = await _db.Product.ToListAsync(),
-                ProductSale = new ProductSale{
-                    SellerId = claim.Value
-                }
-            };
+            var seller = await _db.Seller.Where(s => s.Id == claim.Value).FirstAsync();
+            ps.ProductSale.Seller = seller;
+            ps.ProductSale.SellerId = claim.Value;
+
             return View(ps);
         }
 
@@ -58,6 +61,8 @@ namespace ISProject.Areas.Admin.Controllers
 
             if(ModelState.IsValid)
             {
+                var product = await _db.Product.Where(s => s.Id == model.ProductSale.ProductId).FirstAsync();
+                model.ProductSale.Product = product;
                 _db.ProductSale.Add(model.ProductSale);
                 await _db.SaveChangesAsync();
                 
