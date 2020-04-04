@@ -30,5 +30,70 @@ namespace ISProject.Areas.Admin.Controllers
             
             return View(products);
         }
+
+        //GET - Create
+        public async Task<IActionResult> Create()
+        {
+            ProductSellerViewModel ps = new ProductSellerViewModel(){
+                Products = await _db.Product.ToListAsync(),
+                ProductSale = new ProductSale()
+            };
+            return View(ps);
+        }
+
+        //POST - Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ProductSellerViewModel model)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            model.ProductSale.SellerId = claim.Value;
+
+            if(ModelState.IsValid)
+            {
+                _db.ProductSale.Add(model.ProductSale);
+                await _db.SaveChangesAsync();
+                
+                return RedirectToAction(nameof(Index));
+            }
+            
+            Console.WriteLine("NO fue valido");
+            ProductSellerViewModel ps = new ProductSellerViewModel(){
+                Products = await _db.Product.ToListAsync(),
+                ProductSale = model.ProductSale
+            };
+            return View(ps);
+        }
+
+
+        //GET - Create Product
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+
+
+        //POST - CreateProduct
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateProduct(Product model)
+        {
+            if(ModelState.IsValid)
+            {
+                var prodExists = _db.Product.Where(s => s.Name == model.Name && s.Description == model.Description);
+                if(prodExists.Count() > 0){
+                    //Error
+                }
+                else{
+                    _db.Product.Add(model);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Create));
+                }
+            }
+            return View(model);            
+        }
+
     }
 }
