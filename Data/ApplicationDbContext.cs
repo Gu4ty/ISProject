@@ -65,6 +65,9 @@ namespace ISProject.Data
                     NormalizedName = role
                 });
             }
+
+            //Adding an Admin
+            RegisterUser(modelBuilder,"21123111111",SD.ManagerUser,"admin");
         #endregion
                
 
@@ -80,13 +83,13 @@ namespace ISProject.Data
             {
                 Id = User_ID,
                 Name = name,
-                UserName = name,
-                NormalizedUserName = name,
+                UserName = name + "@fake.com",
+                NormalizedUserName = (name + "@fake.com").ToUpper(),
                 Email = name + "@fake.com",
-                NormalizedEmail = name + "@fake.com",
+                NormalizedEmail = (name + "@fake.com").ToUpper(),
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "pass"),
-                SecurityStamp = string.Empty
+                SecurityStamp = Guid.NewGuid().ToString()
             });
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
@@ -107,13 +110,13 @@ namespace ISProject.Data
             {
                 Id = Seller_ID,
                 Name = name,
-                UserName = name,
-                NormalizedUserName = name,
+                UserName = name + "@fake.com",
+                NormalizedUserName = (name + "@fake.com").ToUpper(),
                 Email = name + "@fake.com",
-                NormalizedEmail = name + "@fake.com",
+                NormalizedEmail = (name + "@fake.com").ToUpper(),
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "pass"),
-                SecurityStamp = string.Empty
+                SecurityStamp = Guid.NewGuid().ToString()
             });
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
