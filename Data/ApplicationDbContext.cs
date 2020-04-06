@@ -16,7 +16,6 @@ namespace ISProject.Data
         public DbSet<Seller> Seller { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductSale> ProductSale { get; set; }
-
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
 
 
