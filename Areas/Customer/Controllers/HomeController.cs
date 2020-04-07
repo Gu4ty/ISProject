@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using ISProject.Data;
@@ -27,6 +28,20 @@ namespace ISProject.Controllers
         {
             return View(await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).ToListAsync());
         }
+
+
+        [Authorize]
+        public async Task<IActionResult> Details(int id){
+            var product = await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).Where(s => s.Id == id).FirstOrDefaultAsync();
+
+            ShoppingCart shcart = new ShoppingCart(){
+                ProductSale = product,
+                ProductSaleID = product.Id
+            };
+
+            return View(shcart);
+        }
+        
 
         public IActionResult Privacy()
         {
