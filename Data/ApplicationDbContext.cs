@@ -86,6 +86,7 @@ namespace ISProject.Data
                 NormalizedUserName = (name + "@fake.com").ToUpper(),
                 Email = name + "@fake.com",
                 NormalizedEmail = (name + "@fake.com").ToUpper(),
+                LockoutEnabled = true,
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "pass"),
                 SecurityStamp = Guid.NewGuid().ToString()
@@ -115,6 +116,7 @@ namespace ISProject.Data
                 NormalizedEmail = (name + "@fake.com").ToUpper(),
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "pass"),
+                LockoutEnabled = true,
                 SecurityStamp = Guid.NewGuid().ToString()
             });
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
