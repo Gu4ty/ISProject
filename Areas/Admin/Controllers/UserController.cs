@@ -51,6 +51,22 @@ namespace ISProject.Areas.Admin.Controllers
             
             return View(uvm);
         }
+        public async Task<IActionResult> SellsDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _db.Seller
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var ps = await _db.ProductSale.Where(seller => seller.SellerId == id).ToListAsync();
+            return View(ps);
+        }
          public async Task<IActionResult> Details(string id)
         {
             if (id == null)

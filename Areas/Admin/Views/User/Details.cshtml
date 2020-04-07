@@ -64,6 +64,12 @@
             <dd class = "col-sm-10">
                 @Html.DisplayFor(model => (model as Seller).Rating)
             </dd>
+            <dt class = "col-sm-2">
+            Sells:
+            </dt>
+            <dd class = "col-sm-10">
+                <a asp-action="SellsDetails" asp-route-id="@Model.Id">Sells</a>
+            </dd>
         }
     </dl>
 </div>
