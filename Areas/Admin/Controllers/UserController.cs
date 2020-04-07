@@ -10,6 +10,7 @@ using ISProject.Models.ViewModels;
 using ISProject.Data;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using ISProject.Utils;
 
 namespace ISProject.Areas.Admin.Controllers
 {
@@ -84,16 +85,72 @@ namespace ISProject.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Name,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
         {
+            string role = Request.Form["rdUserRole"].ToString();
+            Console.WriteLine(role);
+
             if (id != user.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _db.Update(user);
+                    User userBd = await _db.User.FindAsync(id);
+                    
+                    if(role == SD.SellerUser)
+                    {
+                        if(await _db.Seller.FindAsync(id) == null)
+                        {   
+                            Console.WriteLine("customer to seller");
+                            _db.User.Remove(userBd);
+                            await _db.SaveChangesAsync();
+                            
+                            Console.WriteLine(userBd.Id);
+                            userBd.UserName = user.UserName;
+                            userBd.Email = user.Email;
+                            userBd.PhoneNumber = user.PhoneNumber;
+                            userBd.AccessFailedCount = user.AccessFailedCount;
+                            Seller sel = CreateSellerFromUser(userBd);
+                            _db.Seller.Add(sel);
+                        }
+                        else
+                        {
+                            userBd.UserName = user.UserName;
+                            userBd.Email = user.Email;
+                            userBd.PhoneNumber = user.PhoneNumber;
+                            userBd.AccessFailedCount = user.AccessFailedCount;
+                            _db.Update(userBd);
+                        }
+                    }
+                    else
+                    {
+                        if(await _db.Seller.FindAsync(id) != null)
+                        {   
+                            Console.WriteLine("seller to costumer");
+                            Seller sel = await _db.Seller.FindAsync(id);
+                            _db.Seller.Remove(sel);
+                            await _db.SaveChangesAsync();
+
+                            // Console.WriteLine(sel.Id);
+
+                            User us = CreateUserFromSeller(sel);
+                            us.UserName = user.UserName;
+                            us.Email = user.Email;
+                            us.PhoneNumber = user.PhoneNumber;
+                            us.AccessFailedCount = user.AccessFailedCount;
+                            _db.User.Add(us);
+                            await _db.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            userBd.UserName = user.UserName;
+                            userBd.Email = user.Email;
+                            userBd.PhoneNumber = user.PhoneNumber;
+                            userBd.AccessFailedCount = user.AccessFailedCount;
+                            _db.User.Update(userBd);
+                        }
+                    }
                     await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -142,6 +199,37 @@ namespace ISProject.Areas.Admin.Controllers
         private bool UserExists(string id)
         {
             return _db.User.Any(e => e.Id == id);
+        }
+        public User CreateUserFromSeller(Seller userBd)
+        {
+            return new User()
+            {
+                Id = userBd.Id,
+                Name = userBd.Name,
+                UserName = userBd.UserName,
+                NormalizedUserName = userBd.NormalizedUserName,
+                Email = userBd.Email,
+                NormalizedEmail = userBd.NormalizedEmail,
+                EmailConfirmed = userBd.EmailConfirmed,
+                PasswordHash = userBd.PasswordHash,
+                SecurityStamp = userBd.SecurityStamp
+            };
+        }
+        public Seller CreateSellerFromUser(User userBd)
+        {
+            return new Seller()
+            {
+                Id = userBd.Id,
+                Name = userBd.Name,
+                UserName = userBd.UserName,
+                NormalizedUserName = userBd.NormalizedUserName,
+                Email = userBd.Email,
+                NormalizedEmail = userBd.NormalizedEmail,
+                EmailConfirmed = userBd.EmailConfirmed,
+                PasswordHash = userBd.PasswordHash,
+                SecurityStamp = userBd.SecurityStamp,
+                Rating = 0
+            };
         }
     }
 }

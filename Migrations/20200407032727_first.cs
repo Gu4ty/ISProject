@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ISProject.Migrations
 {
-    public partial class Test : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -216,122 +216,122 @@ namespace ISProject.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a18be9c0Seller", "5c5f8347-6b77-44e2-b605-e89e5a2985f1", "Seller", "Seller" });
+                values: new object[] { "a18be9c0Seller", "8a5a2b75-dbdd-4da1-9953-7847d32a92b2", "Seller", "Seller" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a18be9c0Manager", "0ac6e80e-b42a-4b83-9bad-41993fb66288", "Manager", "Manager" });
+                values: new object[] { "a18be9c0Manager", "af008456-9310-4993-bae8-59d28df21aff", "Manager", "Manager" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "a18be9c0Customer", "2d746177-d6b4-4acb-a1d0-b676ca899a2b", "Customer", "Customer" });
+                values: new object[] { "a18be9c0Customer", "28883ab6-3746-4efd-a86b-2b1048915ad2", "Customer", "Customer" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "21123111111", 0, "0761bfe8-29b3-40ad-8288-4f8f7d205234", "User", "admin@fake.com", true, false, null, "ADMIN@FAKE.COM", "ADMIN@FAKE.COM", "AQAAAAEAACcQAAAAEN8JfIme3afQE7aEyRT39E8MHWnRTWRM0ZV/TDQArUK8/pUsunlLbMuDk5n2sAMq2Q==", null, false, "1136f485-d4bc-4675-93a7-1dd1d75675d3", false, "admin@fake.com", "admin" });
+                values: new object[] { "21123111111", 0, "ebe7e19d-a0b1-4028-9eb7-2def9bb53882", "User", "admin@fake.com", true, false, null, "ADMIN@FAKE.COM", "ADMIN@FAKE.COM", "AQAAAAEAACcQAAAAEHxM5yqIQAJNJT21Hrs9ZHdbBkvNU3Ji7VyWk+VZQU/fxDHzdocCoXnpzEgXowVdMw==", null, false, "8f2fe110-8e93-4282-8eee-bd6ac8afb55d", false, "admin@fake.com", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "101", 0, "668f5d55-5cac-45ed-8532-a8b4d70d23ac", "User", "Customer10@fake.com", true, false, null, "CUSTOMER10@FAKE.COM", "CUSTOMER10@FAKE.COM", "AQAAAAEAACcQAAAAEOeA2wv5r3Lg1ZUdB3Km1DUYS4UqnsAr/QiGc28VyFGyDOO17Xv65XbIlch9JaZBdQ==", null, false, "c17241f5-821a-47d6-8f36-bfe48db7fb89", false, "Customer10@fake.com", "Customer10" });
+                values: new object[] { "101", 0, "242f554c-0aa0-444a-bf85-adc8f5fe3f07", "User", "Customer10@fake.com", true, false, null, "CUSTOMER10@FAKE.COM", "CUSTOMER10@FAKE.COM", "AQAAAAEAACcQAAAAENrnrXFqLa67LRwpRxyaBlbzpKx6r9i/mFYKshjAlHxTY+i/zyqKASAMjTFr3ejqyw==", null, false, "bffad3ae-c1b4-49c6-9ffd-ccf900fddbc0", false, "Customer10@fake.com", "Customer10" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "91", 0, "c7d91e36-56e7-44c3-9de2-ef28fc688177", "User", "Customer9@fake.com", true, false, null, "CUSTOMER9@FAKE.COM", "CUSTOMER9@FAKE.COM", "AQAAAAEAACcQAAAAEAiSwR9dxcixJL6yuYTx5yYL34nwgy1swkr3Hvxm+q44iE9MMHbuS8DEVxgCSsJrxA==", null, false, "efa4059f-ac09-4866-b044-ec95bbb701cf", false, "Customer9@fake.com", "Customer9" });
+                values: new object[] { "91", 0, "a333e007-d227-4456-9202-1c07d99169f0", "User", "Customer9@fake.com", true, false, null, "CUSTOMER9@FAKE.COM", "CUSTOMER9@FAKE.COM", "AQAAAAEAACcQAAAAENA3OLjpgP4jXPppCr9UxnSEfZL2k0CcWkYf3sy2MmrhkOtuFMaR1lkCs6kJDZs66w==", null, false, "2354f12c-5f49-4326-98ea-ec19123db821", false, "Customer9@fake.com", "Customer9" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "81", 0, "4660da64-f53b-4aec-a961-9a90226c5aeb", "User", "Customer8@fake.com", true, false, null, "CUSTOMER8@FAKE.COM", "CUSTOMER8@FAKE.COM", "AQAAAAEAACcQAAAAEF3nULzLOrJkzNk5KeMOwS+us0b+vIfoKld+4lPU+fiQD37MIcksN1PcvPeqQ0F97A==", null, false, "04c23e5b-9a77-4373-8c0a-5c248bfe274a", false, "Customer8@fake.com", "Customer8" });
+                values: new object[] { "81", 0, "c508bab1-0413-42f3-943f-b6dcca0113ce", "User", "Customer8@fake.com", true, false, null, "CUSTOMER8@FAKE.COM", "CUSTOMER8@FAKE.COM", "AQAAAAEAACcQAAAAENpelOQWmYTjNn12QVCWrC5EmOaAo1zshc85YCMnKqjjklF98VpAexBWoO0MpHpizQ==", null, false, "b8b33ba4-e1f0-489c-a9b6-e673104a52df", false, "Customer8@fake.com", "Customer8" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "71", 0, "2cc8aede-704b-42de-87a0-3057184a384d", "User", "Customer7@fake.com", true, false, null, "CUSTOMER7@FAKE.COM", "CUSTOMER7@FAKE.COM", "AQAAAAEAACcQAAAAEAmrDO0MYtvHVlgz5ky+MmWi/RAgV5jcmQqPDmBfBJ90OinX/zAZnR5OMtYHdyXRLg==", null, false, "fb41480b-5741-44eb-ab26-9ce2506d7307", false, "Customer7@fake.com", "Customer7" });
+                values: new object[] { "71", 0, "aa2e8a51-bfa2-4260-8821-9c27d3cb5df3", "User", "Customer7@fake.com", true, false, null, "CUSTOMER7@FAKE.COM", "CUSTOMER7@FAKE.COM", "AQAAAAEAACcQAAAAELiKan6L33Mi7ck+IOuwRJPqL3Ovtg8LY1VHI2tIjcSAhQ+BjZ5mIG1EHUFsH9SNuQ==", null, false, "88bf6683-bc20-45bc-a59d-02b7c635f885", false, "Customer7@fake.com", "Customer7" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "61", 0, "3186ff76-f03e-4e4f-aeda-d09a2c9cffe4", "User", "Customer6@fake.com", true, false, null, "CUSTOMER6@FAKE.COM", "CUSTOMER6@FAKE.COM", "AQAAAAEAACcQAAAAEJsbIunjLyGTyQ2zOdNRbmntxiDw2hnStkaRImYaScKcdrr/MXPFSvflisIzOUQnqA==", null, false, "911b6eee-3c28-412f-a6e8-5d9c7c721bcc", false, "Customer6@fake.com", "Customer6" });
+                values: new object[] { "61", 0, "15819ade-7601-4d28-ae3f-4115b64bb7aa", "User", "Customer6@fake.com", true, false, null, "CUSTOMER6@FAKE.COM", "CUSTOMER6@FAKE.COM", "AQAAAAEAACcQAAAAEC4Y7GvjhnHoBb3VM6cUoScVRGtDC9GO0NWU1c7fsLhcHNkJEA5AsIJap9oXCBQguQ==", null, false, "b4aae1b8-eee3-4115-ba8c-efecece5ec2c", false, "Customer6@fake.com", "Customer6" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "82", 0, "64087267-bb91-4d3d-8404-7cce374f9a48", "Seller", "Seller8@fake.com", true, false, null, "Seller8@fake.com", "Seller8", "AQAAAAEAACcQAAAAEOFcwUE+/Z3ylUXT4/GunBxi8sc3vlmiPSvK4svNAObH5q7CHQseqoAuqO92TuJrIQ==", null, false, "", false, "Seller8@fake.com", "Seller8", 0 });
+                values: new object[] { "82", 0, "d3c61c48-111f-49e6-8adb-a90ab2d3562b", "Seller", "Seller8@fake.com", true, false, null, "SELLER8@FAKE.COM", "SELLER8@FAKE.COM", "AQAAAAEAACcQAAAAELcj+EBxrueix+iX+8i25PGgFi9k50SElvuv39MNLUArCFzf9OYn6rrpaS17B/rljQ==", null, false, "45cb8413-da6f-452f-a7f8-30b00188b0f1", false, "Seller8@fake.com", "Seller8", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "41", 0, "3609586a-17ad-43e6-a1eb-a47239ecb6cc", "User", "Customer4@fake.com", true, false, null, "CUSTOMER4@FAKE.COM", "CUSTOMER4@FAKE.COM", "AQAAAAEAACcQAAAAEAPqDA48QHSqnEonqv3upgb8VHrCCpEjeAMz0rY+zWuFIAbPsBUmTrdCL8OjP7gfFQ==", null, false, "ccccfa6b-3e3d-4f3b-87d1-dd1fbe688725", false, "Customer4@fake.com", "Customer4" });
+                values: new object[] { "41", 0, "15e34d2a-a41a-4d23-8683-8278a6f46b82", "User", "Customer4@fake.com", true, false, null, "CUSTOMER4@FAKE.COM", "CUSTOMER4@FAKE.COM", "AQAAAAEAACcQAAAAEAjH2qG8s0X0am+LvcJA54WgaYo6pJqUM0DsRt0y7UcmlreUtmk69J6fkVmr/55LeA==", null, false, "d27b6d8e-1d57-43ea-b9fc-d65c99dafb58", false, "Customer4@fake.com", "Customer4" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "31", 0, "48d06328-89dd-4403-bb9d-e552f74b874f", "User", "Customer3@fake.com", true, false, null, "CUSTOMER3@FAKE.COM", "CUSTOMER3@FAKE.COM", "AQAAAAEAACcQAAAAENKhGC3IdNJ+ngzy9inkyvqsrkXbpgVumHeDbGR6AL44nWp1B8GwRLFeu/m3b87MIQ==", null, false, "a8a2a84e-d609-4364-9c6a-0f96b37f8a4f", false, "Customer3@fake.com", "Customer3" });
+                values: new object[] { "31", 0, "24e66f56-614c-490b-a481-822e4cf46ccf", "User", "Customer3@fake.com", true, false, null, "CUSTOMER3@FAKE.COM", "CUSTOMER3@FAKE.COM", "AQAAAAEAACcQAAAAEKjkoEYivz4wsusf25a5OrdwOQkn18nwf7+zkSxUrsexG11BwJThaPEZ9yGKObC2dQ==", null, false, "c8d3c779-19b5-4c10-951f-3b8a145a2fa1", false, "Customer3@fake.com", "Customer3" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "21", 0, "a7cf377d-fbb0-4757-b0a7-1f650aee5f5e", "User", "Customer2@fake.com", true, false, null, "CUSTOMER2@FAKE.COM", "CUSTOMER2@FAKE.COM", "AQAAAAEAACcQAAAAEMTXZ0wRh8gkdVvr2ht6H0entS+gnUlZNN71Uy2Jz/QmtRQd1yFN1kZKMVZE8/XO9g==", null, false, "257961a5-006d-4260-8ab6-0328d62a84ce", false, "Customer2@fake.com", "Customer2" });
+                values: new object[] { "21", 0, "e3bb6fb8-f8f7-4940-b7b0-dbce25e25391", "User", "Customer2@fake.com", true, false, null, "CUSTOMER2@FAKE.COM", "CUSTOMER2@FAKE.COM", "AQAAAAEAACcQAAAAEGnNzXULbYV1OSPDHX+JzZ1SaKepQyTigY9nyY+Bkm7DXJC42lJsPNsEVwfeCeh/IQ==", null, false, "c9ecb343-88d5-48a6-8ac4-f0b3729ef208", false, "Customer2@fake.com", "Customer2" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "11", 0, "36487bbc-9346-4187-90d8-9107f750d609", "User", "Customer1@fake.com", true, false, null, "CUSTOMER1@FAKE.COM", "CUSTOMER1@FAKE.COM", "AQAAAAEAACcQAAAAEAZma3kPlPz8/QsVImFxTuVmwhaNvbKsn8Nwu4edeurPhc64pUrcMpRvREOYNNu71g==", null, false, "7b58a4ec-570d-44d7-8add-7ff02e13778e", false, "Customer1@fake.com", "Customer1" });
+                values: new object[] { "11", 0, "e7967b41-5286-4726-a5fb-4f56aa5ba758", "User", "Customer1@fake.com", true, false, null, "CUSTOMER1@FAKE.COM", "CUSTOMER1@FAKE.COM", "AQAAAAEAACcQAAAAELQbw5xo1VM9MVRlKdAXVP361H0xgTdS2IiUaBpuChA6XyEy4k3nPb2HSOD/n6KLQA==", null, false, "15eede62-3d96-438c-8a42-4db2648986e6", false, "Customer1@fake.com", "Customer1" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "102", 0, "990bf426-d87c-4178-8765-dca47e8a8509", "Seller", "Seller10@fake.com", true, false, null, "Seller10@fake.com", "Seller10", "AQAAAAEAACcQAAAAELIfqY6/m9oukwZGTcHC9Bc42zrUPbohjKd8XulKw1IrOx35yOry7E7a63i0GGidgQ==", null, false, "", false, "Seller10@fake.com", "Seller10", 0 });
+                values: new object[] { "102", 0, "060ad948-0ed4-4ff9-a21d-5a474291ecf3", "Seller", "Seller10@fake.com", true, false, null, "SELLER10@FAKE.COM", "SELLER10@FAKE.COM", "AQAAAAEAACcQAAAAEP1rP8QhwLxG47sq7xxE6YOzFwCnBA80tKYXB8uOy5alVkqTCjsvIy2o4GYZzI3NWA==", null, false, "96507aa8-1070-427b-a17d-a69ee390db9a", false, "Seller10@fake.com", "Seller10", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "92", 0, "1d7ca325-8d04-4d8e-a78e-1000be3e6372", "Seller", "Seller9@fake.com", true, false, null, "Seller9@fake.com", "Seller9", "AQAAAAEAACcQAAAAEC8b8x6FucXZLMfT4+Uy5kh6JiQo+l6Ih13QdcHEKAw5E3adaC5h7gBLPIby7lmlxA==", null, false, "", false, "Seller9@fake.com", "Seller9", 0 });
+                values: new object[] { "92", 0, "c3498e92-6c7f-478d-945b-bae36c7c8033", "Seller", "Seller9@fake.com", true, false, null, "SELLER9@FAKE.COM", "SELLER9@FAKE.COM", "AQAAAAEAACcQAAAAENX7tSQOwfquJchzff2PxWlpk+3bXTj3LmztN6zo816tKQIifr6U0NCr7K8ub304xA==", null, false, "e13e962d-f9ae-4ce0-bf5e-35717669cdbf", false, "Seller9@fake.com", "Seller9", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name" },
-                values: new object[] { "51", 0, "693ef751-9e9f-439b-82d7-e61ed7bb608b", "User", "Customer5@fake.com", true, false, null, "CUSTOMER5@FAKE.COM", "CUSTOMER5@FAKE.COM", "AQAAAAEAACcQAAAAEH1/jyEZaHRFqZIffNWSSHb2guiSjanlbVQoaSGnUiiEJA39ZgAWPEJUJS4/XeGaog==", null, false, "5efe14fe-a9e5-48af-b36c-9b3078100ea2", false, "Customer5@fake.com", "Customer5" });
+                values: new object[] { "51", 0, "f7881f8b-913f-4cfc-9c4d-9af4bf1361e2", "User", "Customer5@fake.com", true, false, null, "CUSTOMER5@FAKE.COM", "CUSTOMER5@FAKE.COM", "AQAAAAEAACcQAAAAENHsHi/Rh8/lfuO52AgkMoF77b+8HNNQ2UMRiz2lhqGKFKfyhWD/MWBjH0ioGZ3qPg==", null, false, "88f815da-abd4-4827-a701-46d5db075e5b", false, "Customer5@fake.com", "Customer5" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "72", 0, "ef6fb5a0-eca0-40c0-84d1-13e258466c47", "Seller", "Seller7@fake.com", true, false, null, "Seller7@fake.com", "Seller7", "AQAAAAEAACcQAAAAEBmtfh6R5M6eKtd6TgK2LeHGa+Vu5oZ2zj/EzJko3bkWkO8gPVPI0y0jhTxS/+15eQ==", null, false, "", false, "Seller7@fake.com", "Seller7", 0 });
+                values: new object[] { "72", 0, "b043f6ae-67b3-4799-984f-ad37049179f0", "Seller", "Seller7@fake.com", true, false, null, "SELLER7@FAKE.COM", "SELLER7@FAKE.COM", "AQAAAAEAACcQAAAAEDlm3K/skqzoXchHVr18FOjDq7uSQVluFYQ+Y6pprdkSuljo5ryAsyTLNShFhjODJQ==", null, false, "672d18db-e373-4542-a56f-5c514e93a877", false, "Seller7@fake.com", "Seller7", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "52", 0, "490416a0-80e1-4d36-9934-fdd76ee99ef7", "Seller", "Seller5@fake.com", true, false, null, "Seller5@fake.com", "Seller5", "AQAAAAEAACcQAAAAEKV3Hi6u37hbBHHZhHbjRDKP//I5/DtmZ5new+Q+87BWp40hDlCP8Bjrs0TpJm5Cww==", null, false, "", false, "Seller5@fake.com", "Seller5", 0 });
+                values: new object[] { "52", 0, "f20b70f9-2177-4500-8297-207e9ec404ea", "Seller", "Seller5@fake.com", true, false, null, "SELLER5@FAKE.COM", "SELLER5@FAKE.COM", "AQAAAAEAACcQAAAAEF0frsE/HMCQcO4PGUerKjTZmPsUg8TqXgaUUxN6skGanp6QK25uKtje7HIqlbzVPQ==", null, false, "b0f17513-09d5-4c01-b444-b3df33f373ce", false, "Seller5@fake.com", "Seller5", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "42", 0, "16bb6b26-b861-49bb-a882-f11c8aa30211", "Seller", "Seller4@fake.com", true, false, null, "Seller4@fake.com", "Seller4", "AQAAAAEAACcQAAAAEHRa0E9GpHdl1CxZY5KJ47Kz3w5akHj8jI/cDfp9WZtxuRYsxbfKrlO5ET4k34reKA==", null, false, "", false, "Seller4@fake.com", "Seller4", 0 });
+                values: new object[] { "42", 0, "3bea78ef-430f-49d9-9585-b22297006739", "Seller", "Seller4@fake.com", true, false, null, "SELLER4@FAKE.COM", "SELLER4@FAKE.COM", "AQAAAAEAACcQAAAAEDMsKCl/dZoMisohrE6ZC8GY9CuH7ApTdIW5d3zZl1vx3xMgxQ/iRTOxvgYeONxFBA==", null, false, "391deb13-59a7-4f35-bf89-91f2e29ef967", false, "Seller4@fake.com", "Seller4", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "32", 0, "5c4ebdc5-1f1f-45f8-9484-e0faec0cc94c", "Seller", "Seller3@fake.com", true, false, null, "Seller3@fake.com", "Seller3", "AQAAAAEAACcQAAAAEObTFSKdYDzPbIjnFOxnEoebfUnnRomFBGWiXQ5t8lAikyLvgYHw9Nf44PEZ4z5oFA==", null, false, "", false, "Seller3@fake.com", "Seller3", 0 });
+                values: new object[] { "32", 0, "92c8c448-9708-4ea9-bca4-c9657c567614", "Seller", "Seller3@fake.com", true, false, null, "SELLER3@FAKE.COM", "SELLER3@FAKE.COM", "AQAAAAEAACcQAAAAEGrCNE/3LUu/Zp3icJ43GyfaMPMSW8bjr6/xkgdou1iH+Fr675LRsGovPoruCd4QfA==", null, false, "87084a09-a699-4edd-9bd3-1211ad573e89", false, "Seller3@fake.com", "Seller3", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "22", 0, "4aa11ff4-b773-42b1-bac5-f44b3bc8056d", "Seller", "Seller2@fake.com", true, false, null, "Seller2@fake.com", "Seller2", "AQAAAAEAACcQAAAAEAkj5F273stpVstFhzhepuMTg27gxQWmUh/fEf6GX114ziPRmWALDXW8jaAcvp0DuA==", null, false, "", false, "Seller2@fake.com", "Seller2", 0 });
+                values: new object[] { "22", 0, "108abe0c-618e-4b60-83ac-1728bb9f7edf", "Seller", "Seller2@fake.com", true, false, null, "SELLER2@FAKE.COM", "SELLER2@FAKE.COM", "AQAAAAEAACcQAAAAEADR6Q5vQtHaBQapCZkJb6jqQMwoNALFdCIYo9bBqi97JM6akknBEeZWhoY4OUvlnA==", null, false, "0cd41435-a314-44a2-8347-3e048e40d730", false, "Seller2@fake.com", "Seller2", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "12", 0, "da642b5c-dbd9-421f-96d9-edafba4aafbf", "Seller", "Seller1@fake.com", true, false, null, "Seller1@fake.com", "Seller1", "AQAAAAEAACcQAAAAEHXUUZMFiID2k/X775g65QGBLSuDvc4UPPMjQwlHrgw6KHTjZiyVHgrtfA8Ra2bRnA==", null, false, "", false, "Seller1@fake.com", "Seller1", 0 });
+                values: new object[] { "12", 0, "803cf9af-d661-4c0f-8353-8eb7f908d4d3", "Seller", "Seller1@fake.com", true, false, null, "SELLER1@FAKE.COM", "SELLER1@FAKE.COM", "AQAAAAEAACcQAAAAEJgFgXHyjFhqO1GKtQ9EkaRak1kGxusNWn8CGnfcegC0bGnD/8Tb1i2Pc+XE7RhJxA==", null, false, "3614e104-4b8e-4639-97fc-b02a7d0c1bd8", false, "Seller1@fake.com", "Seller1", 0 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Discriminator", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "Name", "Rating" },
-                values: new object[] { "62", 0, "2d423499-9c5b-4bc3-a512-6cbf39d3bbc0", "Seller", "Seller6@fake.com", true, false, null, "Seller6@fake.com", "Seller6", "AQAAAAEAACcQAAAAEOhc/htd/qmmTgji7tvvoDpivJ6EVww+WS3yEiQwiLZTZbsPpcjP82Vl0OLAZ+vr3A==", null, false, "", false, "Seller6@fake.com", "Seller6", 0 });
+                values: new object[] { "62", 0, "1ad6ae48-59f4-4af2-b639-abb950ed26bf", "Seller", "Seller6@fake.com", true, false, null, "SELLER6@FAKE.COM", "SELLER6@FAKE.COM", "AQAAAAEAACcQAAAAEKtmToGbF6WAi8l7IqcZ/V8NlvUEedBrpkT+3VPnXHJMt7ifcKoEwqrmPZPDcsKmgA==", null, false, "e525acb3-5f58-4a7c-b0b7-4f2b9bfea5fa", false, "Seller6@fake.com", "Seller6", 0 });
 
             migrationBuilder.InsertData(
                 table: "Product",
