@@ -12,7 +12,12 @@
 <form method="post">
     <div class="row">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        
+        @Html.HiddenFor(x => x.ProductSale)
+        @Html.HiddenFor(x => x.ProductSaleID)
+        @Html.HiddenFor(x => x.User)
+        @Html.HiddenFor(x => x.UserId)
+        @Html.HiddenFor(x => x.ProductSale.Seller)
+        @Html.HiddenFor(x => x.ProductSale.SellerId)
         <div class="col-md-8">
             <div class="form-group row">
                 <div class="col-md-4">
@@ -60,9 +65,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <input asp-for="ProductSale.Product.Id" hidden />
 </form>
 
 
