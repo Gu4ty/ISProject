@@ -57,6 +57,86 @@ namespace ISProject.Areas.Customer.Controllers
             return View(detailCart);
         }
 
+        public async Task<IActionResult> Summary()
+        {
+            OrderDetailsCart detailCart = new OrderDetailsCart()
+            {
+                OrderHeader = new OrderHeader()
+            };
+
+            detailCart.OrderHeader.TotalPrice = 0;
+
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var cart = _db.ShoppingCart.Where(c => c.UserId == claim.Value);
+
+            if(cart != null)
+            {
+                detailCart.listCart = cart.ToList();
+            }
+
+            foreach(var item in detailCart.listCart)
+            {
+                item.ProductSale = await _db.ProductSale.Include(m => m.Product).Where(m => m.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                detailCart.OrderHeader.TotalPrice += (item.ProductSale.Price * item.Count);
+            }
+
+            detailCart.OrderHeader.OrderTime = DateTime.Now;
+            detailCart.OrderHeader.User = await _db.User.Where(u => u.Id == claim.Value).FirstOrDefaultAsync();
+            detailCart.OrderHeader.UserId = claim.Value;
+ 
+            return View(detailCart);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Summary")]
+        public async Task<IActionResult> SummaryPost(OrderDetailsCart detailCart)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            User user =  await _db.User.Where(u => u.Id == claim.Value).FirstOrDefaultAsync();
+            
+            detailCart.listCart = await _db.ShoppingCart.Where(c => c.UserId == claim.Value).ToListAsync();
+            
+            detailCart.OrderHeader.TotalPrice = 0;
+            detailCart.OrderHeader.User = user;
+            detailCart.OrderHeader.UserId = claim.Value;
+            detailCart.OrderHeader.OrderTime = DateTime.Now;
+
+            List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+            _db.OrderHeader.Add(detailCart.OrderHeader);
+            await _db.SaveChangesAsync();
+
+
+            foreach(var item in detailCart.listCart)
+            {
+                item.ProductSale = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                OrderDetails orderDetails = new OrderDetails()
+                {
+                    OrderId = detailCart.OrderHeader.Id,
+                    OrderHeader = detailCart.OrderHeader,
+                    ProductId = item.ProductSaleID,
+                    ProductSale = item.ProductSale,
+                    Count = item.Count,
+                    Price = item.ProductSale.Price,
+                    Name = item.ProductSale.Product.Name,
+                    Description = item.ProductSale.Product.Description
+                };
+                detailCart.OrderHeader.TotalPrice += orderDetails.Count * orderDetails.Price;
+                _db.OrderDetails.Add(orderDetails);
+            }
+
+            _db.ShoppingCart.RemoveRange(detailCart.listCart);
+            HttpContext.Session.SetInt32(SD.ssShoppingCartCount, 0);
+
+            await _db.SaveChangesAsync();
+ 
+            return RedirectToAction("Index", "Home");
+        }
+
 
         public async Task<IActionResult> Plus(int id)
         {
