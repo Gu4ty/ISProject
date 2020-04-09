@@ -12,6 +12,29 @@ a {
   color: #0366d6;
 }
 
+.notification {
+  color: white;
+  text-decoration: none;
+  position: relative;
+  border-radius: 2px;
+}
+
+/* .notification:hover {
+  background: red;
+} */
+
+.notification .badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  /*padding: 5px 10px;*/
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+
+
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
