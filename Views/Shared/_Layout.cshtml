@@ -28,6 +28,10 @@
                                 <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
                             </li>
                         }
+                        @* @if(User.Identity.IsAuthenticated) 
+                        {
+                            @await Component.InvokeAsync("Notification")
+                        } *@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
