@@ -6,10 +6,12 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using ISProject.Data;
 using ISProject.Models.ViewModels;
 using ISProject.Models;
+using ISProject.Utils;
 
 
 namespace ISProject.Areas.Customer.Controllers
@@ -53,6 +55,45 @@ namespace ISProject.Areas.Customer.Controllers
             }
  
             return View(detailCart);
+        }
+
+
+        public async Task<IActionResult> Plus(int id)
+        {
+            var cart = await _db.ShoppingCart.Where(s => s.Id == id).FirstOrDefaultAsync();
+            cart.Count += 1;
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Minus(int id)
+        {
+            var cart = await _db.ShoppingCart.Where(s => s.Id == id).FirstOrDefaultAsync();
+            if(cart.Count == 1)
+            {
+                _db.ShoppingCart.Remove(cart);
+                await _db.SaveChangesAsync();
+
+                var cnt = _db.ShoppingCart.Where(u => u.UserId == cart.UserId).ToList().Count();
+                HttpContext.Session.SetInt32(SD.ssShoppingCartCount, cnt);
+            }
+            else
+            {
+                cart.Count -= 1;
+                await _db.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Remove(int id)
+        {
+            var cart = await _db.ShoppingCart.Where(s => s.Id == id).FirstOrDefaultAsync();
+
+            _db.ShoppingCart.Remove(cart);
+            await _db.SaveChangesAsync();
+
+            var cnt = _db.ShoppingCart.Where(u => u.UserId == cart.UserId).ToList().Count();
+            HttpContext.Session.SetInt32(SD.ssShoppingCartCount, cnt);
+
+            return RedirectToAction(nameof(Index));
         }
     }
    

@@ -32,14 +32,14 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="float-right mx-1">
-                                        <button type="submit" class="btn btn-primary" asp-action="plus" asp-rout-cartId="@item.Id">+</button>
+                                        <a asp-action="Plus" class="btn btn-primary" asp-area="Customer" asp-controller="Cart" asp-route-id="@item.Id">+</a>
                                     </div>
                                     <div class="float-right mx-1">
-                                        <button type="submit" class="btn btn-danger" asp-action="minus" asp-rout-cartId="@item.Id">-</button>
+                                        <a asp-action="Minus" class="btn btn-danger" asp-area="Customer" asp-controller="Cart" asp-route-id="@item.Id">-</a>
                                     </div>
                                 </div>
                                 <div class="col-2 text-right">
-                                    <button type="submit" class="btn btn-outline-danger" asp-action="remove" asp-rout-cartId="@item.Id">Delete</button>
+                                    <a asp-action="Remove" class="btn btn-outline-danger" asp-area="Customer" asp-controller="Cart" asp-route-id="@item.Id">Delete</a>
                                 </div>
                             </div>
                         </div>
