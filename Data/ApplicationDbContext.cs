@@ -17,7 +17,8 @@ namespace ISProject.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductSale> ProductSale { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
-
+        public DbSet<Notification> Notification { get; set; }
+        public DbSet<NotiRole> NotiRole { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -50,6 +51,18 @@ namespace ISProject.Data
                         Units= i,
                         Price = i/2
                     });
+                
+                //Seeding Notifications of Role Upgrade
+                if(i%3 ==0){
+                    modelBuilder.Entity<NotiRole>()
+                        .HasData(new NotiRole(){
+                            Id=i*10+4,
+                            UserID = (i*10 + 1).ToString(),
+                            Message = "Customer" +i.ToString() + "wants to become a Seller",
+                            SendToUser = "All_A",
+                            Seen= false
+                        });
+                }
 
                 
             }
