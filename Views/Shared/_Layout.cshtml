@@ -1,4 +1,7 @@
 ﻿@using ISProject.Utils;
+@using Microsoft.AspNetCore.Http;
+
+@inject IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,9 +38,23 @@
                                 <a class="nav-link" asp-area="Admin" asp-controller="Seller" asp-action="Index">My Products</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="">Shopping Cart &nbsp; (0)</a>
-                        </li>
+
+                        @if(HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount) != null)
+                        {
+                            <li class="nav-item">
+                                @{
+                                    var count = HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount);
+                                }
+                                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="">Shopping Cart &nbsp; (@count)</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="">Shopping Cart &nbsp; (0)</a>
+                            </li>
+                        }
+                                                
                     </ul>
                 </div>
             </div>
