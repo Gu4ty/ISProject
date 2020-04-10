@@ -9,9 +9,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ISProject</title>
+    <link href="~/fontawesome/css/all.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link href="~/fontawesome/css/all.css" rel="stylesheet">
+    
 </head>
 <body>
     <header>
@@ -23,6 +24,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -34,11 +36,25 @@
                                 <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Index">Users</a>
                             </li>
                         }
+
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+
                         @if(User.IsInRole(SD.SellerUser)){
                             <li>
                                 <a class="nav-link" asp-area="Admin" asp-controller="Seller" asp-action="Index">My Products</a>
                             </li>
                         }
+                        @if(User.Identity.IsAuthenticated) 
+                        {
+                            @await Component.InvokeAsync("Notification")
+                        }
+
 
                         @if(HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount) != null)
                         {
@@ -55,7 +71,6 @@
                                 <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">Shopping Cart &nbsp; (0)</a>
                             </li>
                         }
-                                                
                     </ul>
                 </div>
             </div>
