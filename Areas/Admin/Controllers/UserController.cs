@@ -247,5 +247,33 @@ namespace ISProject.Areas.Admin.Controllers
                 Rating = 0
             };
         }
+        
+        public async Task<IActionResult> Lock(string id)
+        {
+            if(id==null){
+                return NotFound();
+            }
+            var user = await _db.User.Where(m => m.Id==id).FirstOrDefaultAsync();
+            if(user ==null){
+                return NotFound();
+            }
+            user.LockoutEnd = DateTime.Now.AddYears(1000);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        
+        public async Task<IActionResult> UnLock(string id)
+        {
+            if(id==null){
+                return NotFound();
+            }
+            var user = await _db.User.Where(m => m.Id==id).FirstOrDefaultAsync();
+            if(user ==null){
+                return NotFound();
+            }
+            user.LockoutEnd = DateTime.Now;
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
