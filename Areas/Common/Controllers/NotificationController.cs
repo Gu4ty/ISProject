@@ -66,6 +66,37 @@ namespace ISProject.Controllers
                 _db.UpdateRange(notifications);
 
             }
+            if(noti_type == "NotiBuy" || noti_type == null){
+                
+                var notifications = await _db.NotiBuy
+                                    .Where( n=>
+                                            n.SendToUser== claim.Value
+                                    )
+                                    .Include(n=> n.OrderHeader)
+                                    .ToListAsync();
+
+                foreach(var n in notifications){
+                    n.OrderDetails = await _db.OrderDetails.Where(o=> o.OrderId == n.OrderHeaderID ).ToListAsync();
+                    
+                    NotiBuy nr = new NotiBuy(){
+                        Id = n.Id,
+                        Message = n.Message,
+                        OrderHeaderID = n.OrderHeaderID,
+                        OrderHeader = n.OrderHeader,
+                        OrderDetails = n.OrderDetails,
+                        NotiDate = n.NotiDate,
+                        Seen = n.Seen,
+                        SendToUser = n.SendToUser,
+                    
+                    };
+                    nvm.NotiBuy.Add(nr);
+                    n.Seen = true;
+                }
+
+                _db.UpdateRange(notifications);
+
+
+            }
 
 
             
