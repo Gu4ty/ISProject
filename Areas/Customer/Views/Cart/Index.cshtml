@@ -1,0 +1,78 @@
+@model ISProject.Models.ViewModels.OrderDetailsCart
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    @if(Model.listCart.Count > 0)
+    {
+        <br />
+        <input id="userId" asp-for="@Model.listCart[0].UserId" hidden />
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-dark text-light ml-0 row container">
+                    <div class="col-6">Shopping Cart</div>
+                    <div class="col-6 text-right">
+                        <a asp-asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-info btn-sm">Continue shopping</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @foreach(var item in Model.listCart)
+                    {
+                        <div class="row">
+                            <div class="col-7 text-left">
+                                <h4><strong>@item.ProductSale.Product.Name</strong></h4>
+                                <h4><small>@item.ProductSale.Product.Description</small></h4>
+                            </div>
+                            <div class="col-5 text-right row">
+                                <div class="col-4 text-md-right" style="padding-top:5px;">
+                                    <h6><strong>$@item.ProductSale.Price <span class="text-muted">x</span> @item.Count </strong></h6>
+                                </div>
+                                <div class="col-6">
+                                    <div class="float-right mx-1">
+                                        <a asp-action="Plus" class="btn btn-primary" asp-area="Customer" asp-controller="Cart" asp-route-id="@item.Id">+</a>
+                                    </div>
+                                    <div class="float-right mx-1">
+                                        <a asp-action="Minus" class="btn btn-danger" asp-area="Customer" asp-controller="Cart" asp-route-id="@item.Id">-</a>
+                                    </div>
+                                </div>
+                                <div class="col-2 text-right">
+                                    <a asp-action="Remove" class="btn btn-outline-danger" asp-area="Customer" asp-controller="Cart" asp-route-id="@item.Id">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+
+                    <div class="row">
+                        <div class="col-12 pr-4">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between bg-light">
+                                    <span class="text-info">Total (USD)</span>
+                                    <strong class="text-info">$ <span id="txtOrderTotal">@Model.OrderHeader.TotalPrice</span></strong>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <div class="col-4 offset-4">
+                        <a asp-action="Summary" asp-area="Customer" asp-controller="Cart" class="btn btn-success form-control">Summary</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div>No items added to the shopping cart...</div>
+    }
+</form>
