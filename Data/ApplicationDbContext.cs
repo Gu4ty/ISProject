@@ -17,13 +17,8 @@ namespace ISProject.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductSale> ProductSale { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
-<<<<<<< HEAD
         public DbSet<Notification> Notification { get; set; }
         public DbSet<NotiRole> NotiRole { get; set; }
-=======
-      
-
->>>>>>> master
         public DbSet<OrderDetails> OrderDetails {get; set; }
         public DbSet<OrderHeader> OrderHeader {get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
