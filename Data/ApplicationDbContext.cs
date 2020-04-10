@@ -19,8 +19,12 @@ namespace ISProject.Data
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
         public DbSet<Notification> Notification { get; set; }
         public DbSet<NotiRole> NotiRole { get; set; }
+        public DbSet<NotiBuy> NotiBuy { get; set; }
         public DbSet<OrderDetails> OrderDetails {get; set; }
         public DbSet<OrderHeader> OrderHeader {get; set; }
+
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
