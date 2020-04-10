@@ -33,23 +33,91 @@ namespace ISProject.Controllers
 
             bool is_admin = this.User.IsInRole(SD.ManagerUser);
 
+            NotificationViewModel nvm = new NotificationViewModel();
+
             if(!this.User.Identity.IsAuthenticated){
                 return NotFound();
             }
-
-            if(noti_type ==null || noti_type == "All" )
+           
+            if(noti_type =="NotiRole" || noti_type==null )
             {
-                var notifications = await _db.Notification
+                var notifications = await _db.NotiRole
                                     .Where( n=>
                                             n.SendToUser== claim.Value ||
                                             (n.SendToUser == "All_A" && is_admin )
                                     )
+                                    .Include(nr => nr.User)
                                     .ToListAsync();
-                return View(notifications);
+              
+                foreach(var n in notifications){
+                    NotiRole nr = new NotiRole(){
+                        Id = n.Id,
+                        Message = n.Message,
+                        User= n.User,
+                        UserID = n.UserID,
+                        NotiDate = n.NotiDate,
+                        Seen = n.Seen,
+                        SendToUser = n.SendToUser,
+                    
+                    };
+                    nvm.NotiRole.Add(nr);
+                    n.Seen = true;
+                }
+                _db.UpdateRange(notifications);
+
             }
-            return NotFound();
+
+
+            
+            await _db.SaveChangesAsync();
+            nvm.Type = noti_type;
+            return View(nvm);
+           
+           
+
         }
 
+        public async Task<IActionResult> Dismiss(int? id,string type)
+        {
+            if(id ==null)
+                return NotFound();
+            
+            var noti = await _db.Notification.FirstOrDefaultAsync(n => n.Id==id);
+            
+            if(noti == null)
+                return NotFound();
+            
+            _db.Notification.Remove(noti);
+            await _db.SaveChangesAsync();
+            Console.WriteLine(type);
+            return RedirectToAction("Index","Notification",type);
+
+
+        }
+
+        public async Task<IActionResult> DismissAll(string type)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            bool is_admin = this.User.IsInRole(SD.ManagerUser);
+
+
+           if(type =="NotiRole" || type ==null){
+               var notifications = await _db.NotiRole
+                                    .Where( n=>
+                                            n.SendToUser== claim.Value ||
+                                            (n.SendToUser == "All_A" && is_admin )
+                                    )
+                                    .Include(nr => nr.User)
+                                    .ToListAsync();
+                _db.RemoveRange(notifications);
+           }
+
+           await _db.SaveChangesAsync();
+           return RedirectToAction("Index","Notification",type);
+
+        }
        
 
         
