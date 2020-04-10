@@ -5,5 +5,8 @@ namespace ISProject.Utils
         public const string ManagerUser = "Manager";
         public const string CustomerUser = "Customer";
         public const string SellerUser = "Seller";
+
+
+        public const string ssShoppingCartCount = "ssCartCount";
     }
 }
