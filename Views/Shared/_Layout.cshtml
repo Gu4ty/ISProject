@@ -51,12 +51,10 @@
                                 <a class="nav-link" asp-area="Admin" asp-controller="Seller" asp-action="Index">My Products</a>
                             </li>
                         }
-<<<<<<< HEAD
                         @if(User.Identity.IsAuthenticated) 
                         {
                             @await Component.InvokeAsync("Notification")
                         }
-=======
 
                         @if(HttpContextAccessor.HttpContext.Session.GetInt32(SD.ssShoppingCartCount) != null)
                         {
@@ -74,7 +72,6 @@
                             </li>
                         }
                                                 
->>>>>>> master
                     </ul>
                 </div>
             </div>
