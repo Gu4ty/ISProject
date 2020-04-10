@@ -134,16 +134,24 @@ namespace ISProject.Controllers
             bool is_admin = this.User.IsInRole(SD.ManagerUser);
 
 
-           if(type =="NotiRole" || type ==null){
+            if(type =="NotiRole" || type ==null){
                var notifications = await _db.NotiRole
                                     .Where( n=>
                                             n.SendToUser== claim.Value ||
                                             (n.SendToUser == "All_A" && is_admin )
                                     )
-                                    .Include(nr => nr.User)
                                     .ToListAsync();
                 _db.RemoveRange(notifications);
-           }
+            }
+            
+            if(type == "NotiBuy" || type==null){
+                var notifications = await _db.NotiBuy
+                                    .Where( n=>
+                                            n.SendToUser== claim.Value
+                                    )
+                                    .ToListAsync();
+                _db.RemoveRange(notifications);
+            } 
 
            await _db.SaveChangesAsync();
            return RedirectToAction("Index","Notification",type);

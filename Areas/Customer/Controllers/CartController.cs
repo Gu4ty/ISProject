@@ -125,6 +125,7 @@ namespace ISProject.Areas.Customer.Controllers
                     Name = item.ProductSale.Product.Name,
                     Description = item.ProductSale.Product.Description
                 };
+                orderDetailsList.Add(orderDetails);
                 detailCart.OrderHeader.TotalPrice += orderDetails.Count * orderDetails.Price;
                 _db.OrderDetails.Add(orderDetails);
             }
@@ -133,7 +134,10 @@ namespace ISProject.Areas.Customer.Controllers
             HttpContext.Session.SetInt32(SD.ssShoppingCartCount, 0);
 
             await _db.SaveChangesAsync();
- 
+
+            //If the purchase was done send a Notification 
+            await NotiApi.SendNotiBuy(_db,claim.Value,detailCart.OrderHeader,orderDetailsList);
+
             return RedirectToAction("Index", "Home");
         }
 

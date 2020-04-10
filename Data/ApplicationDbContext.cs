@@ -32,7 +32,14 @@ namespace ISProject.Data
         }
         protected override void OnModelCreating (ModelBuilder modelBuilder){
             base.OnModelCreating(modelBuilder);
-        
+
+            modelBuilder.Entity<NotiBuy>()
+                .HasMany(n => n.OrderDetails)
+                .WithOne()
+                .OnDelete(DeleteBehavior.SetNull);
+
+
+
         #region *******************Seeding Data*******************
             
             for(int i=1;i<=10;i++){
