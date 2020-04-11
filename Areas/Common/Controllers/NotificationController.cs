@@ -120,7 +120,7 @@ namespace ISProject.Controllers
             
             _db.Notification.Remove(noti);
             await _db.SaveChangesAsync();
-            Console.WriteLine(type);
+            
             return RedirectToAction("Index","Notification",type);
 
 
@@ -158,7 +158,16 @@ namespace ISProject.Controllers
 
         }
        
-
+        public async Task<IActionResult> BuyDetails(int id)
+        {
+            var noti_buy = await _db.NotiBuy
+                .Where(n=> n.Id==id)
+                .Include(n=> n.OrderHeader)
+                .Include(n=> n.OrderDetails)
+                .FirstOrDefaultAsync();
+            
+            return View(noti_buy);
+        }
         
     }
 }
