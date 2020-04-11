@@ -20,6 +20,7 @@ namespace ISProject.Data
         public DbSet<Notification> Notification { get; set; }
         public DbSet<NotiRole> NotiRole { get; set; }
         public DbSet<NotiBuy> NotiBuy { get; set; }
+        public DbSet<NotiSell> NotiSell { get; set; }
         public DbSet<OrderDetails> OrderDetails {get; set; }
         public DbSet<OrderHeader> OrderHeader {get; set; }
 
