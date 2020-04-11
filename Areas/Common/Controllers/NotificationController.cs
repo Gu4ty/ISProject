@@ -73,6 +73,7 @@ namespace ISProject.Controllers
                                             n.SendToUser== claim.Value
                                     )
                                     .Include(n=> n.OrderHeader)
+                                    .Include(n => n.OrderHeader.User)
                                     .ToListAsync();
 
                 foreach(var n in notifications){
@@ -89,6 +90,7 @@ namespace ISProject.Controllers
                         SendToUser = n.SendToUser,
                     
                     };
+                    
                     nvm.NotiBuy.Add(nr);
                     n.Seen = true;
                 }
@@ -98,7 +100,30 @@ namespace ISProject.Controllers
 
             }
 
-
+            if(noti_type == "NotiSell" || noti_type == null){
+                
+                var notifications = await _db.NotiSell
+                                    .Where( n=>
+                                            n.SendToUser== claim.Value
+                                    )
+                                    .Include(n=> n.OrderDetails)
+                                    .ToListAsync();
+                
+                foreach(var n in notifications){
+                    NotiSell ns = new NotiSell(){
+                        Id = n.Id,
+                        Message = n.Message,
+                        NotiDate = n.NotiDate,
+                        Seen = n.Seen,
+                        SendToUser = n.SendToUser,
+                        OrderDetails = n.OrderDetails,
+                        OrderDetailsID = n.OrderDetailsID,
+                    };
+                    nvm.NotiSell.Add(ns);
+                    n.Seen = true;
+                }
+                _db.UpdateRange(notifications);
+            }
             
             await _db.SaveChangesAsync();
             nvm.Type = noti_type;
@@ -151,6 +176,15 @@ namespace ISProject.Controllers
                                     )
                                     .ToListAsync();
                 _db.RemoveRange(notifications);
+            }
+
+            if(type == "NotiSell" || type==null){
+                var notifications = await _db.NotiSell
+                                    .Where( n=>
+                                            n.SendToUser== claim.Value
+                                    )
+                                    .ToListAsync();
+                _db.RemoveRange(notifications);
             } 
 
            await _db.SaveChangesAsync();
@@ -164,6 +198,7 @@ namespace ISProject.Controllers
                 .Where(n=> n.Id==id)
                 .Include(n=> n.OrderHeader)
                 .Include(n=> n.OrderDetails)
+                .Include(n=> n.OrderHeader.User)
                 .FirstOrDefaultAsync();
             
             return View(noti_buy);
