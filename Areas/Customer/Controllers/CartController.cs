@@ -113,7 +113,7 @@ namespace ISProject.Areas.Customer.Controllers
 
             foreach(var item in detailCart.listCart)
             {
-                item.ProductSale = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                item.ProductSale = await _db.ProductSale.Include(p=>p.Seller).Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
                 OrderDetails orderDetails = new OrderDetails()
                 {
                     OrderId = detailCart.OrderHeader.Id,
@@ -135,9 +135,10 @@ namespace ISProject.Areas.Customer.Controllers
 
             await _db.SaveChangesAsync();
 
-            //If the purchase was done send a Notification 
+            //If the purchase was done send Notifications 
             await NotiApi.SendNotiBuy(_db,claim.Value,detailCart.OrderHeader,orderDetailsList);
-
+            await NotiApi.SendNotiSells(_db,orderDetailsList);
+            
             return RedirectToAction("Index", "Home");
         }
 
