@@ -61,7 +61,8 @@ namespace ISProject.Areas.Customer.Controllers
         {
             OrderDetailsCart detailCart = new OrderDetailsCart()
             {
-                OrderHeader = new OrderHeader()
+                OrderHeader = new OrderHeader(),
+                ChangesMessage = ""
             };
 
             detailCart.OrderHeader.TotalPrice = 0;

@@ -43,6 +43,13 @@
                                         <input asp-for="@Model.OrderHeader.OrderTime" type="text" class="form-control" readonly style="background: #fff" />
                                     </div>
                                 </div>
+                                @if(@Model.ChangesMessage != "")
+                                {
+                                    <br /><br />
+                                    <div class="row col-11 offset-1">
+                                        <h4 style="color: red">@Model.ChangesMessage</h4>
+                                    </div>
+                                }
                             </div>
 
                             <div class="col-5 offset-1">
