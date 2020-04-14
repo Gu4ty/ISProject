@@ -50,7 +50,7 @@
                     <label asp-for="Count" class="text-info font-weight-bold"></label>
                 </div>
                 <div class="col-md-8">
-                    <input asp-for="Count" class="form-control" />
+                    <input asp-for="Count" id="countInput" class="form-control" />
                     <span asp-validation-for="Count" class="text-danger"></span>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
                 </div>
                 <div class="col-md-4">
-                    <button type="submit" value="Add to Cart" class="btn btn-primary form-control">Add to Cart</button>
+                    <button type="submit" id="btnAddToCart" onclick="return validateInput(@Model.ProductSale.Units);" value="Add to Cart" class="btn btn-primary form-control">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -71,4 +71,14 @@
 
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function validateInput(c){
+            var count = document.getElementById("countInput");
+            if(count.value > c){
+                alert("The maximum amount of items you can buy is " + c);
+                return false;
+            }
+            return true;
+        }
+    </script>
 }

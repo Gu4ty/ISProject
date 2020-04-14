@@ -37,7 +37,7 @@ namespace ISProject.Controllers
                 HttpContext.Session.SetInt32(SD.ssShoppingCartCount, cnt);
             }
 
-            return View(await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).ToListAsync());
+            return View(await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).Where(s => s.Units > 0).ToListAsync());
         }
 
 
