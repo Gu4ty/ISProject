@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using ISProject.Models;
 using ISProject.Models.ViewModels;
 using ISProject.Data;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using ISProject.Utils;
 
 namespace ISProject.Areas.Admin.Controllers
 {
@@ -21,6 +23,7 @@ namespace ISProject.Areas.Admin.Controllers
         {
             _db=db;
         }
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -49,6 +52,232 @@ namespace ISProject.Areas.Admin.Controllers
             uvm.Users = regularUser;
             
             return View(uvm);
+        }
+        [Authorize]
+        public async Task<IActionResult> SellsDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _db.Seller
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var ps = await _db.ProductSale.Where(seller => seller.SellerId == id).ToListAsync();
+            return View(ps);
+        }
+        [Authorize]
+        public async Task<IActionResult> BuysDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var orders = await _db.OrderDetails.Join(
+                _db.OrderHeader.Where(n => n.UserId == id),
+                n => n.OrderId,
+                m => m.Id,
+                (n, m) => new OrderDetailModel{ Count = n.Count,
+                                                Description = n.Description,
+                                                Name = n.Name,
+                                                OrderId = n.OrderId,
+                                                OrderTime = m.OrderTime,
+                                                Price = n.Price,
+                                                ProductId = n.ProductId }
+            )
+            .ToListAsync();
+
+            return View(orders);
+        }
+
+        [Authorize]
+         public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _db.User
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+        [Authorize]
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _db.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [Bind("Name,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
+        {
+            string role = Request.Form["rdUserRole"].ToString();
+            Console.WriteLine(role);
+
+            if (id != user.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    User userBd = await _db.User.FindAsync(id);
+                    
+                    if(role == SD.SellerUser)
+                    {
+                        if(await _db.Seller.FindAsync(id) == null)
+                        {   
+                            // Console.WriteLine("customer to seller");
+                            _db.User.Remove(userBd);
+                            await _db.SaveChangesAsync();
+                            
+                            Console.WriteLine(userBd.Id);
+                            userBd.UserName = user.UserName;
+                            userBd.Email = user.Email;
+                            userBd.PhoneNumber = user.PhoneNumber;
+                            userBd.AccessFailedCount = user.AccessFailedCount;
+                            Seller sel = CreateSellerFromUser(userBd);
+                            _db.Seller.Add(sel);
+                        }
+                        else
+                        {
+                            userBd.UserName = user.UserName;
+                            userBd.Email = user.Email;
+                            userBd.PhoneNumber = user.PhoneNumber;
+                            userBd.AccessFailedCount = user.AccessFailedCount;
+                            _db.Update(userBd);
+                        }
+                    }
+                    else
+                    {
+                        if(await _db.Seller.FindAsync(id) != null)
+                        {   
+                            // Console.WriteLine("seller to costumer");
+                            Seller sel = await _db.Seller.FindAsync(id);
+                            _db.Seller.Remove(sel);
+                            await _db.SaveChangesAsync();
+
+                            // Console.WriteLine(sel.Id);
+
+                            User us = CreateUserFromSeller(sel);
+                            us.UserName = user.UserName;
+                            us.Email = user.Email;
+                            us.PhoneNumber = user.PhoneNumber;
+                            us.AccessFailedCount = user.AccessFailedCount;
+                            _db.User.Add(us);
+                            await _db.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            userBd.UserName = user.UserName;
+                            userBd.Email = user.Email;
+                            userBd.PhoneNumber = user.PhoneNumber;
+                            userBd.AccessFailedCount = user.AccessFailedCount;
+                            _db.User.Update(userBd);
+                        }
+                    }
+                    await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(user.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(user);
+        }
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _db.User
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [Authorize]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _db.User.FindAsync(id);
+            _db.User.Remove(user);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool UserExists(string id)
+        {
+            return _db.User.Any(e => e.Id == id);
+        }
+        public User CreateUserFromSeller(Seller userBd)
+        {
+            return new User()
+            {
+                Id = userBd.Id,
+                Name = userBd.Name,
+                UserName = userBd.UserName,
+                NormalizedUserName = userBd.NormalizedUserName,
+                Email = userBd.Email,
+                NormalizedEmail = userBd.NormalizedEmail,
+                EmailConfirmed = userBd.EmailConfirmed,
+                PasswordHash = userBd.PasswordHash,
+                SecurityStamp = userBd.SecurityStamp
+            };
+        }
+        public Seller CreateSellerFromUser(User userBd)
+        {
+            return new Seller()
+            {
+                Id = userBd.Id,
+                Name = userBd.Name,
+                UserName = userBd.UserName,
+                NormalizedUserName = userBd.NormalizedUserName,
+                Email = userBd.Email,
+                NormalizedEmail = userBd.NormalizedEmail,
+                EmailConfirmed = userBd.EmailConfirmed,
+                PasswordHash = userBd.PasswordHash,
+                SecurityStamp = userBd.SecurityStamp,
+                Rating = 0
+            };
         }
         
         public async Task<IActionResult> Lock(string id)
