@@ -61,7 +61,9 @@ namespace ISProject.Areas.Customer.Controllers
         {
             OrderDetailsCart detailCart = new OrderDetailsCart()
             {
-                OrderHeader = new OrderHeader()
+                OrderHeader = new OrderHeader(),
+                ChangesMessage = "",
+                listCart = new List<ShoppingCart>()
             };
 
             detailCart.OrderHeader.TotalPrice = 0;
@@ -69,22 +71,35 @@ namespace ISProject.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            var cart = _db.ShoppingCart.Where(c => c.UserId == claim.Value);
+            var cart = _db.ShoppingCart.Where(c => c.UserId == claim.Value).ToList();
 
-            if(cart != null)
-            {
-                detailCart.listCart = cart.ToList();
-            }
-
-            foreach(var item in detailCart.listCart)
+            bool changes = false;
+            foreach(var item in cart)
             {
                 item.ProductSale = await _db.ProductSale.Include(m => m.Product).Where(m => m.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                if(item.ProductSale.Units == 0){
+                    _db.ShoppingCart.Remove(item);
+                    changes = true;
+                    continue;
+                }
+                if(item.Count > item.ProductSale.Units){
+                    changes = true;
+                    item.Count = item.ProductSale.Units;
+                }
+                detailCart.listCart.Add(item);
                 detailCart.OrderHeader.TotalPrice += (item.ProductSale.Price * item.Count);
             }
+            await _db.SaveChangesAsync();
+
+            HttpContext.Session.SetInt32(SD.ssShoppingCartCount, detailCart.listCart.Count());
 
             detailCart.OrderHeader.OrderTime = DateTime.Now;
             detailCart.OrderHeader.User = await _db.User.Where(u => u.Id == claim.Value).FirstOrDefaultAsync();
             detailCart.OrderHeader.UserId = claim.Value;
+
+            if(changes){
+                detailCart.ChangesMessage = "The amount of some products you requested is no longer available. Some changes were applied to your Shopping Cart. We are sorry for the trouble.";
+            }
  
             return View(detailCart);
         }
@@ -114,7 +129,8 @@ namespace ISProject.Areas.Customer.Controllers
             foreach(var item in detailCart.listCart)
             {
 
-                item.ProductSale = await _db.ProductSale.Include(p=>p.Seller).Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                item.ProductSale = ps;
 
                 OrderDetails orderDetails = new OrderDetails()
                 {
@@ -123,15 +139,16 @@ namespace ISProject.Areas.Customer.Controllers
                     ProductId = item.ProductSaleID,
                     ProductSale = item.ProductSale,
                     Count = item.Count,
-                    Price = item.ProductSale.Price,
-                    Name = item.ProductSale.Product.Name,
-                    Description = item.ProductSale.Product.Description
+                    Price = ps.Price,
+                    Name = ps.Product.Name,
+                    Description = ps.Product.Description
                 };
 
                 orderDetailsList.Add(orderDetails);
 
                 detailCart.OrderHeader.TotalPrice += orderDetails.Count * orderDetails.Price;
                 _db.OrderDetails.Add(orderDetails);
+                ps.Units -= item.Count;
             }
 
             _db.ShoppingCart.RemoveRange(detailCart.listCart);
