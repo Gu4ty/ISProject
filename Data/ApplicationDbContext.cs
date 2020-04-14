@@ -1,3 +1,4 @@
+
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,11 +18,13 @@ namespace ISProject.Data
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductSale> ProductSale { get; set; }
         public DbSet<ShoppingCart> ShoppingCart { get; set; }
-
         public DbSet<Notification> Notification { get; set; }
         public DbSet<NotiRole> NotiRole { get; set; }
+        public DbSet<NotiBuy> NotiBuy { get; set; }
+        public DbSet<NotiSell> NotiSell { get; set; }
         public DbSet<OrderDetails> OrderDetails {get; set; }
         public DbSet<OrderHeader> OrderHeader {get; set; }
+
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -31,7 +34,14 @@ namespace ISProject.Data
         }
         protected override void OnModelCreating (ModelBuilder modelBuilder){
             base.OnModelCreating(modelBuilder);
-        
+
+            modelBuilder.Entity<NotiBuy>()
+                .HasMany(n => n.OrderDetails)
+                .WithOne()
+                .OnDelete(DeleteBehavior.SetNull);
+
+
+
         #region *******************Seeding Data*******************
             
             for(int i=1;i<=10;i++){

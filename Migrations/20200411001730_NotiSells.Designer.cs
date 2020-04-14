@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ISProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200409035422_SeedNotifications")]
-    partial class SeedNotifications
+    [Migration("20200411001730_NotiSells")]
+    partial class NotiSells
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,67 @@ namespace ISProject.Migrations
                     b.ToTable("Notification");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Notification");
+                });
+
+            modelBuilder.Entity("ISProject.Models.OrderDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("NotiBuyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotiBuyId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("ISProject.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrderHeader");
                 });
 
             modelBuilder.Entity("ISProject.Models.Product", b =>
@@ -262,7 +323,7 @@ namespace ISProject.Migrations
                     b.Property<int>("ProductSaleID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("SellerID")
+                    b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -299,21 +360,21 @@ namespace ISProject.Migrations
                         new
                         {
                             Id = "a18be9c0Customer",
-                            ConcurrencyStamp = "92407c97-8492-4e2c-98cf-5fe59f9a29b0",
+                            ConcurrencyStamp = "ed949784-2cb1-4c53-9e82-83a8ad978e93",
                             Name = "Customer",
                             NormalizedName = "Customer"
                         },
                         new
                         {
                             Id = "a18be9c0Manager",
-                            ConcurrencyStamp = "2d6aff39-75c2-4810-9645-e152347b04a1",
+                            ConcurrencyStamp = "632c4a12-33af-49c9-bef7-99e0e5c95ca7",
                             Name = "Manager",
                             NormalizedName = "Manager"
                         },
                         new
                         {
                             Id = "a18be9c0Seller",
-                            ConcurrencyStamp = "ff25262a-8a59-4b24-80dd-25cfe2c05c03",
+                            ConcurrencyStamp = "a3ae42b1-c544-40b1-96fe-f4d87016bb35",
                             Name = "Seller",
                             NormalizedName = "Seller"
                         });
@@ -598,6 +659,18 @@ namespace ISProject.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ISProject.Models.NotiBuy", b =>
+                {
+                    b.HasBaseType("ISProject.Models.Notification");
+
+                    b.Property<int>("OrderHeaderID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("OrderHeaderID");
+
+                    b.HasDiscriminator().HasValue("NotiBuy");
+                });
+
             modelBuilder.Entity("ISProject.Models.NotiRole", b =>
                 {
                     b.HasBaseType("ISProject.Models.Notification");
@@ -639,6 +712,18 @@ namespace ISProject.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ISProject.Models.NotiSell", b =>
+                {
+                    b.HasBaseType("ISProject.Models.Notification");
+
+                    b.Property<int?>("OrderDetailsId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("OrderDetailsId");
+
+                    b.HasDiscriminator().HasValue("NotiSell");
+                });
+
             modelBuilder.Entity("ISProject.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -653,15 +738,15 @@ namespace ISProject.Migrations
                         {
                             Id = "11",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "981720e1-ae9c-4b93-ab04-f867dc592598",
+                            ConcurrencyStamp = "f6ce3c18-2c34-4b2e-b99b-c3097af0af60",
                             Email = "Customer1@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER1@FAKE.COM",
                             NormalizedUserName = "CUSTOMER1@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFP2UUd59xoNbYb6KYtXd4Doz+/sEueCm4m+vh449UOLfkHcmbpItY99GmhOpBMmFA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP/H6Z44cD1YG1pJrEhzdROEGLG0TD7L1Eya0rPykRwAitqmjtFb+qh4sDTyhIBPSA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f8c8ef45-a189-488a-94a1-573ef1fe48dd",
+                            SecurityStamp = "6e0888a1-de1c-4eb5-8d06-e9af2a810960",
                             TwoFactorEnabled = false,
                             UserName = "Customer1@fake.com",
                             Name = "Customer1"
@@ -670,15 +755,15 @@ namespace ISProject.Migrations
                         {
                             Id = "21",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dd3a4dc7-104b-4c20-a62f-99e83bd8853d",
+                            ConcurrencyStamp = "f7db5bcf-21bd-4dfe-9e10-bb69e276dabb",
                             Email = "Customer2@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER2@FAKE.COM",
                             NormalizedUserName = "CUSTOMER2@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBh5LfsRc+aPNVDp72SMti8E8yfU2eN7hzG5rdkaHpaC6UgnZStFCP5lS2SszzAPRw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ3tsha0TJA/e/xE16I2PwJ9AustQ7h5XvV9Qs/iT+AH+gFgHpu2x9ic53tJQI7dQw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "41f54357-d805-4a97-a4fc-611923ffd720",
+                            SecurityStamp = "9f50bf5f-2944-49d2-80b4-1124cd46c57c",
                             TwoFactorEnabled = false,
                             UserName = "Customer2@fake.com",
                             Name = "Customer2"
@@ -687,15 +772,15 @@ namespace ISProject.Migrations
                         {
                             Id = "31",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dc749f82-a1e7-4440-b5b9-399f6378ad8c",
+                            ConcurrencyStamp = "dc847ad5-5d7a-42b9-94b9-428f6701f5c0",
                             Email = "Customer3@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER3@FAKE.COM",
                             NormalizedUserName = "CUSTOMER3@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHL4sSG8l2mTEOsjzFGGp8JNBWjLyFUipM0AWdEDK6QlSWI7yCEhhaceWlEnGjBeQA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPRHih/hJBHeDhcf8rUUxZlxRvxU4g9bBLNWZNgb85A9w+J8Oleoy1AMkV1rvd74JA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "da80c67c-81d2-4537-a4b5-7c7de412a9e7",
+                            SecurityStamp = "fad5b959-d70f-40b5-9616-ed2559e89324",
                             TwoFactorEnabled = false,
                             UserName = "Customer3@fake.com",
                             Name = "Customer3"
@@ -704,15 +789,15 @@ namespace ISProject.Migrations
                         {
                             Id = "41",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1364a401-06bf-475a-9cd7-8c0f379410c9",
+                            ConcurrencyStamp = "59531771-7bdb-4555-878f-b7532cc20d39",
                             Email = "Customer4@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER4@FAKE.COM",
                             NormalizedUserName = "CUSTOMER4@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEB0sWISHDs2NdrFID9FSW6Zc8W/p4qF9JDaa7XDppPX3oEx6953V6c5UDUQnfAavjA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHu2J89GIk1iBC5cXvrF98z6j84tHcFwi7WSmYpMOnrZZTxUoJaTq4ycjCwhCpxySQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "620eca55-9938-4ba2-b16b-439a7bc4dc51",
+                            SecurityStamp = "462a7970-d5dd-4221-bdf8-d7a32106d4bd",
                             TwoFactorEnabled = false,
                             UserName = "Customer4@fake.com",
                             Name = "Customer4"
@@ -721,15 +806,15 @@ namespace ISProject.Migrations
                         {
                             Id = "51",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7721743b-c9f1-49e5-9df5-19e843c9a211",
+                            ConcurrencyStamp = "47f1e9e6-3c79-4be4-b598-2f18b193f07c",
                             Email = "Customer5@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER5@FAKE.COM",
                             NormalizedUserName = "CUSTOMER5@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECG3RKHZRBnlkuSgAHDLW3rl4/s346omE10lfla3gtv/1XgN4ApkswTxCnlRLWWooA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAbQm0P28j/w/QNk+yC0PWNxHZ0PLD9wNylTYCSa9ezqgN6ouLFVkBvBHH0M11fgCA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fae770db-2a62-4638-83b6-b6416b679bf1",
+                            SecurityStamp = "67178987-8d5f-46d8-8a70-16be12a5e748",
                             TwoFactorEnabled = false,
                             UserName = "Customer5@fake.com",
                             Name = "Customer5"
@@ -738,15 +823,15 @@ namespace ISProject.Migrations
                         {
                             Id = "61",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b569fb5c-99bb-40a7-af25-a214e6c297ec",
+                            ConcurrencyStamp = "d9b93c3c-3b97-47b5-81b3-de5e13aadafd",
                             Email = "Customer6@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER6@FAKE.COM",
                             NormalizedUserName = "CUSTOMER6@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG7RKZKPJuWRNwDDbr6i3AqgnIyb4SM2M8rnmTakKSv1z0++e76SkEEjew8V7DUoOw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENv07gs2fJt8uUVgzhH6y21jGJA3AAsVpa5cIZOM6K1+hSwCQ/6lPjSGmeZm427MQQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c39a82b1-7c16-424e-90d6-5a47cd6f2dd1",
+                            SecurityStamp = "290513a5-bfae-44aa-9c15-1b7cc4aabb84",
                             TwoFactorEnabled = false,
                             UserName = "Customer6@fake.com",
                             Name = "Customer6"
@@ -755,15 +840,15 @@ namespace ISProject.Migrations
                         {
                             Id = "71",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2e1ad2bf-443e-4540-b64e-53a0c6c2eaff",
+                            ConcurrencyStamp = "d74de3d6-2218-44bc-9560-1d74a2a21a60",
                             Email = "Customer7@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER7@FAKE.COM",
                             NormalizedUserName = "CUSTOMER7@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJZ07XXFcPYVFgI4znVedrsVShRXtq5XsuMVlHRKd1W3FcUb343fw0jGKq2kFjkWvg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKLae1SOWcpiWix9usYwfiJ7orzXk44ezpCHU9URi4GhBLhUkl9nQ+po/OdVs8S3vg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "58c813bd-8897-4ced-8dcf-80877714ad9c",
+                            SecurityStamp = "9ba955f8-1740-4c2a-8b6f-d92308b4c424",
                             TwoFactorEnabled = false,
                             UserName = "Customer7@fake.com",
                             Name = "Customer7"
@@ -772,15 +857,15 @@ namespace ISProject.Migrations
                         {
                             Id = "81",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c00a1f0e-e285-4d71-8096-af68267027d9",
+                            ConcurrencyStamp = "438f8d7e-a95f-4c51-be6f-445577399d06",
                             Email = "Customer8@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER8@FAKE.COM",
                             NormalizedUserName = "CUSTOMER8@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDhNAkKd23PP6ZxXz5Mp1tB/6TH4VbhcxML609AIRuSQRplAe/Qi85ApyQiFj1Jp3Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ7DXWPYlh/sapinLqQAZY2o6B+MiY15aQKQnhGU9RM4eOBMFOfbRe1IEAoXQcWq7g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1f277939-fb5d-4f5a-9d6b-45cca98065e5",
+                            SecurityStamp = "0feddfa1-626f-4e75-9a9b-e51acfc413da",
                             TwoFactorEnabled = false,
                             UserName = "Customer8@fake.com",
                             Name = "Customer8"
@@ -789,15 +874,15 @@ namespace ISProject.Migrations
                         {
                             Id = "91",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bfec3853-d812-4008-8164-244375ea5899",
+                            ConcurrencyStamp = "89ee489f-bf45-4f8f-8801-e78b4596cace",
                             Email = "Customer9@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER9@FAKE.COM",
                             NormalizedUserName = "CUSTOMER9@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGPy8Zik1MnkM1CYjOcNe6QYf0Ui95QSQi8DYXTJ88whlLoJkUPVfpC9LC8BCTcPIA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOU0sEEjiAalg5ulZPNVEQkjZWmevm900meNrRMt7/sp/jlvUyGlmITieuJD37U1cQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b93825ee-4551-4d56-b125-d149ab94aeff",
+                            SecurityStamp = "864a53e8-94b0-4ca3-9f75-39a035352e00",
                             TwoFactorEnabled = false,
                             UserName = "Customer9@fake.com",
                             Name = "Customer9"
@@ -806,15 +891,15 @@ namespace ISProject.Migrations
                         {
                             Id = "101",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "48ecdb88-c685-45c8-8c54-5004e21500c3",
+                            ConcurrencyStamp = "b8775711-ed6a-4ad1-991c-879a0bcbc63e",
                             Email = "Customer10@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER10@FAKE.COM",
                             NormalizedUserName = "CUSTOMER10@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENV8DIWc8cYV5pZS8lCohwXZbm27LLBKNYmOxcFC//x4YMdN3Ejwe6FRtHbP0pJYcA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFL0nwjq5TBQWMZhdaAxBVVoo2T7d6iMlhDuELpn9Y/dLqndbJ641WsLX+14pUnQFw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "941b0c96-813b-49ab-9ba9-41004853cf08",
+                            SecurityStamp = "dda7c6f8-7e2c-472e-a710-97f0d72b9b41",
                             TwoFactorEnabled = false,
                             UserName = "Customer10@fake.com",
                             Name = "Customer10"
@@ -823,15 +908,15 @@ namespace ISProject.Migrations
                         {
                             Id = "21123111111",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d60e21e2-26d5-4af3-9727-6b281cff5aa8",
+                            ConcurrencyStamp = "b92cfa9e-09e5-4e72-b18c-fe64e3d1ec60",
                             Email = "admin@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@FAKE.COM",
                             NormalizedUserName = "ADMIN@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEz99gzYX6VyzKO8fDfMdVab4Qar65CP5kMbBNPYUsTtEqCzWQJzcOgbywiDzUxvog==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPLlXrSdWPAN1JcAbmEee5fl42YDsVs1NZ//wQdYWcXMB77qpJbssDC88yjeFHQhBQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eaf077b4-db70-47fa-b9d5-e79bed54c1e6",
+                            SecurityStamp = "d095e4bd-b61c-4cc8-8c10-530a1bee0e8e",
                             TwoFactorEnabled = false,
                             UserName = "admin@fake.com",
                             Name = "admin"
@@ -852,15 +937,15 @@ namespace ISProject.Migrations
                         {
                             Id = "12",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e99ea32d-f696-4e03-b803-d648807a19f7",
+                            ConcurrencyStamp = "cb861758-8065-4520-b08f-ac13d1fac2e8",
                             Email = "Seller1@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER1@FAKE.COM",
                             NormalizedUserName = "SELLER1@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ80/OOjklPeD53L7l+9BeoTjW3WfsLWxMA0iVCl6mRZ7voUu2M5KFEmCEmRJZAGtA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECikWUok2nXZ5G1eWIFL2pvN9CZnnH1OLHlhnT1w7oSGEp/fOZYjrdheg/gODHRtCg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8346a7b7-c18f-4ed5-914e-d5193a2c85c4",
+                            SecurityStamp = "8d47c418-3c5e-4fb6-a540-4972b1054d45",
                             TwoFactorEnabled = false,
                             UserName = "Seller1@fake.com",
                             Name = "Seller1",
@@ -870,15 +955,15 @@ namespace ISProject.Migrations
                         {
                             Id = "22",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6f7139ce-f744-4577-95c5-615898c24415",
+                            ConcurrencyStamp = "ca1075f7-844b-44f5-b89b-ee63305c68c8",
                             Email = "Seller2@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER2@FAKE.COM",
                             NormalizedUserName = "SELLER2@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ25f7Gy70IWcpS3O4A0RWOmLMgvM2cOEJ/PBhlqivf3qDYJ/R6xUqLZ+QFQHhpHJQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDzC5K58yj+34hmEKPDKPLeKntjvOVYV198WlB+0wp4RCUc1gR8VMBlkTAeiWujHVg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c8e04d0d-2606-45f8-bfff-0530e46fca69",
+                            SecurityStamp = "72345a42-d66d-430c-9b21-c8277cf03f6f",
                             TwoFactorEnabled = false,
                             UserName = "Seller2@fake.com",
                             Name = "Seller2",
@@ -888,15 +973,15 @@ namespace ISProject.Migrations
                         {
                             Id = "32",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "43157afa-6d0b-4084-95af-dfc9fc49720d",
+                            ConcurrencyStamp = "2ffbc244-8f53-431c-8445-0f877d0ef96b",
                             Email = "Seller3@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER3@FAKE.COM",
                             NormalizedUserName = "SELLER3@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECqkge717EHBYihqvoSdfWTcQ72xKrdhJUl9Vju4MPxaC+8qd2ZO63ynYFnq+DN4ZQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP1vSICTD95PILulZAGsZ227SIESTefXn7NlCphXB/ERB5nDr2SqNdIL79cvgEEpvQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "28f625b9-7da3-4a32-9d00-339ef4445010",
+                            SecurityStamp = "6d8f1277-1b48-4e0d-b760-6bce46f4a3d5",
                             TwoFactorEnabled = false,
                             UserName = "Seller3@fake.com",
                             Name = "Seller3",
@@ -906,15 +991,15 @@ namespace ISProject.Migrations
                         {
                             Id = "42",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "101debf5-bf7e-42f3-950d-aae5596e885a",
+                            ConcurrencyStamp = "0bf5ce3b-3187-4912-9a18-ca8c1479c6ee",
                             Email = "Seller4@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER4@FAKE.COM",
                             NormalizedUserName = "SELLER4@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEgahM7g/bvXMU40E7Vp7u9iAnnqr36PLsDlJQOXZk2ouuImNLokreN3TKcS9IsDxw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECplpQ8V9k3A0shtQa+Yr+UFT2jGDEhbzfpzAmB7/krW6hmN1UsQc0M5AqYVz6WgcQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a9f83013-7c71-48a2-a153-35d3b96701f9",
+                            SecurityStamp = "66048dca-cde2-42ff-8ed9-ad832462bbdc",
                             TwoFactorEnabled = false,
                             UserName = "Seller4@fake.com",
                             Name = "Seller4",
@@ -924,15 +1009,15 @@ namespace ISProject.Migrations
                         {
                             Id = "52",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f59d4c17-cbc1-4810-8ba6-b6f715aaa3eb",
+                            ConcurrencyStamp = "07e54ece-76a8-4654-8f40-4f0b405aeca2",
                             Email = "Seller5@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER5@FAKE.COM",
                             NormalizedUserName = "SELLER5@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG1ugp1rN6yXpT0FWfg2VA/9dtk6TJw1yQyte+JMx7qrRQRb1Sb1t+62T63uh9G6Tg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFcr2qxtf4vyim0taToakyWDYxzaE8wQmRkLJ8bg/EYC1VVTUEWuo9BJ85tgCXrJfg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "438812cd-681c-43b3-b457-8bf6994bf990",
+                            SecurityStamp = "0e98e4c8-6884-46f1-88c0-e36bd594db36",
                             TwoFactorEnabled = false,
                             UserName = "Seller5@fake.com",
                             Name = "Seller5",
@@ -942,15 +1027,15 @@ namespace ISProject.Migrations
                         {
                             Id = "62",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "27cd3c16-af5a-4ed2-8c0f-593892a668ae",
+                            ConcurrencyStamp = "bc3960cf-af07-43ca-93c8-b21d04eb0884",
                             Email = "Seller6@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER6@FAKE.COM",
                             NormalizedUserName = "SELLER6@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENOXLuRR1BhRNMxxoW2rIC6075B9b37o7bo79ijQIqGRaxO83mse0CTVwAR1GyBa4g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENqKkOr/tIWwxEKVor9hT1F8Es5i/mXntQYJlInOAnrbcTUvsn4pgnX/l7DkhyQhaw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fe6e22a2-71d8-46c1-8697-94722ecce41b",
+                            SecurityStamp = "6a012b26-eb34-4a73-b9e2-abd30accbacf",
                             TwoFactorEnabled = false,
                             UserName = "Seller6@fake.com",
                             Name = "Seller6",
@@ -960,15 +1045,15 @@ namespace ISProject.Migrations
                         {
                             Id = "72",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c29105e3-3eb8-40f1-b9af-783b43b06b41",
+                            ConcurrencyStamp = "7298447d-c499-41c2-8a2b-7bdba6097393",
                             Email = "Seller7@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER7@FAKE.COM",
                             NormalizedUserName = "SELLER7@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECtHjGiIqdNFzMpljkSYuY+PKKXagDXnqruARgI3InmF7p1UblhAj0nqEt/uhsGfew==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFdjGYBs5lKxDHPjsx1RHGeP8zmmO/XErLi0myrGXfgUlWB9+tq3+lSgyJXVfGllEQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b5aec431-7bab-4764-826e-12d7abdea93d",
+                            SecurityStamp = "ce70328a-25f6-4007-97e9-b3a808e6d725",
                             TwoFactorEnabled = false,
                             UserName = "Seller7@fake.com",
                             Name = "Seller7",
@@ -978,15 +1063,15 @@ namespace ISProject.Migrations
                         {
                             Id = "82",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fed9c6c3-59e4-4bcb-91e4-219f50669ba8",
+                            ConcurrencyStamp = "9579fcbd-09fc-43a1-b136-07466e8dbe51",
                             Email = "Seller8@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER8@FAKE.COM",
                             NormalizedUserName = "SELLER8@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKlBZrJ4E3OAOFv4GLM477MBeMabU6RRdbMoVtsrxWfJtcps30YMAUiiE7VF2j0A+A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEAmdO2EwJds4dx/uP9O6Yg4cZdKCOhAyghYSPP3EFCDoEmQg/N2VABW1A7bgyPQmlw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ebfe26cd-4b0a-4e50-9e68-f6681c92d307",
+                            SecurityStamp = "482c2a99-b510-4377-a414-19475d020721",
                             TwoFactorEnabled = false,
                             UserName = "Seller8@fake.com",
                             Name = "Seller8",
@@ -996,15 +1081,15 @@ namespace ISProject.Migrations
                         {
                             Id = "92",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "77170410-15c1-4df5-a1f4-9e40a8dda3bc",
+                            ConcurrencyStamp = "db6b80fd-b3fd-400d-a2ba-b0209b01d8bf",
                             Email = "Seller9@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER9@FAKE.COM",
                             NormalizedUserName = "SELLER9@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELygkZ6TDtJAAyF13pN7+HCT/kb1lPzjI1We87REyJFTjmGLg/7ZlOO04GHpbpz2zg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDiVgpYjIKAWE7bYhtSW7nEW+Z70KucraBPsMooZb7hwlu22tjSZluqm8GXA3GWFPQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7a707e68-59f4-4614-af4a-b0003b9f5b80",
+                            SecurityStamp = "b1bf0ba7-9efc-4035-9257-71f275e86457",
                             TwoFactorEnabled = false,
                             UserName = "Seller9@fake.com",
                             Name = "Seller9",
@@ -1014,20 +1099,49 @@ namespace ISProject.Migrations
                         {
                             Id = "102",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "052eb62c-deb5-4c48-9642-a5cc53cc71da",
+                            ConcurrencyStamp = "c4dccf97-04b3-47c7-a44e-4ec4f4ec7867",
                             Email = "Seller10@fake.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "SELLER10@FAKE.COM",
                             NormalizedUserName = "SELLER10@FAKE.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF44uATYSBrzexlnhtw+9WBWpy0/OBgC4ZmIajJQDoYLpAY9qIIRgP3aVdBkQjTPWQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA0jnH9dt9hojSqxCfGN917VkY7IIY9OzWDoQwg2ykRN6rYARUzoIxXyTjWlruhDeQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "51e1118e-8db3-4063-af29-541996c1f21a",
+                            SecurityStamp = "3e9c50c7-478a-4b22-bcde-82a3351423c4",
                             TwoFactorEnabled = false,
                             UserName = "Seller10@fake.com",
                             Name = "Seller10",
                             Rating = 0
                         });
+                });
+
+            modelBuilder.Entity("ISProject.Models.OrderDetails", b =>
+                {
+                    b.HasOne("ISProject.Models.NotiBuy", null)
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("NotiBuyId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ISProject.Models.OrderHeader", "OrderHeader")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ISProject.Models.ProductSale", "ProductSale")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ISProject.Models.OrderHeader", b =>
+                {
+                    b.HasOne("ISProject.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ISProject.Models.ProductSale", b =>
@@ -1096,11 +1210,27 @@ namespace ISProject.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ISProject.Models.NotiBuy", b =>
+                {
+                    b.HasOne("ISProject.Models.OrderHeader", "OrderHeader")
+                        .WithMany()
+                        .HasForeignKey("OrderHeaderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ISProject.Models.NotiRole", b =>
                 {
                     b.HasOne("ISProject.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
+                });
+
+            modelBuilder.Entity("ISProject.Models.NotiSell", b =>
+                {
+                    b.HasOne("ISProject.Models.OrderDetails", "OrderDetails")
+                        .WithMany()
+                        .HasForeignKey("OrderDetailsId");
                 });
 #pragma warning restore 612, 618
         }

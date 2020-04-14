@@ -128,8 +128,10 @@ namespace ISProject.Areas.Customer.Controllers
 
             foreach(var item in detailCart.listCart)
             {
+
                 ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
                 item.ProductSale = ps;
+
                 OrderDetails orderDetails = new OrderDetails()
                 {
                     OrderId = detailCart.OrderHeader.Id,
@@ -141,6 +143,9 @@ namespace ISProject.Areas.Customer.Controllers
                     Name = ps.Product.Name,
                     Description = ps.Product.Description
                 };
+
+                orderDetailsList.Add(orderDetails);
+
                 detailCart.OrderHeader.TotalPrice += orderDetails.Count * orderDetails.Price;
                 _db.OrderDetails.Add(orderDetails);
                 ps.Units -= item.Count;
@@ -150,7 +155,13 @@ namespace ISProject.Areas.Customer.Controllers
             HttpContext.Session.SetInt32(SD.ssShoppingCartCount, 0);
 
             await _db.SaveChangesAsync();
- 
+
+
+            //If the purchase was done send Notifications 
+            await NotiApi.SendNotiBuy(_db,claim.Value,detailCart.OrderHeader,orderDetailsList);
+            await NotiApi.SendNotiSells(_db,orderDetailsList);
+            
+
             return RedirectToAction("Index", "Home");
         }
 

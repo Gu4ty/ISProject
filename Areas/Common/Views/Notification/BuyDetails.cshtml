@@ -1,0 +1,87 @@
+﻿@model ISProject.Models.NotiBuy
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    @if(Model.OrderDetails.Count > 0)
+    {
+        <br />
+        <input id="userId" asp-for="@Model.OrderHeader.UserId" hidden />
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-dark text-light ml-0 row container">
+                    <div class="col-6">Order Summary</div>
+                    <div class="col-6 text-right">
+                        <a asp-action="Dismiss" asp-route-id="@Model.Id" asp-route-type="NotiBuy" asp-controller="Notification" class="btn btn-danger form-control">Dismiss</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container rounded p-2">
+                        <div class="row">
+                            <div class="col-6 pb-4">
+                                <div class="row">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-info">Order Details:</span>
+                                    </h4>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input asp-for="@Model.OrderHeader.User.Email" type="text" class="form-control" readonly style="background: #fff" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Date</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input asp-for="@Model.OrderHeader.OrderTime" type="text" class="form-control" readonly style="background: #fff" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-5 offset-1">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-info">Order Summary:</span>
+                                </h4>
+                                <ul class="list-group mb-3">
+                                    @foreach(var item in Model.OrderDetails)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="my-0">@item.Name</h6>
+                                                <small class="text-muted">Quantity: @item.Count</small>
+                                            </div>
+                                            <span class="text-muted">$@(item.Price * item.Count)</span>
+                                        </li>
+                                    }
+                                    <li class="list-group-item d-flex justify-content-between bg-light">
+                                        <small class="text-info">Total (USD)</small>
+                                        <strong class="text-info">$@(Model.OrderHeader.TotalPrice)</strong>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-4 offset-8">
+                            <a asp-action="Index" class="btn btn-success form-control" asp-route-id="NotiBuy">Go Back</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div>No items added to the shopping cart...</div>
+    }
+</form>

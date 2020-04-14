@@ -11,11 +11,17 @@ namespace ISProject.Models.ViewModels
 
         public List<NotiRole> NotiRole { get; set; }
 
+        public List<NotiBuy> NotiBuy { get; set; }
+
+        public List<NotiSell> NotiSell { get; set; }
+
         public string Type { get; set; }
 
         public NotificationViewModel()
         {
             NotiRole = new List<NotiRole>();
+            NotiBuy = new List<NotiBuy>();
+            NotiSell = new List<NotiSell>();
         }
         
     }
