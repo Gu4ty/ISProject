@@ -128,7 +128,8 @@ namespace ISProject.Areas.Customer.Controllers
 
             foreach(var item in detailCart.listCart)
             {
-                item.ProductSale = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                item.ProductSale = ps;
                 OrderDetails orderDetails = new OrderDetails()
                 {
                     OrderId = detailCart.OrderHeader.Id,
@@ -136,12 +137,13 @@ namespace ISProject.Areas.Customer.Controllers
                     ProductId = item.ProductSaleID,
                     ProductSale = item.ProductSale,
                     Count = item.Count,
-                    Price = item.ProductSale.Price,
-                    Name = item.ProductSale.Product.Name,
-                    Description = item.ProductSale.Product.Description
+                    Price = ps.Price,
+                    Name = ps.Product.Name,
+                    Description = ps.Product.Description
                 };
                 detailCart.OrderHeader.TotalPrice += orderDetails.Count * orderDetails.Price;
                 _db.OrderDetails.Add(orderDetails);
+                ps.Units -= item.Count;
             }
 
             _db.ShoppingCart.RemoveRange(detailCart.listCart);
