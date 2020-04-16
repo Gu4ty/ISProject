@@ -72,9 +72,15 @@
 
                 <div class="col-md-3 col-sm-12 offset-md-9 text-center">
                     @* <a asp-action="Buy" class="btn btn-success form-control" asp-route-id="@item.Id">Buy</a> *@
-                    <a href="#" class="btn btn-success form-control">Check Customer</a>
+                    <a asp-area="Admin" asp-controller="User" asp-action="Details" asp-route-id="@item.UserID" class="btn btn-success form-control">Check Customer</a>
                 </div>
                 
+                <div class="row col-12 text-justify">
+                    <a href = "#" class = "btn btn-success">
+                        <i class="fas fa-check">Accept Request</i>
+                    </a>
+                    
+                </div>
                 
                 
             </div>
