@@ -11,6 +11,7 @@ using ISProject.Models;
 using ISProject.Models.ViewModels;
 using System.Security.Claims;
 using ISProject.Utils;
+using Microsoft.AspNetCore.Identity;
 
 namespace ISProject.Controllers
 {
@@ -20,9 +21,11 @@ namespace ISProject.Controllers
     {
        
         private readonly ApplicationDbContext _db;
+        
 
-        public NotificationController(ApplicationDbContext db){
+        public NotificationController(ApplicationDbContext db,UserManager<IdentityUser> userManager){
             _db = db;
+            
             
         }
 
@@ -202,6 +205,46 @@ namespace ISProject.Controllers
                 .FirstOrDefaultAsync();
             
             return View(noti_buy);
+        }
+
+        public async Task<IActionResult> AcceptRequest(int id){
+
+            var noti_role = await _db.NotiRole.FirstOrDefaultAsync(n=>n.Id==id);
+            var customerID = noti_role.UserID;
+            var customer = await _db.User.FirstOrDefaultAsync(u=> u.Id == customerID);
+
+
+            var new_seller = new Seller()
+            {
+                Id = customerID,
+                Name = customer.Name,
+                UserName = customer.UserName,
+                NormalizedUserName = customer.NormalizedUserName,
+                Email = customer.Email,
+                NormalizedEmail = customer.NormalizedEmail,
+                EmailConfirmed = true,
+                PasswordHash = customer.PasswordHash,
+                LockoutEnabled = true,
+                SecurityStamp = customer.SecurityStamp
+            };
+
+
+            
+            _db.Remove(customer);
+            await _db.SaveChangesAsync();
+            
+            _db.Seller.Add(new_seller);
+            
+            var seller_role = await _db.Roles.FirstOrDefaultAsync(r=> r.Name== SD.SellerUser);
+            var seller_role_id = seller_role.Id;
+
+            _db.UserRoles.Add( new IdentityUserRole<string>(){
+                                RoleId = seller_role_id,
+                                UserId = new_seller.Id});
+
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Dismiss","Notification",new {id = id,type = "NotiRole"});
         }
         
     }
