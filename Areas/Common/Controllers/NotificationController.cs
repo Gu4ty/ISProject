@@ -127,6 +127,26 @@ namespace ISProject.Controllers
                 }
                 _db.UpdateRange(notifications);
             }
+
+            if( noti_type =="NotiGeneral" || noti_type == null){
+                
+                var notifications = await _db.Notification.Where(n=> n is Notification && n.SendToUser == claim.Value).ToListAsync();
+
+                foreach(var n in notifications){
+                    Notification not = new Notification(){
+                        Id = n.Id,
+                        Message = n.Message,
+                        NotiDate = n.NotiDate,
+                        Seen = n.Seen,
+                        SendToUser = n.SendToUser
+                    };
+
+                    nvm.NotiGeneral.Add(not);
+                    n.Seen = true;
+                }
+                
+                _db.UpdateRange(notifications);
+            }
             
             await _db.SaveChangesAsync();
             nvm.Type = noti_type;
@@ -145,9 +165,17 @@ namespace ISProject.Controllers
             
             if(noti == null)
                 return NotFound();
+
+            if( (noti as NotiRole) != null ){
+                var noti_role = noti as NotiRole;
+                var m = "You request of becoming a seller got denied";
+                NotiApi.SendNotification(_db,noti_role.UserID,m);
+            }
             
             _db.Notification.Remove(noti);
             await _db.SaveChangesAsync();
+
+            
             
             return RedirectToAction("Index","Notification",type);
 
@@ -187,6 +215,11 @@ namespace ISProject.Controllers
                                             n.SendToUser== claim.Value
                                     )
                                     .ToListAsync();
+                _db.RemoveRange(notifications);
+            }
+
+            if(type =="NotiGeneral" || type ==null){
+                var notifications = await _db.Notification.Where(n=> n is Notification && n.SendToUser== claim.Value ).ToListAsync();
                 _db.RemoveRange(notifications);
             } 
 
@@ -243,6 +276,9 @@ namespace ISProject.Controllers
                                 UserId = new_seller.Id});
 
             await _db.SaveChangesAsync();
+
+            var message = "Congrats!!! You have been promoted to a Seller!!!";
+            NotiApi.SendNotification(_db,new_seller.Id,message);
 
             return RedirectToAction("Dismiss","Notification",new {id = id,type = "NotiRole"});
         }

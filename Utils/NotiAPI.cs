@@ -16,6 +16,23 @@ namespace ISProject.Utils
            
         }
 
+        public static async void SendNotification(ApplicationDbContext db, string sendTo, string message ,DateTime? date = null)
+        {
+             if(date ==null)
+                date = DateTime.Now;
+
+            var noti = new Notification()
+            {
+                Message=message,
+                NotiDate = (DateTime)date,
+                Seen= false,
+                SendToUser = sendTo
+            };
+
+            db.Notification.Add(noti);
+            await db.SaveChangesAsync();
+        }
+
         public static async Task<bool> SendNotiRole(ApplicationDbContext db,string UserId, DateTime? date = null)
         {
             if(date ==null)
