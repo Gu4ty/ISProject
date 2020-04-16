@@ -129,7 +129,7 @@ namespace ISProject.Areas.Customer.Controllers
             foreach(var item in detailCart.listCart)
             {
 
-                ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
+                ProductSale ps = await _db.ProductSale.Include(p => p.Product).Include(p=> p.Seller).Where(p => p.Id == item.ProductSaleID).FirstOrDefaultAsync();
                 item.ProductSale = ps;
 
                 OrderDetails orderDetails = new OrderDetails()
