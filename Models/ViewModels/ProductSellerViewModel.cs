@@ -11,5 +11,7 @@ namespace ISProject.Models.ViewModels
         public List<Product> Products { get; set; }
 
         public ProductSale ProductSale { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }
