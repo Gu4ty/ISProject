@@ -29,6 +29,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Units)
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,11 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Units)
+                        </td>
+                        <td>
+                            <div class="row text-right">
+                                <a asp-action="Details" class="btn btn-info">Details</a>
+                            </div>
                         </td>
                     </tr>
             }
