@@ -199,6 +199,14 @@ namespace ISProject.Controllers
                                             (n.SendToUser == "All_A" && is_admin )
                                     )
                                     .ToListAsync();
+                foreach(var noti in notifications){
+                    if( (noti as NotiRole) != null ){
+                        var noti_role = noti as NotiRole;
+                        var m = "You request of becoming a seller got denied";
+                        NotiApi.SendNotification(_db,noti_role.UserID,m);
+                    }
+                }
+
                 _db.RemoveRange(notifications);
             }
             
