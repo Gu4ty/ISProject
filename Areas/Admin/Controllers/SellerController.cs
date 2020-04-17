@@ -69,7 +69,6 @@ namespace ISProject.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             
-            Console.WriteLine("NO fue valido");
             ProductSellerViewModel ps = new ProductSellerViewModel(){
                 Products = await _db.Product.ToListAsync(),
                 ProductSale = model.ProductSale
