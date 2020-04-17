@@ -19,6 +19,9 @@
         <a class="nav-link" asp-area="Common" 
             asp-controller="Notification" asp-action="Index" asp-route-noti_type="NotiSell">Sell Notifications</a>
    }
+
+   <a class="nav-link" asp-area="Common" 
+    asp-controller="Notification" asp-action="Index" asp-route-noti_type="NotiGeneral">Generals</a>
    
  
  
@@ -47,7 +50,7 @@
                             </div>
                             <div class="col-md-3 col-sm-12 offset-md-9 text-center">
                     
-                                <a asp-action="Dismiss" asp-route-id="@item.Id" asp-route-type="@Model.Type" asp-controller="Notification" class="btn btn-danger form-control">Dismiss</a>
+                                <a asp-action="Dismiss" asp-route-id="@item.Id" asp-route-type="@Model.Type" asp-controller="Notification" class="btn btn-danger form-control">Denied</a>
                             </div>
                         </div>
                     </div>
@@ -72,9 +75,16 @@
 
                 <div class="col-md-3 col-sm-12 offset-md-9 text-center">
                     @* <a asp-action="Buy" class="btn btn-success form-control" asp-route-id="@item.Id">Buy</a> *@
-                    <a href="#" class="btn btn-success form-control">Check Customer</a>
+                    <a asp-area="Admin" asp-controller="User" asp-action="Details" asp-route-id="@item.UserID" class="btn btn-success form-control">Check Customer</a>
                 </div>
                 
+                <div class="row col-12 text-justify">
+                    
+                    <a asp-action="AcceptRequest" asp-route-id="@item.Id" asp-controller="Notification" class = "btn btn-success">
+                        <i class="fas fa-check">Accept Request</i>
+                    </a>
+                    
+                </div>
                 
                 
             </div>
@@ -168,7 +178,51 @@
 
         }
 
-        @if(Model.NotiRole.Count()>0 || Model.NotiBuy.Count() > 0 || Model.NotiSell.Count() > 0){
+        @foreach(var item in Model.NotiGeneral)
+        {
+            <div class="border border-info rounded col-12" style="margin-bottom:10px; margin-top:10px; padding:10px">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12">
+                        <div class="row">
+                            <div class="col-8">
+                                @if(!item.Seen)
+                                {
+                                    <label class="text-primary" style="font-size:21px; color:maroon">New!</label>
+                                    
+                                }
+                            </div>
+                            
+                            <div class="col-4 text-right" style="color:maroon">
+                                <h4>@item.NotiDate</h4>
+                            </div>
+                            <div class="col-md-3 col-sm-12 offset-md-9 text-center">
+                    
+                                <a asp-action="Dismiss" asp-route-id="@item.Id" asp-route-type="@Model.Type" asp-controller="Notification" class="btn btn-danger form-control">Dismiss</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-12 text-justify">
+                    @if(item.Message.Contains("Congrats")){
+                        <h5>
+                            <i class="fas fa-trophy"></i>
+                            @Html.Raw(item.Message)
+                            <i class="fas fa-trophy"></i>
+                        </h5>
+                    }
+                    else
+                    {
+                        <p>@Html.Raw(item.Message)</p>
+                    }
+                </div>
+                                
+                
+            </div>
+
+        }
+
+        @if(Model.NotiRole.Count()>0 || Model.NotiBuy.Count() > 0 || Model.NotiSell.Count() > 0 || Model.NotiGeneral.Count() > 0){
             <div class="col-md-3 col-sm-12 offset-md-9 text-center">
                     
                 <a asp-action="DismissAll" asp-route-type="@Model.Type" asp-controller="Notification" class="btn btn-danger form-control">Dismiss All</a>
