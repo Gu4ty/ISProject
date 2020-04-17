@@ -35,7 +35,7 @@
                 <label asp-for="Price" class="col-form-label"></label>
             </div>
             <div class="col-5">
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" id="priceInput" />
             </div>
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
@@ -44,7 +44,7 @@
                 <label asp-for="Units" class="col-form-label"></label>
             </div>
             <div class="col-5">
-                <input asp-for="Units" class="form-control" />
+                <input asp-for="Units" class="form-control" id="unitsInput" />
             </div>
             <span asp-validation-for="Units" class="text-danger"></span>
         </div>
@@ -53,7 +53,7 @@
             <div class="col-5 offset-3">
                 <div class="row">
                     <div class="col-6">
-                        <input type="submit" class="btn btn-info form-control" value="Apply Changes" />
+                        <button type="submit" onclick="return validateInput();" value="Apply Changes" class="btn btn-info form-control">Apply Changes</button>
                     </div>
                     <div class="col-6">
                         <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
@@ -63,3 +63,27 @@
         </div>
     </form>
 </div>
+
+@section Scripts{
+    <script>
+        function validateUnits(){
+            var units = document.getElementById("unitsInput");
+            return (units.value >= 0);
+        }
+        function validatePrice(){
+            var price = document.getElementById("priceInput");
+            return (price.value >= 0.01);
+        }
+        function validateInput(){
+            if(!validatePrice()){
+                alert("The price must be greater than $0.01");
+                return false;
+            }
+            if(!validateUnits()){
+                alert("The amount of products must be greater than or equal to 0");
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
