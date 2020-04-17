@@ -130,19 +130,21 @@ namespace ISProject.Controllers
 
             if( noti_type =="NotiGeneral" || noti_type == null){
                 
-                var notifications = await _db.Notification.Where(n=> n is Notification && n.SendToUser == claim.Value).ToListAsync();
+                var notifications = await _db.Notification.OfType<Notification>().Where(n=> (n.SendToUser == claim.Value)).ToListAsync();
 
                 foreach(var n in notifications){
-                    Notification not = new Notification(){
-                        Id = n.Id,
-                        Message = n.Message,
-                        NotiDate = n.NotiDate,
-                        Seen = n.Seen,
-                        SendToUser = n.SendToUser
-                    };
+                    if(n.GetType() == typeof(Notification)){
+                        Notification not = new Notification(){
+                            Id = n.Id,
+                            Message = n.Message,
+                            NotiDate = n.NotiDate,
+                            Seen = n.Seen,
+                            SendToUser = n.SendToUser
+                        };
 
-                    nvm.NotiGeneral.Add(not);
-                    n.Seen = true;
+                        nvm.NotiGeneral.Add(not);
+                        n.Seen = true;
+                    }
                 }
                 
                 _db.UpdateRange(notifications);
