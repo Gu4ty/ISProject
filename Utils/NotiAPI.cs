@@ -38,6 +38,9 @@ namespace ISProject.Utils
             if(date ==null)
                 date = DateTime.Now;
             
+            var prev_noti_role = await db.NotiRole.FirstOrDefaultAsync(n=>n.UserID==UserId);
+            if(prev_noti_role != null)
+                return false;
 
             var user = await db.User.FirstOrDefaultAsync(u => u.Id==UserId);
             if(user == null)
