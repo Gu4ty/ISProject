@@ -63,7 +63,7 @@ namespace ISProject.Data
                         ProductId= i*10,
                         SellerId=(i*10 + 2).ToString(),
                         Units= i,
-                        Price = i/2
+                        Price = (i + 15) / 2
                     });
                 
                 //Seeding Notifications of Role Upgrade
