@@ -105,5 +105,13 @@ namespace ISProject.Areas.Admin.Controllers
             return View(model);            
         }
 
+        public async Task<IActionResult> Details(int id){
+            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstAsync();
+            if(ps != null){
+                return View(ps);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
