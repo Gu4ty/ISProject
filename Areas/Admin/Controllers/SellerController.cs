@@ -105,5 +105,29 @@ namespace ISProject.Areas.Admin.Controllers
             return View(model);            
         }
 
+        public async Task<IActionResult> Details(int id){
+            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstAsync();
+            if(ps != null){
+                return View(ps);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(ProductSale model){
+            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == model.Id).FirstAsync();
+            if(ps != null){
+                ps.Price = model.Price;
+                ps.Units = model. Units;
+
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(ps);
+        }
+
     }
 }
