@@ -56,12 +56,12 @@
                                                 <h6 class="my-0">@item.Name</h6>
                                                 <small class="text-muted">Quantity: @item.Count</small>
                                             </div>
-                                            <span class="text-muted">$@(item.Price * item.Count)</span>
+                                            <span class="text-muted">$@((item.Price * item.Count).ToString("F2"))</span>
                                         </li>
                                     }
                                     <li class="list-group-item d-flex justify-content-between bg-light">
                                         <small class="text-info">Total (USD)</small>
-                                        <strong class="text-info">$@(Model.OrderHeader.TotalPrice)</strong>
+                                        <strong class="text-info">$@((Model.OrderHeader.TotalPrice).ToString("F2"))</strong>
                                     </li>
                                 </ul>
                             </div>

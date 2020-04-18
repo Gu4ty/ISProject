@@ -28,7 +28,7 @@
                             </div>
                             <div class="col-5 text-right row">
                                 <div class="col-4 text-md-right" style="padding-top:5px;">
-                                    <h6><strong>$@item.ProductSale.Price <span class="text-muted">x</span> @item.Count </strong></h6>
+                                    <h6><strong>@Html.DisplayFor(modelItem => item.ProductSale.Price) <span class="text-muted">x</span> @item.Count </strong></h6>
                                 </div>
                                 <div class="col-6">
                                     <div class="float-right mx-1">
@@ -51,7 +51,7 @@
                             <ul class="list-group">
                                 <li class="list-group-item d-flex justify-content-between bg-light">
                                     <span class="text-info">Total (USD)</span>
-                                    <strong class="text-info">$ <span id="txtOrderTotal">@Model.OrderHeader.TotalPrice</span></strong>
+                                    <strong class="text-info"><span id="txtOrderTotal">@Html.DisplayFor(m => Model.OrderHeader.TotalPrice)</span></strong>
                                 </li>
 
                             </ul>

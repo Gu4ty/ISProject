@@ -67,7 +67,7 @@ namespace ISProject.Utils
 
             var noti_buy = new NotiBuy(){
                 Message = "You have bought a total of " + OrderDetails.Count().ToString() + 
-                            " different products for a total of " + "$"+OrderHeader.TotalPrice.ToString(),
+                            " different products for a total of " + "$" + (OrderHeader.TotalPrice).ToString("F2"),
                 NotiDate = (DateTime)date,
                 Seen = false,
                 OrderHeader = OrderHeader,

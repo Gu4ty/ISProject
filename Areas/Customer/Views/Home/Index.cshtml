@@ -14,7 +14,7 @@
                             <label class="text-primary" style="font-size:21px; color:maroon">@item.Product.Name</label>
                         </div>
                         <div class="col-4 text-right" style="color:maroon">
-                            <h4>$@item.Price</h4>
+                            <h4>@Html.DisplayFor(modelItem => item.Price)</h4>
                         </div>
                     </div>
                 </div>
