@@ -36,7 +36,8 @@ namespace ISProject.Areas.Admin.Controllers
         {
             ProductSellerViewModel ps = new ProductSellerViewModel(){
                 Products = await _db.Product.ToListAsync(),
-                ProductSale = new ProductSale()
+                ProductSale = new ProductSale(), 
+                ErrorMessage = ""
             };
 
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -54,14 +55,22 @@ namespace ISProject.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductSellerViewModel model)
         {
-            // var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            // var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
-            // model.ProductSale.SellerId = claim.Value;
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
             if(ModelState.IsValid)
             {
                 var product = await _db.Product.Where(s => s.Id == model.ProductSale.ProductId).FirstAsync();
+                ProductSale productFromDB = await _db.ProductSale.Where(p => p.ProductId == model.ProductSale.ProductId && p.SellerId == claim.Value).FirstOrDefaultAsync();
+                if(productFromDB != null){
+                    ProductSellerViewModel newModel = new ProductSellerViewModel(){
+                        Products = await _db.Product.ToListAsync(),
+                        ProductSale = model.ProductSale,
+                        ErrorMessage = "You are already selling this product. If you want to change its properties you can access its Details button"
+                    };
+                    return View(newModel);
+                }
+
                 model.ProductSale.Product = product;
                 _db.ProductSale.Add(model.ProductSale);
                 await _db.SaveChangesAsync();
@@ -69,7 +78,6 @@ namespace ISProject.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             
-            Console.WriteLine("NO fue valido");
             ProductSellerViewModel ps = new ProductSellerViewModel(){
                 Products = await _db.Product.ToListAsync(),
                 ProductSale = model.ProductSale

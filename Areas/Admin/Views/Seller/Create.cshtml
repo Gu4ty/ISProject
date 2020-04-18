@@ -28,6 +28,11 @@
                 <select id="ddlProductlist" asp-for="ProductSale.ProductId" asp-items="Model.Products.ToSelectListItem(Model.ProductSale.ProductId)" class="form-control"></select>
             </div>
         </div>
+        @if(@Model.ErrorMessage != ""){
+            <div class="row col-5 offset-3">
+                <h6 style="color: red">@Model.ErrorMessage</h6>
+            </div>
+        }
         <div class="form-group row">
             <div class="col-3">
                 <label asp-for="ProductSale.Price" class="col-form-label"></label>
