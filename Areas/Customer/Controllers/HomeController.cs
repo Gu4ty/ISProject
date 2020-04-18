@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using ISProject.Data;
@@ -86,7 +87,7 @@ namespace ISProject.Controllers
 
                 return RedirectToAction("Index");
             }
-            
+
             var product = await _db.ProductSale
                                 .Include(s => s.Product)
                                 .Include(s => s.Seller)
