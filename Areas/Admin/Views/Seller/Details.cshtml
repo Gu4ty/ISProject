@@ -35,7 +35,7 @@
                 <label asp-for="Price" class="col-form-label"></label>
             </div>
             <div class="col-5">
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" id="priceInput" />
             </div>
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
@@ -44,7 +44,7 @@
                 <label asp-for="Units" class="col-form-label"></label>
             </div>
             <div class="col-5">
-                <input asp-for="Units" class="form-control" />
+                <input asp-for="Units" class="form-control" id="unitsInput" />
             </div>
             <span asp-validation-for="Units" class="text-danger"></span>
         </div>
@@ -53,7 +53,7 @@
             <div class="col-5 offset-3">
                 <div class="row">
                     <div class="col-6">
-                        <input type="submit" class="btn btn-info form-control" value="Apply Changes" />
+                        <button type="submit" value="Apply Changes" class="btn btn-info form-control">Apply Changes</button>
                     </div>
                     <div class="col-6">
                         <a asp-action="Index" class="btn btn-success form-control">Back to List</a>

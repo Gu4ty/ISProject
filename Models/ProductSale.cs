@@ -10,8 +10,12 @@ namespace ISProject.Models
         public int Id { get; set; }
         
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Price should be greater than ${0}")]
+        [Range(0.01, int.MaxValue, ErrorMessage = "Price should be greater than $0")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public double Price { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Units should be greater than 0")]
         public int Units { get; set; }
         
         [Required]

@@ -62,8 +62,8 @@ namespace ISProject.Data
                         {Id= i *1000 + 3, 
                         ProductId= i*10,
                         SellerId=(i*10 + 2).ToString(),
-                        Units= i,
-                        Price = i/2
+                        Units= i + 1,
+                        Price = (i + 15) / 2
                     });
                 
                 //Seeding Notifications of Role Upgrade
@@ -72,7 +72,7 @@ namespace ISProject.Data
                         .HasData(new NotiRole(){
                             Id=i*10+4,
                             UserID = (i*10 + 1).ToString(),
-                            Message = "Customer" +i.ToString() + "wants to become a Seller",
+                            Message = "Customer" +i.ToString() + " wants to become a Seller",
                             SendToUser = "All_A",
                             Seen= false
                         });
