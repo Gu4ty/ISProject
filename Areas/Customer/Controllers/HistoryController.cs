@@ -27,7 +27,12 @@ namespace ISProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var order = await _db.OrderHeader.Where(p => p.UserId == claim.Value).ToListAsync();
+         
+            return View(order);
         }
     }
 }

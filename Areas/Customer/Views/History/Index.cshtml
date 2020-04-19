@@ -1,1 +1,39 @@
-<h4>Hello!!!</h4>
+@model IEnumerable<ISProject.Models.OrderHeader>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class ="row">
+    <div class = "col-6">
+        <h2 class= "text-info">Shopping History</h2>
+    </div>
+    <div class = "col-6 text-right">
+        <a href="~/Identity/Account/Manage" class="btn btn-info">Back</a>
+    </div>
+</div>
+
+@if(Model.Count() > 0)
+{
+    @foreach(var item in Model)
+    {
+        <div class="border border-info rounded col-12 row" style="margin-bottom:5px; margin-top:5px; padding:5px">
+                <div class="col-9">
+                    <div class="row col-md-9 col-sm-12">
+                        <h4>Date: @Html.DisplayFor(modelItem => item.OrderTime)</h4>
+                    </div>
+                    <div class="row col-12 text-justify" style="color:maroon">
+                        <h4>Total Price: @Html.DisplayFor(modelItem => item.TotalPrice)</h4>
+                    </div>
+                </div>
+                <div class="text-right col-3 text-center p-2">
+                    <a asp-action="Details" class="btn btn-success form-control" asp-route-id="@item.Id">Details</a>
+                </div>
+            </div>
+    }
+}
+else{
+    <p>You have not bought any products yet...</p>
+}
