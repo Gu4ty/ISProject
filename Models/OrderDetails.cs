@@ -32,6 +32,7 @@ namespace ISProject.Models
         public string Description { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public double Price { get; set; }
 
     }

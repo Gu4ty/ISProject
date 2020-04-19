@@ -34,5 +34,11 @@ namespace ISProject.Controllers
          
             return View(order);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var oDetails = await _db.OrderDetails.Where(p => p.OrderId == id).ToListAsync();
+            return View(oDetails);
+        }
     }
 }
