@@ -18,6 +18,7 @@ namespace ISProject.Models
         public virtual User User { get; set;}
         
         [Required]
+        [DataType(DataType.Date)]
         public DateTime OrderTime { get; set; }
 
         [Required]

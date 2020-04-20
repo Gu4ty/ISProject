@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ISProject.Models.ViewModels
 {
-    public class OrderDetailModel
+    public class ShoppingHistoryModel
     {
         public string UserId { get; set; }
-        public List<OrderDetails> Products { get; set; }
-        public double Price { get; set; }
+        public List<OrderHeader> Orders { get; set; }
     }
 }
