@@ -9,11 +9,13 @@ using ISProject.Models;
 using ISProject.Models.ViewModels;
 using ISProject.Data;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using ISProject.Utils;
 
-namespace ISProject.Areas.Admin.Controllers
+namespace ISProject.Areas.Customer.Controllers
 {
-    [Area("Admin")]
+    [Area("Customer")]
     public class SellerController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -21,6 +23,7 @@ namespace ISProject.Areas.Admin.Controllers
         {
             _db=db;
         }
+        [Authorize(Roles=SD.SellerUser)]
         public async Task<IActionResult> Index()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -32,18 +35,20 @@ namespace ISProject.Areas.Admin.Controllers
         }
 
         //GET - Create
+        [Authorize(Roles=SD.SellerUser)]
         public async Task<IActionResult> Create()
         {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var seller = await _db.Seller.Where(s => s.Id == claim.Value).FirstAsync();
+
             ProductSellerViewModel ps = new ProductSellerViewModel(){
                 Products = await _db.Product.ToListAsync(),
                 ProductSale = new ProductSale(), 
                 ErrorMessage = ""
             };
 
-            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            var seller = await _db.Seller.Where(s => s.Id == claim.Value).FirstAsync();
             ps.ProductSale.Seller = seller;
             ps.ProductSale.SellerId = claim.Value;
 
@@ -87,6 +92,7 @@ namespace ISProject.Areas.Admin.Controllers
 
 
         //GET - Create Product
+        [Authorize(Roles=SD.SellerUser)]
         public IActionResult CreateProduct()
         {
             return View();
@@ -112,6 +118,7 @@ namespace ISProject.Areas.Admin.Controllers
             }
             return View(model);            
         }
+        [Authorize(Roles=SD.SellerUser)]
 
         public async Task<IActionResult> Details(int id){
             ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstAsync();
