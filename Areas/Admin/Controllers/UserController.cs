@@ -16,6 +16,7 @@ using ISProject.Utils;
 namespace ISProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.ManagerUser)]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -23,7 +24,7 @@ namespace ISProject.Areas.Admin.Controllers
         {
             _db=db;
         }
-        [Authorize]
+       
         public async Task<IActionResult> Index()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -53,7 +54,7 @@ namespace ISProject.Areas.Admin.Controllers
             
             return View(uvm);
         }
-        [Authorize]
+        
         public async Task<IActionResult> SellsDetails(string id)
         {
             if (id == null)
@@ -70,7 +71,7 @@ namespace ISProject.Areas.Admin.Controllers
             var ps = await _db.ProductSale.Where(seller => seller.SellerId == id).ToListAsync();
             return View(ps);
         }
-        [Authorize]
+        
         public async Task<IActionResult> BuysDetails(string id)
         {
             if (id == null)
@@ -95,7 +96,7 @@ namespace ISProject.Areas.Admin.Controllers
             return View(orders);
         }
 
-        [Authorize]
+      
          public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -112,7 +113,7 @@ namespace ISProject.Areas.Admin.Controllers
 
             return View(user);
         }
-        [Authorize]
+       
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -127,7 +128,7 @@ namespace ISProject.Areas.Admin.Controllers
             }
             return View(user);
         }
-        [Authorize]
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Name,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
@@ -215,7 +216,7 @@ namespace ISProject.Areas.Admin.Controllers
             }
             return View(user);
         }
-        [Authorize]
+      
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -233,7 +234,7 @@ namespace ISProject.Areas.Admin.Controllers
             return View(user);
         }
 
-        [Authorize]
+       
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
