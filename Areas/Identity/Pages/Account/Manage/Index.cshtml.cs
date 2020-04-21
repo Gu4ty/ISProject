@@ -42,6 +42,20 @@ namespace ISProject.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            [DataType(DataType.Password)]
+            public string OldPassword { get; set; }
+
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "Password")]
+            public string Password { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm password")]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
+
+            [EmailAddress]
             public string Email { get; set; }
 
             [Phone]
@@ -134,6 +148,38 @@ namespace ISProject.Areas.Identity.Pages.Account.Manage
                 {
                     var userId = await _userManager.GetUserIdAsync(user);
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
+                }
+            }
+
+            if (Input.OldPassword != null)
+            {
+                var oldpass = await _userManager.CheckPasswordAsync(user, Input.OldPassword);
+                if(oldpass)
+                {
+                    if(Input.Password != null && Input.ConfirmPassword != null)
+                    {
+                        var setNewPasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.Password);
+                        if(!setNewPasswordResult.Succeeded)
+                        {
+                            foreach (var error in setNewPasswordResult.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                            return Page();
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "The NewPassword must be at least 6 characters long");
+                        return Page();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Incorrect old password");
+                    return Page();
+                    // StatusMessage = "Incorrect old password";
+                    // return RedirectToPage();
                 }
             }
 
