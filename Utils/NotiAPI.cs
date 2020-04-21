@@ -87,21 +87,43 @@ namespace ISProject.Utils
             if(date ==null)
                 date = DateTime.Now;
             
+            Dictionary<string, List<OrderDetails> > sells_by_user = new Dictionary<string, List<OrderDetails>>();
+
+
             foreach(var od in orderDetails){
                 var seller = od.ProductSale.Seller;
+                var id = seller.Id;
+                List<OrderDetails> sell_list;
+                if(sells_by_user.TryGetValue(id,out sell_list) ){
+                    sell_list.Add(od);
+                }
+                else{
+                    sell_list = new List<OrderDetails>();
+                    sell_list.Add(od);
+                    sells_by_user.Add(id,sell_list);
+                }
+
+            }
+
+            foreach(var (sellerID,sell_list) in sells_by_user){
+                
+                var message = "You have sold " + sell_list[0].Count + " Unit(s) of " + sell_list[0].Name;
+                if(sell_list.Count > 1){
+                    message = "You have sold multiple products to a user, check the details for more information";
+                }
+
                 var noti_sell = new NotiSell()
                 {
-                    SendToUser = seller.Id,
+                    SendToUser = sellerID,
                     NotiDate = (DateTime)date,
-                    Message = "You have sold " + od.Count + " Unit(s) of " + od.Name,
+                    Message = message,
                     Seen = false,
-                    OrderDetails=od,
-                    OrderDetailsID = od.Id,
+                    OrderDetails=sell_list,
                 };
                 await db.NotiSell.AddAsync(noti_sell);
                 await db.SaveChangesAsync();
 
-            }
+            }  
             
             return true;
             

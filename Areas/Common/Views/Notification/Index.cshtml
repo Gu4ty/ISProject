@@ -164,12 +164,19 @@
                     <p>@Html.Raw(item.Message)</p>
                 </div>
                 <div class="row col-12 text-justify">
-                    <p>Total earned: $@((item.OrderDetails.Price * item.OrderDetails.Price).ToString("F2"))</p>
+
+                    @{ var total = 0.0; }
+                    @foreach(var od in item.OrderDetails)
+                    {  
+                        total += od.Price * od.Count; 
+                    }
+                    <p>Total earned: $@(total.ToString("F2"))</p>
+                
                 </div>
 
                 <div class="col-md-3 col-sm-12 offset-md-9 text-center">
                     @* <a asp-action="BuyDetails" class="btn btn-success form-control" asp-route-id="@item.Id">See complete Order</a>  *@
-                     <a href="#" class="btn btn-success form-control">See complete Order</a>
+                     <a asp-action="SellDetails" asp-route-id="@item.Id" class="btn btn-success form-control">See complete Order</a>
                 </div>
                 
                 

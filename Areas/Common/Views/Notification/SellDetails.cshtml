@@ -1,0 +1,81 @@
+﻿@model ISProject.Models.NotiSell
+@{
+    ViewData["Title"] = "Sells Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="col-12">
+    <div class="col-8 offset-2">
+        <div class="row">
+            <div class="col-5">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-info">Purchase Details:</span>
+                </h4>
+            </div>
+            <div class="col-7 text-right">
+                <a asp-action="Index" asp-route-noti_type="NotiSell" class="btn btn-primary">Back</a>
+            </div>
+        </div>
+        <ul class="list-group mb-3">
+             
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6 class="my-0">Date: </h6>
+                    <small>@Model.NotiDate</small><br>
+                    @* <small class="text-muted">Price: @Html.DisplayFor(modelItem => item.Price)</small> *@
+                </div>
+            </li>
+            
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6 class="my-0">User who bought: </h6>
+                    <small>@Model.OrderDetails[0].OrderHeader.User.Name</small><br>
+                    @* <small class="text-muted">Price: @Html.DisplayFor(modelItem => item.Price)</small> *@
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+
+
+
+<div class="col-12">
+    <div class="col-8 offset-2">
+        <div class="row">
+            <div class="col-5">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-info">Products List:</span>
+                </h4>
+            </div>
+        </div>
+
+        <ul class="list-group mb-3">
+            @{ var total = 0.0; }
+           
+
+
+            @foreach(var item in Model.OrderDetails)
+            {
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <h6 class="my-0">@item.Name</h6>
+                        <small class="text-muted">Quantity: @item.Count</small><br>
+                        <small class="text-muted">Price: @Html.DisplayFor(modelItem => item.Price)</small><br>
+                        <small class="text-muted">Items remaining to this date: @item.ProductSale.Units</small>
+                    </div>
+                    <span class="text-muted">$@((item.Price * item.Count).ToString("F2"))</span>
+                    @{total += item.Price * item.Count; }
+                </li>
+            }
+            <li class="list-group-item d-flex justify-content-between bg-light">
+                <small class="text-info">Total (USD)</small>
+                <strong class="text-info">@(total.ToString("F2"))</strong>
+            </li>
+        </ul>
+    </div>
+</div>
+
