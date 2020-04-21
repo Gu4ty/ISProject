@@ -79,24 +79,30 @@ namespace ISProject.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var orders = await _db.OrderDetails.Join(
-                _db.OrderHeader.Where(n => n.UserId == id),
-                n => n.OrderId,
-                m => m.Id,
-                (n, m) => new OrderDetailModel{ Count = n.Count,
-                                                Description = n.Description,
-                                                Name = n.Name,
-                                                OrderId = n.OrderId,
-                                                OrderTime = m.OrderTime,
-                                                Price = n.Price,
-                                                ProductId = n.ProductId }
-            )
-            .ToListAsync();
-
+            ShoppingHistoryModel orders = new ShoppingHistoryModel(){
+                UserId = id,
+                Orders = await _db.OrderHeader.Where(p => p.UserId == id).ToListAsync()
+            };
+           
             return View(orders);
         }
 
-      
+        public async Task<IActionResult> ShopDetails(int id){
+            var order = await _db.OrderHeader.Where(p => p.Id == id).FirstOrDefaultAsync();
+            if(order == null)
+            {
+                return NotFound();
+            }
+            var items = new OrderDetailModel(){
+                UserId = order.UserId,
+                Products = await _db.OrderDetails.Where(p => p.OrderId == order.Id).ToListAsync(),
+                Price = order.TotalPrice
+            };
+
+            return View(items);
+        }
+
+        
          public async Task<IActionResult> Details(string id)
         {
             if (id == null)
