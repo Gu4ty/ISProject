@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using ISProject.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ISProject
 {
@@ -46,6 +47,20 @@ namespace ISProject
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
             });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest)
+            .AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                });
+
+                services.ConfigureApplicationCookie(options =>
+                {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

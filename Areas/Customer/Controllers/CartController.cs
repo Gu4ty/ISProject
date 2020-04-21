@@ -12,11 +12,12 @@ using ISProject.Data;
 using ISProject.Models.ViewModels;
 using ISProject.Models;
 using ISProject.Utils;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace ISProject.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _db;
