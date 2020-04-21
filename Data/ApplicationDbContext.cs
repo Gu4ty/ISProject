@@ -38,6 +38,11 @@ namespace ISProject.Data
                 .HasMany(n => n.OrderDetails)
                 .WithOne()
                 .OnDelete(DeleteBehavior.SetNull);
+            
+            modelBuilder.Entity<NotiSell>()
+                .HasMany(n => n.OrderDetails)
+                .WithOne()
+                .OnDelete(DeleteBehavior.SetNull);
 
 
 
@@ -55,7 +60,7 @@ namespace ISProject.Data
                 //Seeding 10 seller
                 RegisterSeller(modelBuilder, (i*10 + 2).ToString(), SD.SellerUser, "Seller" +i.ToString() );
 
-                // //Seeding 10 products sales
+                //Seeding 10 products sales
                 modelBuilder.Entity<ProductSale>()
                     .HasData(new ProductSale()
                         {Id= i *1000 + 3, 
@@ -64,6 +69,7 @@ namespace ISProject.Data
                         Units= i + 1,
                         Price = (i + 15) / 2
                     });
+                
                 
                 //Seeding Notifications of Role Upgrade
                 if(i%3 ==0){
@@ -79,6 +85,17 @@ namespace ISProject.Data
 
                 
             }
+
+            //Adding just one more product sale, Seller 8 is selling product 1
+            modelBuilder.Entity<ProductSale>()
+                    .HasData(new ProductSale()
+                        {Id= 8 *10000 + 3, 
+                        ProductId= 1*10,
+                        SellerId=(8*10 + 2).ToString(),
+                        Units= 8 + 1,
+                        Price = (8 + 15) / 2
+                    });
+
             //Defining Roles
             string [] roles = {SD.CustomerUser,SD.ManagerUser,SD.SellerUser};
             foreach(var role in roles){    

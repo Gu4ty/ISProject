@@ -120,7 +120,6 @@ namespace ISProject.Controllers
                         Seen = n.Seen,
                         SendToUser = n.SendToUser,
                         OrderDetails = n.OrderDetails,
-                        OrderDetailsID = n.OrderDetailsID,
                     };
                     nvm.NotiSell.Add(ns);
                     n.Seen = true;
@@ -248,6 +247,32 @@ namespace ISProject.Controllers
                 .FirstOrDefaultAsync();
             
             return View(noti_buy);
+        }
+
+        public async Task<IActionResult> SellDetails(int id)
+        {
+            var noti_sell = await _db.NotiSell
+                .Where(n=> n.Id == id )
+                .Include(n=> n.OrderDetails)
+                .FirstOrDefaultAsync();
+            
+            var headerID = noti_sell.OrderDetails[0].OrderId;
+            var header = await _db.OrderHeader
+                .Where(h => h.Id == headerID)
+                .Include(h => h.User)
+                .FirstOrDefaultAsync();
+            
+            noti_sell.OrderDetails[0].OrderHeader = header;
+
+            foreach(var od in noti_sell.OrderDetails)
+            {
+                var product_sale = await _db.ProductSale
+                    .Where(ps => ps.Id == od.ProductId)
+                    .FirstOrDefaultAsync();
+                od.ProductSale = product_sale;
+            }
+
+            return View(noti_sell);
         }
 
         public async Task<IActionResult> AcceptRequest(int id){
