@@ -43,7 +43,7 @@
                         </li>
                         @if(User.IsInRole(SD.SellerUser)){
                             <li>
-                                <a class="nav-link" asp-area="Admin" asp-controller="Seller" asp-action="Index">My Products</a>
+                                <a class="nav-link" asp-area="Customer" asp-controller="Seller" asp-action="Index">My Products</a>
                             </li>
                         }
                         @if(User.Identity.IsAuthenticated) 
