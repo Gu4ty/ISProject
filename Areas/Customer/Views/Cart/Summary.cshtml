@@ -43,6 +43,14 @@
                                         <input asp-for="@Model.OrderHeader.OrderTime" type="text" class="form-control" readonly style="background: #fff" />
                                     </div>
                                 </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Credit Card Number</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="number" id="CCnumber" class="form-control" style="background: #fff"/>
+                                    </div>
+                                </div>
                                 @if(@Model.ChangesMessage != "")
                                 {
                                     <br /><br />
@@ -79,8 +87,11 @@
 
                 <div class="card-footer">
                     <div class="row">
-                        <div class="col-4 offset-8">
-                            <button type="submit" value="Place Order" class="btn btn-success form-control">Place Order</button>
+                        <div class="col-8">
+                            <h6 id="message" style="color: green; display: none">Please, wait while we process your transaction...</h6>
+                        </div>
+                        <div class="col-4 text-right">
+                            <button type="submit" value="Place Order" onclick="return validateTransaction();" class="btn btn-success form-control">Place Order</button>
                         </div>
                     </div>
                 </div>
@@ -93,3 +104,37 @@
         <div>No items added to the shopping cart...</div>
     }
 </form>
+
+@section Scripts{
+    <script>
+        function sleep(milliseconds){
+            const date = Date.now();
+            let currentDate = null;
+            do{
+                currentDate = Date.now();
+            }while(currentDate - date < milliseconds);
+        }
+
+        function validateTransaction(){
+            var number = document.getElementById("CCnumber").value;
+            if(number.toString() == ''){
+                alert("You must write your credit card number in order to make the transaction.");
+                return false;
+            }
+
+            document.getElementById("message").style.display = "block";
+            
+            sleep(2000);
+
+            var r = Math.round(Math.random() * 10000);
+            r = 5;
+            if(r % 2 == 0 || r % 3 == 0){
+                return true;
+            }
+            
+            document.getElementById("message").style.display = "none";
+            alert("The transaction was unsuccessful. Please, try again.");
+            return false;
+        }
+    </script>
+}
