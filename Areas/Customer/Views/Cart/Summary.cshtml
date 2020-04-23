@@ -9,7 +9,6 @@
 @if(Model.listCart.Count > 0)
 {
     <br />
-    <input id="userId" asp-for="@Model.listCart[0].UserId" hidden />
     <div class="container">
         <div class="card">
             <div class="card-header bg-dark text-light ml-0 row container">
@@ -78,20 +77,18 @@
                 </div>
             </div>
             
-            <div class="form-popup" id="buyForm">
-                <form class="form-container">
-                    <h1 style="color: green">Transaction</h1>
+            <div class="form-popup form-container" id="buyForm">
+                <h1 style="color: green">Transaction</h1>
 
-                    <label><b>Credit Card Number</b></label>
-                    <input type="number" placeholder="Enter Number" id="CCnumber">
-                    
-                    <div class="row p-2">
-                        <button class="btn btn-success form-control">Accept</button>
-                    </div>
-                    <div class="row p-2">
-                        <button class="btn btn-danger form-control" onclick="closeForm()">Close</button>
-                    </div>
-                </form> 
+                <label><b>Credit Card Number</b></label>
+                <input type="number" placeholder="Enter Number" id="CCnumber">
+                
+                <div class="row p-2">
+                    <button class="btn btn-success form-control" onclick="validateTransaction()">Accept</button>
+                </div>
+                <div class="row p-2">
+                    <button class="btn btn-danger form-control" onclick="closeForm()">Close</button>
+                </div>
             </div>
             
 
@@ -105,6 +102,11 @@
         </div>
     </div>
     <form method="post" style="display: none">
+        @* <input id="userId" asp-for="@Model.listCart[0].UserId" hidden /> *@
+        @Html.HiddenFor(x => x.listCart[0].UserId)
+        @Html.HiddenFor(x => x.OrderHeader)
+        @Html.HiddenFor(x => x.listCart)
+        @Html.HiddenFor(x => x.ChangesMessage)
         <button id="buyButton" type="submit"></button>
     </form>
 
@@ -125,14 +127,28 @@ else
             document.getElementById("buyForm").style.display = "none";
         } 
 
-
-
         function sleep(milliseconds){
             const date = Date.now();
             let currentDate = null;
             do{
                 currentDate = Date.now();
             }while(currentDate - date < milliseconds);
+        }
+
+        function validateTransaction(){
+            var number = document.getElementById("CCnumber").value;
+            if(number.toString() == ''){
+                alert("You need to enter the credit card number in order to process the transaction.");
+            }
+            else{
+                var r = Math.round(Math.random() * 1000);
+                if(r % 2 == 0 || r % 3 == 0){
+                    document.getElementById("buyButton").click();
+                }
+                else{
+                    alert("The transaction was unsuccessful. Please, try again.");
+                }
+            }
         }
 
     </script>
