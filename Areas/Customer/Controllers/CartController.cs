@@ -109,18 +109,21 @@ namespace ISProject.Areas.Customer.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Summary")]
-        public async Task<IActionResult> SummaryPost(OrderDetailsCart detailCart)
+        public async Task<IActionResult> SummaryPost(OrderDetailsCart model)
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             User user =  await _db.User.Where(u => u.Id == claim.Value).FirstOrDefaultAsync();
-            
-            detailCart.listCart = await _db.ShoppingCart.Where(c => c.UserId == claim.Value).ToListAsync();
-            
-            detailCart.OrderHeader.TotalPrice = 0;
-            detailCart.OrderHeader.User = user;
-            detailCart.OrderHeader.UserId = claim.Value;
-            detailCart.OrderHeader.OrderTime = DateTime.Now;
+
+            OrderDetailsCart detailCart = new OrderDetailsCart(){
+                listCart = await _db.ShoppingCart.Where(c => c.UserId == claim.Value).ToListAsync(),
+                OrderHeader = new OrderHeader(){
+                    User = user,
+                    UserId = claim.Value,
+                    TotalPrice = 0,
+                    OrderTime = DateTime.Now
+                }
+            };
 
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
             _db.OrderHeader.Add(detailCart.OrderHeader);
