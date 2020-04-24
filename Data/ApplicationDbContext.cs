@@ -23,6 +23,9 @@ namespace ISProject.Data
         public DbSet<NotiSell> NotiSell { get; set; }
         public DbSet<OrderDetails> OrderDetails {get; set; }
         public DbSet<OrderHeader> OrderHeader {get; set; }
+        public DbSet<AuctionHeader> AuctionHeader {get; set; }
+        public DbSet<AuctionProduct> AuctionProduct {get; set; }
+        public DbSet<AuctionUser> AuctionUser {get; set; }
 
 
 
