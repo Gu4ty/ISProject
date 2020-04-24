@@ -41,6 +41,11 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        <li>
+                                <a class="nav-link" asp-area="Customer" asp-controller="Auction" asp-action="Index">Auctions</a>
+                        </li>
+
                         @if(User.IsInRole(SD.SellerUser)){
                             <li>
                                 <a class="nav-link" asp-area="Customer" asp-controller="Seller" asp-action="Index">My Products</a>
