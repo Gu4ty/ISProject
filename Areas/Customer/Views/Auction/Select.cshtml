@@ -1,0 +1,50 @@
+@model IEnumerable<ISProject.Models.ViewModels.ProductsAuctionViewModel>
+
+@{
+    ViewData["Title"] = "Select";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class ="row">
+    <div class = "col-6">
+        <h2 class= "text-info">Products available for Auction</h2>
+    </div>
+    <div class = "col-6 text-right">
+        <a asp-area="Customer" asp-controller="Seller" asp-action="Index" class="btn btn-info"> Back </a>
+    </div>
+</div>
+
+
+@if(Model.Count() > 0){
+    <form method="post">
+        <h6>Select the amount for each product you want to auction. If the quantity of a product is 0 it will not be added to the auction</h6><br />
+        @foreach (var item in Model)
+        {
+            <div class="container col-12">
+                <div class="row">
+                    <div class="col-7 text-left">
+                        <h4 class="text-primary"><strong>@item.ProductSale.Product.Name</strong></h4>
+                        <h4><small>@item.ProductSale.Product.Description</small></h4>
+                    </div>
+                    <div class="col-5 text-right row">
+                        <div class="col-6 text-md-right" style="padding-top:5px;">
+                            <h6 style="color: maroon"><strong>@Html.DisplayFor(modelItem => item.ProductSale.Price)</strong></h6>
+                            <small class="text-muted">Quantity available: @item.ProductSale.Units</small>
+                        </div>
+                        <div class="col-6 text-right">
+                            <small class="text-muted">Quantity for auction:</small>
+                            <input type="number" asp-for="@item.Quantity" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Add to Auction</button>
+        </div>
+    </form>
+}
+else{
+    <p>You have no products available...</p>
+}
