@@ -16,5 +16,6 @@ namespace ISProject.Models.ViewModels
 
         public AuctionHeader AuctionHeader { get; set; }
         public List<AuctionProduct> AuctionProduct   { get; set; }
+        public AuctionUser AuctionUser { get; set; }
     }
 }

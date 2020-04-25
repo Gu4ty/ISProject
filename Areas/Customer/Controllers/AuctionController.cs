@@ -54,13 +54,9 @@ namespace ISProject.Areas.Customer.Controllers
         public async Task<IActionResult> FilterByUser()
         {
         
-                 
-            
-
             var auctions = await _db.AuctionHeader.Include(a=> a.User).ToListAsync();
             List<AuctionItemViewModel> auItems = new List<AuctionItemViewModel>();
 
-            
 
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -112,6 +108,7 @@ namespace ISProject.Areas.Customer.Controllers
             else
                 ViewBag.Bid=false;
 
+            vm.AuctionUser = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.UserId==claim.Value && a.AuctionId==id);
             
             return View(vm);
 
@@ -119,6 +116,32 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
         
+        [Authorize]
+        public async Task<IActionResult> JoinAuction(int id)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            
+            var au = await _db.AuctionHeader.FirstOrDefaultAsync(a => a.Id == id);
+            
+
+            var a_user = new AuctionUser()
+            {
+                UserId = claim.Value,
+                AuctionId = id,
+                LastPriceOffered = au.CurrentPrice + au.PriceStep
+            };
+
+            au.CurrentPrice = a_user.LastPriceOffered;
+
+            _db.AuctionUser.Add(a_user);
+            _db.SaveChanges();
+
+            return RedirectToAction("Details",new{id = id});
+            
+        }
+
+
         [Authorize(Roles=SD.SellerUser)]
         public async Task<IActionResult> Select()
         {
