@@ -116,6 +116,13 @@ namespace ISProject.Data
                         Quantity = (i+1)/2,
                     };
 
+                    var auser= new AuctionUser()
+                    {
+                        Id=i*10 +7,
+                        AuctionId = i*10 +5,
+                        UserId = (i*10 + 1).ToString()
+                    };
+
                     modelBuilder.Entity<AuctionHeader>()
                         .HasData(ah);
                     
@@ -124,8 +131,9 @@ namespace ISProject.Data
                     
                     modelBuilder.Entity<AuctionProduct>()
                         .HasData(ap1);
-                
-                    
+
+                    modelBuilder.Entity<AuctionUser>()
+                        .HasData(auser); 
                         
                 }
 

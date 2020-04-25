@@ -30,90 +30,37 @@ namespace ISProject.Areas.Customer.Controllers
             var auctions = await _db.AuctionHeader.Include(a=> a.User).ToListAsync();
             List<AuctionItemViewModel> auItems = new List<AuctionItemViewModel>();
 
-            var auction_products = await _db.AuctionProduct.Include(a=>a.Product).ToListAsync();
+            
 
-            List<Product> LoadProducts(AuctionHeader auction, List<AuctionProduct> a_products)
-            {
-                List<Product> load = new List<Product>();
-                int id = auction.Id;
-                foreach(var ap in a_products){
-                    if(ap.AuctionId == id)
-                        load.Add(ap.Product);
-                }
-
-                return load;
-            }
+            
                 
             foreach(var a in auctions){
                 var item = new AuctionItemViewModel();
                 item.AuctionHeader = a;
-                item.Products = LoadProducts(a,auction_products);
+                item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id ).Include(a=> a.Product).ToListAsync();
+                if(item.AuctionProduct.Count ==0)
+                {
+                    Console.WriteLine("EOEOEOEOEOEOEO");
+                }
                 auItems.Add(item);
                 
             }
             
             return View(auItems);
         
-            
-            // bool UserParticipate(int auction_id, List<AuctionUser> auctions)
-            // {
-            //     foreach(var a in auctions)
-            //         if(a.AuctionId == auction_id)
-            //             return true;
-                
-            //     return false;
-            // }
-
-            // var user_auctions = await _db.AuctionUser.Where(a=> a.UserId == id ).ToListAsync();
-
-            // var view_auction = new List<AuctionHeader>();
-
-            // foreach(var a in auctions)
-            // {
-            //     if(UserParticipate(a.Id,user_auctions))
-            //         view_auction.Add(a);
-            // }
-
-            // foreach(var a in view_auction){
-            //         var item = new AuctionItemViewModel();
-            //         item.AuctionHeader = a;
-            //         item.Products = LoadProducts(a,auction_products);
-            //         auItems.Add(item);
-                    
-            // }
-
-            // return View(auItems);
         }
 
         [Authorize]
         public async Task<IActionResult> FilterByUser()
         {
         
-            List<Product> LoadProducts(AuctionHeader auction, List<AuctionProduct> a_products)
-            {
-                List<Product> load = new List<Product>();
-                int id = auction.Id;
-                foreach(var ap in a_products){
-                    if(ap.AuctionId == id)
-                        load.Add(ap.Product);
-                }
-
-                return load;
-            }
                  
-            bool UserParticipate(int auction_id, List<AuctionUser> auctions)
-            {
-                foreach(var a in auctions)
-                    if(a.AuctionId == auction_id)
-                        return true;
-                
-                return false;
-            }
+            
 
             var auctions = await _db.AuctionHeader.Include(a=> a.User).ToListAsync();
             List<AuctionItemViewModel> auItems = new List<AuctionItemViewModel>();
 
-            var auction_products = await _db.AuctionProduct.Include(a=>a.Product).ToListAsync();
+            
 
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -132,7 +79,7 @@ namespace ISProject.Areas.Customer.Controllers
             foreach(var a in view_auction){
                     var item = new AuctionItemViewModel();
                     item.AuctionHeader = a;
-                    item.Products = LoadProducts(a,auction_products);
+                    item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id).Include(a=> a.Product).ToListAsync();
                     auItems.Add(item);
                     
             }
@@ -142,11 +89,50 @@ namespace ISProject.Areas.Customer.Controllers
             
         }
 
+        [Authorize]
+        public async Task<IActionResult> Details(int id)
+        {
+            var auction = await _db.AuctionHeader.Where(a => a.Id == id).Include(a=> a.User).FirstOrDefaultAsync();
+            if(auction==null)
+                return NotFound();
+            
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var vm = new AuctionItemViewModel();
+            vm.AuctionHeader = auction;
+            
+            
+            vm.AuctionProduct = await _db.AuctionProduct.Where(a => a.AuctionId == auction.Id).Include(a=> a.Product).ToListAsync();
+
+            var a_user = await _db.AuctionUser.Where(a => a.UserId==claim.Value && a.AuctionId == id).FirstOrDefaultAsync();
+            
+            if(a_user != null)
+                ViewBag.Bid=true;
+            else
+                ViewBag.Bid=false;
+
+            
+            return View(vm);
+
+
+        }
+
         
         [Authorize(Roles=SD.SellerUser)]
         public async Task<IActionResult> Select()
         {
             return View();
+        }
+
+        
+        private bool UserParticipate(int auction_id, List<AuctionUser> auctions)
+        {
+            foreach(var a in auctions)
+                if(a.AuctionId == auction_id)
+                    return true;
+            
+            return false;
         }
 
 

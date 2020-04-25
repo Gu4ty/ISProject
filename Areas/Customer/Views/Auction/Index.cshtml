@@ -41,10 +41,10 @@
             <div class="row col-12 text-justify">
 
                 <ul class="list-group">
-                    @foreach (var p in item.Products)
+                    @foreach (var p in item.AuctionProduct)
                     {
                         <li class="list-group-item">
-                            @p.Name
+                            @p.Product.Name
                         </li>
                     }
                 <ul>
@@ -58,7 +58,7 @@
 
 
                 <div class="col-md-3 col-sm-12 offset-md-9 text-center">
-                    <a asp-action="Index" class="btn btn-success form-control" asp-route-id="">Details</a>
+                    <a asp-action="Details" class="btn btn-success form-control" asp-route-id="@item.AuctionHeader.Id">Details</a>
                 </div>
             </div>
         </div>

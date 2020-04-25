@@ -11,10 +11,10 @@ namespace ISProject.Models.ViewModels
         
         public AuctionItemViewModel()
         {
-            Products = new List<Product>();
+            AuctionProduct = new List<AuctionProduct>();
         }
 
         public AuctionHeader AuctionHeader { get; set; }
-        public List<Product> Products   { get; set; }
+        public List<AuctionProduct> AuctionProduct   { get; set; }
     }
 }
