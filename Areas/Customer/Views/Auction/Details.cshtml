@@ -1,0 +1,114 @@
+﻿@model  ISProject.Models.ViewModels.AuctionItemViewModel
+@{
+    ViewData["Title"] = "Auction Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="col-12">
+    <div class="col-8 offset-2">
+        <div class="row">
+            <div class="col-5">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-info">Auction Details:</span>
+                </h4>
+            </div>
+            <div class="col-7 text-right">
+                <a asp-action="Index" class="btn btn-primary">Back</a>
+            </div>
+        </div>
+        <ul class="list-group mb-3">
+             
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6 class="my-0">Begin Date: </h6>
+                    <small>@Model.AuctionHeader.BeginDate</small><br>
+                </div>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6 class="my-0">End Date: </h6>
+                    <small>@Model.AuctionHeader.EndDate</small><br>
+                </div>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6 class="my-0">Minimun outbid: </h6>
+                    <small>@Model.AuctionHeader.PriceStep</small><br>
+                </div>
+            </li>
+            
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6 class="my-0">User who is auctioning: </h6>
+                    <small>@Model.AuctionHeader.User.Name</small><br>
+                  
+                </div>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                <div>
+                    <h6 class="my-0">Current Price: </h6>
+                    
+                    <small style="color:maroon">@Model.AuctionHeader.CurrentPrice</small>
+                    
+                  
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+
+
+
+<div class="col-12">
+    <div class="col-8 offset-2">
+        <div class="row">
+            <div class="col-5">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-info">Products in Auction:</span>
+                </h4>
+            </div>
+        </div>
+
+        <ul class="list-group mb-3">
+
+            @foreach(var item in Model.AuctionProduct)
+            {
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <h6 class="my-0">@item.Product.Name</h6>
+                        <small class="text-muted">Quantity: @item.Quantity</small><br>
+                        <small class="text-muted">@item.Product.Description</small><br>
+        
+                    </div>
+                </li>
+            }
+            
+        </ul>
+    </div>
+</div>
+
+
+<div class="col-12">
+    <div class="col-8 offset-2">
+        <div class="row">
+            <div class="col-7 text-left">
+                @if(!ViewBag.Bid)
+                {    
+                    <a asp-action="Index" class="btn btn-primary">Join Auction</a>   
+                }
+                else{
+                    <h6 class="text-success"><i class="fas fa-check"></i> You are participating in this auction</h6>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+    

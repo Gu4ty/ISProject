@@ -86,6 +86,57 @@ namespace ISProject.Data
                         });
                 }
 
+                //Seeding Auctions
+                if(i%2 != 0)
+                {
+                    var ah = new AuctionHeader()
+                    {
+                        BeginDate = DateTime.Now,
+                        CurrentPrice = i+3,
+                        EndDate = DateTime.Now.AddHours(i+10),
+                        Id = i*10 + 5,
+                        PriceStep = i,
+                        SellerId = (i*10 + 2).ToString()
+                    };
+
+                    var ap = new AuctionProduct()
+                    {
+                        AuctionId = i*10 +5,
+                        Id = i*10+6,
+                        ProductId = i*10,
+                        Quantity = (i+1)/2,
+                    };
+
+                    
+                    var ap1 = new AuctionProduct()
+                    {
+                        AuctionId = i*10 +5,
+                        Id = i*100000+6,
+                        ProductId = (i+1)*10,
+                        Quantity = (i+1)/2,
+                    };
+
+                    var auser= new AuctionUser()
+                    {
+                        Id=i*10 +7,
+                        AuctionId = i*10 +5,
+                        UserId = (i*10 + 1).ToString()
+                    };
+
+                    modelBuilder.Entity<AuctionHeader>()
+                        .HasData(ah);
+                    
+                    modelBuilder.Entity<AuctionProduct>()
+                        .HasData(ap);
+                    
+                    modelBuilder.Entity<AuctionProduct>()
+                        .HasData(ap1);
+
+                    modelBuilder.Entity<AuctionUser>()
+                        .HasData(auser); 
+                        
+                }
+
                 
             }
 
