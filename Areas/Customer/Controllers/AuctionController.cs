@@ -24,6 +24,13 @@ namespace ISProject.Areas.Customer.Controllers
             _db=db;
         }
 
+        [Authorize(Roles=SD.SellerUser)]
+        public async Task<IActionResult> Select()
+        {
+            return View();
+        }
+
+
         public async Task<IActionResult> Index()
         {
 
@@ -138,12 +145,7 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
 
-        [Authorize(Roles=SD.SellerUser)]
-        public async Task<IActionResult> Select()
-        {
-            return View();
-        }
-
+      
         [Authorize]
         public async Task<IActionResult> QuickBid(int id) //get
         {
@@ -186,8 +188,49 @@ namespace ISProject.Areas.Customer.Controllers
             return RedirectToAction("Details",new{id = qb.AuctionId});
                 
         }
-        
+       
+        [Authorize]
+        public async Task<IActionResult> CustomBid(int id) //get
+        {
+            var auction = await _db.AuctionHeader.FirstOrDefaultAsync(a=> a.Id==id);
 
+            var vm = new CustomBidViewModel()
+            {
+                AuctionId = auction.Id,
+                PriceStep = auction.PriceStep,
+                CurrentPrice = auction.CurrentPrice,
+                CustomBid = auction.CurrentPrice + auction.PriceStep
+            };
+            return PartialView(vm);
+            
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CustomBid(CustomBidViewModel cb)
+        {
+            
+            if(!ModelState.IsValid)
+            {
+                return NotFound();
+            }
+
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var a_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.UserId==claim.Value && a.AuctionId==cb.AuctionId);
+            var auction = await _db.AuctionHeader.FirstOrDefaultAsync(a=> a.Id== cb.AuctionId );
+
+            a_user.LastPriceOffered = cb.CustomBid;
+            
+            auction.CurrentPrice = Math.Max(auction.CurrentPrice, a_user.LastPriceOffered);
+
+            _db.SaveChanges();
+
+            return RedirectToAction("Details",new{id = cb.AuctionId});
+                
+        }
         
         private bool UserParticipate(int auction_id, List<AuctionUser> auctions)
         {

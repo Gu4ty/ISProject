@@ -1,6 +1,6 @@
-﻿@model ISProject.Models.ViewModels.QuickBidViewModel
+﻿@model ISProject.Models.ViewModels.CustomBidViewModel
 
-
+<partial name =_ValidationScriptsPartial />
 
 
 <div class="modal-dialog">
@@ -8,14 +8,14 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">Making a Quick Bid</h4>
+            <h4 class="modal-title">Making a Custom Bid</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body">
             <div>
-                <form asp-action="QuickBid" method="post" >
+                <form asp-action="CustomBid" method="post" >
                     
                     @Html.HiddenFor(x => x.AuctionId)
                     @Html.HiddenFor(x => x.PriceStep)
@@ -41,25 +41,16 @@
                         </div>
                     </div>
                             
-                            
-                
-                    <div class="form-group row">
-                        <div class="col-3">
-                            <label class="col-form-label">Your Bid(USD)</label>
-                        </div>
-                        <div class="col-5">
-                            <input id="Bid" value="@(Model.CurrentPrice+Model.PriceStep) " class="form-control" readonly style="background: #fff" />
-                        </div>
-                    </div>
 
                     <div class="form-group row">
                         <div class="col-3">
-                            <label asp-for="Count" class="col-form-label"></label>
+                            <label asp-for="CustomBid" class="col-form-label">You are going to Bid (USD)</label>
                         </div>
                         <div class="col-5">
-                            <input asp-for="Count" class="form-control" min="1" max="@int.MaxValue" placeholder="1" onchange="NewBid()" id="iCount" />
+                            <input id="bid" autofocus asp-for="CustomBid" class="form-control" placeholder="Place your bid here..." /> 
+                            <span asp-validation-for="CustomBid" class="text-danger" id ="bidValidation" ></span>
                         </div>
-                        <span asp-validation-for="Count" class="text-danger" ></span>
+                        
                     </div>
 
 
@@ -68,7 +59,8 @@
                             
                      <!-- Modal footer -->
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-info form-control" value="Make a Bid" />
+                        <button type = "submit" id="btn-submit" style="display: none"></button>
+                        <input type="button" class="btn btn-info form-control" value="Make a Bid" onclick="handle()" />
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     
                        
@@ -82,15 +74,61 @@
 
     </div>
 </div>
+ 
 
 
 <script>
 
-        function NewBid(){
-            var count = document.getElementById("iCount").value;
-            var l = document.getElementById("Bid");
-            l.value = @Model.CurrentPrice + count * @Model.PriceStep; 
+    
+    async function validateInput()
+    {
+        var v = document.getElementById("bidValidation");
+        
+        var bid = document.getElementById("bid").value;
+
+        if(bid == ""){
+            v.innerHTML = " Your bid field is required.";
+            return false;
+        }
+    
+        var n = parseFloat(bid);
+        if(n == NaN){
+            v.innerHTML = " Your bid field must be a number.";
+            return false;
+        }
+        if(n < @(Model.CurrentPrice + Model.PriceStep) ){
+            v.innerHTML = " Your bid must be at least of $" + @( (Model.CurrentPrice + Model.PriceStep).ToString("F2") ) ;
+            return false;
+        }
+        
+        return true    
+        
+    }
+
+    function handle(){
+        validateInput().then(v=>{
+            if(v){
+                document.getElementById("btn-submit").click()
+            }
+        });
+    }
+
+
+    
+
+    
+
+
+    /*$(document).ready(function(){
+        $('#btnQuickBid').click(function(){
             
-        };
+            var url = $('#quickModal').data('url');
+            $.get(url,function(data){
+                
+                $("#quickModal").html(data);
+                $("#quickModal").modal('show');
+
+            });
+    });*/
 
 </script>

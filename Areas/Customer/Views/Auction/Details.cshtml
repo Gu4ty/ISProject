@@ -119,18 +119,29 @@
 <div class="col-12">
     <div class="col-8 offset-2">
         <div class="row">
-            <div class="col-7 text-left">
+            
                 @if(@Model.AuctionUser==null)
                 {   
-                    <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
+                    <div class="col-7 text-left">
+                        <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
+                    </div>
                 }
                 else{
-                    <button type="button" class="btn btn-primary" id = "btnQuickBid"> Quick bid </button>
+                    
+                    <div class="col-5">
+                        <button type="button" class="btn btn-primary" id = "btnQuickBid"> Quick bid </button>
+                        <!-- The Quick Modal -->
+                        <div class="modal fade" id="quickModal" role="dialog" data-url='@Url.Action("QuickBid",new { id = @Model.AuctionHeader.Id })'> </div>
+                    </div>
 
-                    <!-- The Modal -->
-                    <div class="modal fade" id="quickModal" role="dialog" data-url='@Url.Action("QuickBid",new { id = @Model.AuctionHeader.Id })'> </div>
+                    <div class="col-7 text-right">
+                        <button type="button" class="btn btn-primary" id = "btncustomBid"> Custom Bid </button>
+                        <!-- The Custom Modal -->
+                        <div class="modal fade" id="customModal" role="dialog" data-url='@Url.Action("CustomBid",new { id = @Model.AuctionHeader.Id })'> </div>
+                    </div>
+                    
                 }
-            </div>
+            
         </div>
     </div>
 </div>
@@ -219,6 +230,18 @@
                 
                 $("#quickModal").html(data);
                 $("#quickModal").modal('show');
+
+            });
+        });
+
+
+        $('#btncustomBid').click(function(){
+            
+            var url = $('#customModal').data('url');
+            $.get(url,function(data){
+                
+                $("#customModal").html(data);
+                $("#customModal").modal('show');
 
             });
         });
