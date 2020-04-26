@@ -135,7 +135,16 @@ namespace ISProject.Areas.Customer.Controllers
                 LastPriceOffered = au.CurrentPrice + au.PriceStep
             };
 
-            au.CurrentPrice = Math.Max(au.CurrentPrice, a_user.LastPriceOffered);
+            if(au.CurrentPrice < a_user.LastPriceOffered)
+            {
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==au.CurrentPrice);
+                await NotiApi.SendNotiAuction(_db,"You were outbided, check the auction for more details",outbided_user.UserId,au.Id); 
+                await NotiApi.SendNotiAuction(_db,"You bid for $"+a_user.LastPriceOffered.ToString("F2")+" in an auction, check the auction for more details",a_user.UserId,au.Id);
+
+                au.CurrentPrice = Math.Max(au.CurrentPrice, a_user.LastPriceOffered);
+            }
+
+            
 
             _db.AuctionUser.Add(a_user);
             _db.SaveChanges();
@@ -181,7 +190,19 @@ namespace ISProject.Areas.Customer.Controllers
 
             a_user.LastPriceOffered = qb.CurrentPrice + qb.Count * qb.PriceStep;
             
-            auction.CurrentPrice = Math.Max(auction.CurrentPrice, a_user.LastPriceOffered);
+            
+            if(auction.CurrentPrice < a_user.LastPriceOffered)
+            {
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==auction.CurrentPrice);
+                
+                if(outbided_user.UserId != claim.Value)
+                    await NotiApi.SendNotiAuction(_db,"You got outbided, check the auction for more details",outbided_user.UserId,auction.Id); 
+                
+                await NotiApi.SendNotiAuction(_db,"You bid for $"+a_user.LastPriceOffered.ToString("F2")+" in an auction, check the auction for more details",a_user.UserId,auction.Id);
+
+                auction.CurrentPrice = Math.Max(auction.CurrentPrice, a_user.LastPriceOffered);
+            }
+            
 
             _db.SaveChanges();
 
@@ -224,7 +245,18 @@ namespace ISProject.Areas.Customer.Controllers
 
             a_user.LastPriceOffered = cb.CustomBid;
             
-            auction.CurrentPrice = Math.Max(auction.CurrentPrice, a_user.LastPriceOffered);
+            if(auction.CurrentPrice < a_user.LastPriceOffered)
+            {
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==auction.CurrentPrice);
+                
+                if(outbided_user.UserId != claim.Value)
+                    await NotiApi.SendNotiAuction(_db,"You got outbided, check the auction for more details",outbided_user.UserId,auction.Id); 
+                
+                await NotiApi.SendNotiAuction(_db,"You bid for $"+a_user.LastPriceOffered.ToString("F2")+" in an auction, check the auction for more details",a_user.UserId,auction.Id);
+
+                auction.CurrentPrice = Math.Max(auction.CurrentPrice, a_user.LastPriceOffered);
+            }
+
 
             _db.SaveChanges();
 

@@ -122,7 +122,8 @@ namespace ISProject.Data
                     {
                         Id=i*10 +7,
                         AuctionId = i*10 +5,
-                        UserId = (i*10 + 1).ToString()
+                        UserId = (i*10 + 1).ToString(),
+                        LastPriceOffered = i+3
                     };
 
                     modelBuilder.Entity<AuctionHeader>()

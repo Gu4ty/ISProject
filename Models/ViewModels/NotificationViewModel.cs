@@ -17,6 +17,8 @@ namespace ISProject.Models.ViewModels
 
         public List<Notification> NotiGeneral { get; set; }
 
+        public List<NotiAuction> NotiAuction { get; set; }
+
         public string Type { get; set; }
 
         public NotificationViewModel()
@@ -25,6 +27,7 @@ namespace ISProject.Models.ViewModels
             NotiRole = new List<NotiRole>();
             NotiBuy = new List<NotiBuy>();
             NotiSell = new List<NotiSell>();
+            NotiAuction = new List<NotiAuction>();
         }
         
     }

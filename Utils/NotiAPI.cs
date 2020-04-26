@@ -128,6 +128,27 @@ namespace ISProject.Utils
             return true;
             
         }
+
+        public static async Task<bool> SendNotiAuction(ApplicationDbContext db,string msg,string sendto,int auctionID, DateTime? date = null)
+        {
+            if(date ==null)
+                date = DateTime.Now;
+            
+            var noti = new NotiAuction()
+            {
+                Message = msg,
+                NotiDate = (DateTime)date,
+                Seen = false,
+                SendToUser = sendto,
+                AuctionHeaderID = auctionID
+            };
+
+            await db.NotiAuction.AddAsync(noti);
+            await db.SaveChangesAsync();
+
+            return true;
+
+        }
             
     }
 }
