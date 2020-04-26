@@ -38,10 +38,6 @@ namespace ISProject.Areas.Customer.Controllers
                 var item = new AuctionItemViewModel();
                 item.AuctionHeader = a;
                 item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id ).Include(a=> a.Product).ToListAsync();
-                if(item.AuctionProduct.Count ==0)
-                {
-                    Console.WriteLine("EOEOEOEOEOEOEO");
-                }
                 auItems.Add(item);
                 
             }
@@ -132,7 +128,7 @@ namespace ISProject.Areas.Customer.Controllers
                 LastPriceOffered = au.CurrentPrice + au.PriceStep
             };
 
-            au.CurrentPrice = a_user.LastPriceOffered;
+            au.CurrentPrice = Math.Max(au.CurrentPrice, a_user.LastPriceOffered);
 
             _db.AuctionUser.Add(a_user);
             _db.SaveChanges();
@@ -147,6 +143,50 @@ namespace ISProject.Areas.Customer.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public async Task<IActionResult> QuickBid(int id) //get
+        {
+            
+            var auction = await _db.AuctionHeader.FirstOrDefaultAsync(a=> a.Id==id);
+
+            var vm = new QuickBidViewModel()
+            {
+                AuctionId = auction.Id,
+                Count = 1,
+                PriceStep = auction.PriceStep,
+                CurrentPrice = auction.CurrentPrice
+            };
+            return PartialView(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuickBid(QuickBidViewModel qb)
+        {
+            
+            if(!ModelState.IsValid)
+            {
+                return NotFound();
+            }
+
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var a_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.UserId==claim.Value && a.AuctionId==qb.AuctionId);
+            var auction = await _db.AuctionHeader.FirstOrDefaultAsync(a=> a.Id== qb.AuctionId );
+
+            a_user.LastPriceOffered = qb.CurrentPrice + qb.Count * qb.PriceStep;
+            
+            auction.CurrentPrice = Math.Max(auction.CurrentPrice, a_user.LastPriceOffered);
+
+            _db.SaveChanges();
+
+            return RedirectToAction("Details",new{id = qb.AuctionId});
+                
+        }
+        
 
         
         private bool UserParticipate(int auction_id, List<AuctionUser> auctions)

@@ -3,6 +3,9 @@
     ViewData["Title"] = "Auction Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 
 
 
@@ -122,7 +125,10 @@
                     <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
                 }
                 else{
-                    <h6 class="text-success"><i class="fas fa-check"></i> You are participating in this auction</h6>
+                    <button type="button" class="btn btn-primary" id = "btnQuickBid"> Quick bid </button>
+
+                    <!-- The Modal -->
+                    <div class="modal fade" id="quickModal" role="dialog" data-url='@Url.Action("QuickBid",new { id = @Model.AuctionHeader.Id })'> </div>
                 }
             </div>
         </div>
@@ -158,6 +164,7 @@
 
 
 @section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
         function openForm() {
             document.getElementById("buyForm").style.display = "block";
@@ -197,4 +204,34 @@
     </script>
 }
 
-    
+
+
+
+@* Pop up script *@
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#btnQuickBid').click(function(){
+            
+            var url = $('#quickModal').data('url');
+            $.get(url,function(data){
+                
+                $("#quickModal").html(data);
+                $("#quickModal").modal('show');
+
+            });
+        });
+
+
+    });
+
+
+</script>
+
+
+
+
+
+
+
