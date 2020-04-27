@@ -1,1 +1,97 @@
-<h1>Hello!!!</h1>
+@model ISProject.Models.ViewModels.AuctionViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if(Model.Products.Count > 0)
+{
+    <form asp-action="Create" method="post">
+        <br />
+        <div class="container">
+            <div class="card">
+                <div class="card-header bg-dark text-light ml-0 row container">
+                    <div class="col-6">Create Auction</div>
+                    <div class="col-6 text-right">
+                        <a asp-asp-area="Customer" asp-controller="Seller" asp-action="Index" class="btn btn-outline-info btn-sm">Back</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container rounded p-2">
+                        <div class="row">
+                            <div class="col-6 pb-4">
+                                <div class="row">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-info">Auction Details:</span>
+                                    </h4>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Date to begin:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input asp-for="@Model.AuctionHeader.BeginDate" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Date to end:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input asp-for="@Model.AuctionHeader.EndDate" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Initial Price:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input asp-for="@Model.AuctionHeader.CurrentPrice" type="number" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="row my-1">
+                                    <div class="col-3">
+                                        <label>Minimum outbid:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input asp-for="@Model.AuctionHeader.PriceStep" type="number" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-5 offset-1">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-info">Products for the auction:</span>
+                                </h4>
+                                <ul class="list-group mb-3">
+                                    @foreach(var item in Model.Products)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between">
+                                            <div>
+                                                <h6 class="my-0">@item.ProductSale.Product.Name</h6>
+                                            </div>
+                                            <span class="text-muted">Quantity: @item.Quantity</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-4 offset-8">
+                            <button value="Create" type="submit" class="btn btn-success form-control">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <div>No items added to the auction...</div>
+}
