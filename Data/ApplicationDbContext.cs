@@ -21,6 +21,8 @@ namespace ISProject.Data
         public DbSet<NotiRole> NotiRole { get; set; }
         public DbSet<NotiBuy> NotiBuy { get; set; }
         public DbSet<NotiSell> NotiSell { get; set; }
+        public DbSet<NotiAuction> NotiAuction { get; set; }
+        
         public DbSet<OrderDetails> OrderDetails {get; set; }
         public DbSet<OrderHeader> OrderHeader {get; set; }
         public DbSet<AuctionHeader> AuctionHeader {get; set; }
@@ -120,7 +122,8 @@ namespace ISProject.Data
                     {
                         Id=i*10 +7,
                         AuctionId = i*10 +5,
-                        UserId = (i*10 + 1).ToString()
+                        UserId = (i*10 + 1).ToString(),
+                        LastPriceOffered = i+3
                     };
 
                     modelBuilder.Entity<AuctionHeader>()

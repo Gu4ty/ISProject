@@ -3,6 +3,9 @@
     ViewData["Title"] = "Auction Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 
 
 
@@ -37,7 +40,7 @@
             <li class="list-group-item d-flex justify-content-between">
                 <div>
                     <h6 class="my-0">Minimun outbid: </h6>
-                    <small>@Model.AuctionHeader.PriceStep</small><br>
+                    <small>@Html.DisplayFor(modelItem => Model.AuctionHeader.PriceStep)</small><br>
                 </div>
             </li>
             
@@ -52,12 +55,30 @@
             <li class="list-group-item d-flex justify-content-between">
                 <div>
                     <h6 class="my-0">Current Price: </h6>
-                    
-                    <small style="color:maroon">@Model.AuctionHeader.CurrentPrice</small>
-                    
+                    @if(Model.AuctionUser!=null && Model.AuctionUser.LastPriceOffered == Model.AuctionHeader.CurrentPrice){
+                        <small style="color:green">@Html.DisplayFor(modelItem => Model.AuctionHeader.CurrentPrice)</small>
+                    }
+                    else{
+                        <small style="color:maroon">@Html.DisplayFor(modelItem => Model.AuctionHeader.CurrentPrice)</small>
+                    }
                   
                 </div>
             </li>
+
+            @if(Model.AuctionUser!=null){
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        
+                        @if(Model.AuctionUser.LastPriceOffered == Model.AuctionHeader.CurrentPrice){
+                            <h6 style="color:green" class="my-0">You are the current buyer</h6>
+                        }
+                        else{
+                            <h6 style="color:maroon" class="my-0">You are not the current buyer.... Your bid is of $@(Model.AuctionUser.LastPriceOffered.ToString("F2"))</h6>
+                        }
+                    
+                    </div>
+                </li>
+            }
 
         </ul>
     </div>
@@ -98,17 +119,142 @@
 <div class="col-12">
     <div class="col-8 offset-2">
         <div class="row">
-            <div class="col-7 text-left">
-                @if(!ViewBag.Bid)
-                {    
-                    <a asp-action="Index" class="btn btn-primary">Join Auction</a>   
+            
+                @if(@Model.AuctionUser==null)
+                {   
+                    <div class="col-7 text-left">
+                        <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
+                    </div>
                 }
                 else{
-                    <h6 class="text-success"><i class="fas fa-check"></i> You are participating in this auction</h6>
+                    
+                    <div class="col-5">
+                        <button type="button" class="btn btn-primary" id = "btnQuickBid"> Quick bid </button>
+                        <!-- The Quick Modal -->
+                        <div class="modal fade" id="quickModal" role="dialog" data-url='@Url.Action("QuickBid",new { id = @Model.AuctionHeader.Id })'> </div>
+                    </div>
+
+                    <div class="col-7 text-right">
+                        <button type="button" class="btn btn-primary" id = "btncustomBid"> Custom Bid </button>
+                        <!-- The Custom Modal -->
+                        <div class="modal fade" id="customModal" role="dialog" data-url='@Url.Action("CustomBid",new { id = @Model.AuctionHeader.Id })'> </div>
+                    </div>
+                    
                 }
-            </div>
+            
         </div>
     </div>
 </div>
 
-    
+
+
+
+
+
+
+
+
+<div class="form-popup form-container" id="buyForm">
+    <h1 style="color: green">Transaction</h1>
+    <h5>To join the auction you will start bidding for a price of
+        <br/> $@((Model.AuctionHeader.CurrentPrice + Model.AuctionHeader.PriceStep).ToString("F2") )  </h5>
+
+    <label><b>Credit Card Number</b></label>
+        <input type="number" placeholder="Enter Number" id="CCnumber">
+                
+    <div class="row p-2">
+        <button class="btn btn-success form-control" onclick="validateTransaction()">Accept</button>
+    </div>
+    <div class="row p-2">
+        <button class="btn btn-danger form-control" onclick="closeForm()">Close</button>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        function openForm() {
+            document.getElementById("buyForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("buyForm").style.display = "none";
+        } 
+
+        function sleep(milliseconds){
+            const date = Date.now();
+            let currentDate = null;
+            do{
+                currentDate = Date.now();
+            }while(currentDate - date < milliseconds);
+        }
+
+        function validateTransaction(){
+            var number = document.getElementById("CCnumber").value;
+            if(number.toString() == ''){
+                alert("You need to enter the credit card number in order to process the transaction.");
+            }
+            else{
+                var r = Math.round(Math.random() * 1000);
+                if(r % 2 == 0 || r % 3 == 0){
+                   window.location.href = '@Url.Action("JoinAuction",new { id = @Model.AuctionHeader.Id })';
+                   
+                   
+                }
+                else{
+                    
+                    alert("The transaction was unsuccessful. Please, try again.");
+                }
+            }
+        }
+
+    </script>
+}
+
+
+
+
+@* Pop up script *@
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#btnQuickBid').click(function(){
+            
+            var url = $('#quickModal').data('url');
+            $.get(url,function(data){
+                
+                $("#quickModal").html(data);
+                $("#quickModal").modal('show');
+
+            });
+        });
+
+
+        $('#btncustomBid').click(function(){
+            
+            var url = $('#customModal').data('url');
+            $.get(url,function(data){
+                
+                $("#customModal").html(data);
+                $("#customModal").modal('show');
+
+            });
+        });
+
+
+    });
+
+
+</script>
+
+
+
+
+
+
+

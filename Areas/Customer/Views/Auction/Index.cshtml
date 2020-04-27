@@ -32,14 +32,14 @@
                             <label class="text-primary" style="font-size:21px; color:maroon">@(item.AuctionHeader.User.Name) is auctioning one or more products</label>
                         </div>
                         <div class="col-4 text-right" style="color:maroon">
-                            <h4>Current Price: @item.AuctionHeader.CurrentPrice</h4>
+                            <h4>Current Price: @Html.DisplayFor(modelItem => item.AuctionHeader.CurrentPrice)</h4>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row col-12 text-justify">
-
+                
                 <ul class="list-group">
                     @foreach (var p in item.AuctionProduct)
                     {
