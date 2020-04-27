@@ -60,7 +60,9 @@ namespace ISProject.Areas.Customer.Controllers
                         if(item.Quantity > item.ProductSale.Units){
                             item.Quantity = item.ProductSale.Units;
                         }
-                        var product = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSale.Id).FirstOrDefaultAsync();
+                        var product = await _db.ProductSale.Include(p => p.Product).Include(p => p.Seller)
+                                                        .Where(p => p.Id == item.ProductSale.Id)
+                                                        .FirstOrDefaultAsync();
                         var prod = new ProductsAuctionViewModel(){
                             ProductSale = product,
                             Quantity = item.Quantity
@@ -117,13 +119,63 @@ namespace ISProject.Areas.Customer.Controllers
                 AuctionHeader = new AuctionHeader(){
                     BeginDate = DateTime.Now,
                     EndDate = DateTime.Now,
-                    CurrentPrice = total,
-                    PriceStep = total / 20,
+                    CurrentPrice = Math.Round((double)total, 2),
+                    PriceStep = Math.Round((double)(total / 20), 2),
                     SellerId = claim.Value,
                     User = user
                 }
             };
             return View(auction);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AuctionViewModel auction)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var user = await _db.Seller.Where(s => s.Id == claim.Value).FirstOrDefaultAsync();
+
+            if(ModelState.IsValid){
+                AuctionHeader auctionHeader = new AuctionHeader(){
+                    SellerId = claim.Value,
+                    User = user,
+                    BeginDate = auction.AuctionHeader.BeginDate,
+                    EndDate = auction.AuctionHeader.EndDate,
+                    CurrentPrice = auction.AuctionHeader.CurrentPrice,
+                    PriceStep = auction.AuctionHeader.PriceStep
+                };
+                _db.AuctionHeader.Add(auctionHeader);
+                await _db.SaveChangesAsync();
+
+                foreach(var item in auction.Products){
+                    var productSale = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSale.Id).FirstOrDefaultAsync();
+                    var product = await _db.Product.Where(p => p.Id == productSale.ProductId).FirstOrDefaultAsync();
+                    var auctionProduct = new AuctionProduct(){
+                        ProductId = product.Id,
+                        Product = product,
+                        AuctionId = auctionHeader.Id,
+                        AuctionHeader = auctionHeader,
+                        Quantity = item.Quantity
+                    };
+                    _db.AuctionProduct.Add(auctionProduct);
+                }
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Seller");
+            }
+
+            foreach(var modelState in ViewData.ModelState.Values){
+                foreach(ModelError error in modelState.Errors){
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+
+            return RedirectToAction(nameof(Select));
+
+        }
     }
 }
+
+

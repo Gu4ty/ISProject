@@ -26,6 +26,8 @@
                                         <span class="text-info">Auction Details:</span>
                                     </h4>
                                 </div>
+                                @Html.HiddenFor(x => x.AuctionHeader.User)
+                                @Html.HiddenFor(x => x.AuctionHeader.SellerId)
                                 <div class="row my-1">
                                     <div class="col-3">
                                         <label>Date to begin:</label>
@@ -65,13 +67,20 @@
                                     <span class="text-info">Products for the auction:</span>
                                 </h4>
                                 <ul class="list-group mb-3">
-                                    @foreach(var item in Model.Products)
+                                    @for(int i = 0; i < Model.Products.Count(); ++i)
                                     {
+                                        @Html.HiddenFor(x => x.Products[i].ProductSale)
+                                        @Html.HiddenFor(x => x.Products[i].ProductSale.Id)
+                                        @Html.HiddenFor(x => x.Products[i].ProductSale.Units)
+                                        @Html.HiddenFor(x => x.Products[i].ProductSale.Price)
+                                        @Html.HiddenFor(x => x.Products[i].ProductSale.Seller)
+                                        @Html.HiddenFor(x => x.Products[i].ProductSale.SellerId)
+                                        @Html.HiddenFor(x => x.Products[i].Quantity)
                                         <li class="list-group-item d-flex justify-content-between">
                                             <div>
-                                                <h6 class="my-0">@item.ProductSale.Product.Name</h6>
+                                                <h6 class="my-0">@Model.Products[i].ProductSale.Product.Name</h6>
                                             </div>
-                                            <span class="text-muted">Quantity: @item.Quantity</span>
+                                            <span class="text-muted">Quantity: @Model.Products[i].Quantity</span>
                                         </li>
                                     }
                                 </ul>
