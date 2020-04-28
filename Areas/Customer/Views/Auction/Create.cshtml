@@ -33,7 +33,7 @@
                                         <label>Date to begin:</label>
                                     </div>
                                     <div class="col-9">
-                                        <input asp-for="@Model.AuctionHeader.BeginDate" type="text" class="form-control" />
+                                        <input asp-for="@Model.AuctionHeader.BeginDate" id="beginDate" value="" type="text" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -41,7 +41,7 @@
                                         <label>Date to end:</label>
                                     </div>
                                     <div class="col-9">
-                                        <input asp-for="@Model.AuctionHeader.EndDate" type="text" class="form-control" />
+                                        <input asp-for="@Model.AuctionHeader.EndDate" id="endDate" value="" type="text" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -49,7 +49,7 @@
                                         <label>Initial Price:</label>
                                     </div>
                                     <div class="col-9">
-                                        <input asp-for="@Model.AuctionHeader.CurrentPrice" type="number" class="form-control" />
+                                        <input asp-for="@Model.AuctionHeader.CurrentPrice" id="initPrice" class="form-control" />
                                     </div>
                                 </div>
                                 <div class="row my-1">
@@ -57,7 +57,7 @@
                                         <label>Minimum outbid:</label>
                                     </div>
                                     <div class="col-9">
-                                        <input asp-for="@Model.AuctionHeader.PriceStep" type="number" class="form-control" />
+                                        <input asp-for="@Model.AuctionHeader.PriceStep" id="step" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-4 offset-8">
-                            <button value="Create" type="submit" class="btn btn-success form-control">Create</button>
+                            <button value="Create" type="submit" onclick="return validateInput()" class="btn btn-success form-control">Create</button>
                         </div>
                     </div>
                 </div>
@@ -103,4 +103,61 @@
 else
 {
     <div>No items added to the auction...</div>
+}
+
+
+@section Scripts{
+    <script>
+        $(function (){
+            $("#beginDate").datepicker({ minDate : 0, maxDate : "+1W"});
+            $("#endDate").datepicker({ minDate : 0, maxDate : "+1M"});
+        });
+
+
+        function validateInput(){
+            var bDate = document.getElementById("beginDate").value;
+            var eDate = document.getElementById("endDate").value;
+            var price = document.getElementById("initPrice").value;
+            var step = document.getElementById("step").value;
+
+            if(bDate.toString() == ''){
+                alert("Please enter a date to begin the auction.")
+                return false;
+            }
+            if(eDate.toString() == ''){
+                alert("Please enter a date to end the auction.")
+                return false;
+            }
+            if(price.toString() == ''){
+                alert("Please enter the initial price for the auction.")
+                return false;
+            }
+            if(step.toString() == ''){
+                alert("Please enter the minimum outbid for the auction.")
+                return false;
+            }
+
+            if(price < 0.01){
+                alert("The price field must be at least $0.01 .")
+                return false;
+            }
+            if(step < 0.01){
+                alert("The price field must be at least $0.01 .")
+                return false;
+            }
+
+            var beginDt = new Date(bDate);
+            var endDt = new Date(eDate);
+
+            beginDt.setHours(0, 0, 0, 0);
+            endDt.setHours(0, 0, 0, 0);
+            if(beginDt > endDt){
+                alert("The begining of the auction can't happen after its ending. Please, select valid dates.")
+                return false;
+            }
+
+            return true;
+
+        }
+    </script>
 }
