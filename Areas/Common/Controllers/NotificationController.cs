@@ -148,6 +148,35 @@ namespace ISProject.Controllers
                 
                 _db.UpdateRange(notifications);
             }
+
+            if(noti_type =="NotiAuction" || noti_type == null)
+            {
+                var notifications = await _db.NotiAuction
+                                    .Where( n=>
+                                            n.SendToUser== claim.Value
+                                    )
+                                    .Include(n => n.AuctionHeader)
+                                    .ToListAsync();
+                
+                foreach(var n in notifications){
+
+                    var products = await _db.AuctionProduct.Where(a=> a.AuctionId == n.AuctionHeaderID).Include(a=>a.Product).ToListAsync();
+
+                    NotiAuction na = new NotiAuction(){
+                        Id = n.Id,
+                        Message = n.Message,
+                        NotiDate = n.NotiDate,
+                        Seen = n.Seen,
+                        SendToUser = n.SendToUser,
+                        AuctionHeader = n.AuctionHeader,
+                        AuctionHeaderID = n.AuctionHeaderID,
+                        AuctionProduct = products,
+                    };
+                    nvm.NotiAuction.Add(na);
+                    n.Seen = true;
+                }
+                _db.UpdateRange(notifications);
+            }
             
             await _db.SaveChangesAsync();
             nvm.Type = noti_type;
@@ -229,6 +258,15 @@ namespace ISProject.Controllers
 
             if(type =="NotiGeneral" || type ==null){
                 var notifications = await _db.Notification.Where(n=> n is Notification && n.SendToUser== claim.Value ).ToListAsync();
+                _db.RemoveRange(notifications);
+            }
+
+            if(type == "NotiAuction" || type==null){
+                var notifications = await _db.NotiAuction
+                                    .Where( n=>
+                                            n.SendToUser== claim.Value
+                                    )
+                                    .ToListAsync();
                 _db.RemoveRange(notifications);
             } 
 

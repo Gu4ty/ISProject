@@ -1,0 +1,96 @@
+﻿@model ISProject.Models.ViewModels.QuickBidViewModel
+
+
+
+
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Making a Quick Bid</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div>
+                <form asp-action="QuickBid" method="post" >
+                    
+                    @Html.HiddenFor(x => x.AuctionId)
+                    @Html.HiddenFor(x => x.PriceStep)
+                    @Html.HiddenFor(x => x.CurrentPrice)
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="CurrentPrice" class="col-form-label"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="CurrentPrice" class="form-control" readonly style="background: #fff" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="PriceStep" class="col-form-label"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="PriceStep" class="form-control" readonly style="background: #fff" />
+                        </div>
+                    </div>
+                            
+                            
+                
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label class="col-form-label">Your Bid(USD)</label>
+                        </div>
+                        <div class="col-5">
+                            <input id="Bid" value="@(Model.CurrentPrice+Model.PriceStep) " class="form-control" readonly style="background: #fff" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <label asp-for="Count" class="col-form-label"></label>
+                        </div>
+                        <div class="col-5">
+                            <input asp-for="Count" class="form-control" min="1" max="@int.MaxValue" placeholder="1" onchange="NewBid()" id="iCount" />
+                        </div>
+                        <span asp-validation-for="Count" class="text-danger" ></span>
+                    </div>
+
+
+                            
+                            
+                            
+                     <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-info form-control" value="Make a Bid" />
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    
+                       
+                    </div>                         
+                        
+                </form>
+            </div>
+        </div>
+
+               
+
+    </div>
+</div>
+
+
+<script>
+
+        function NewBid(){
+            var count = document.getElementById("iCount").value;
+            var l = document.getElementById("Bid");
+            l.value = @Model.CurrentPrice + count * @Model.PriceStep; 
+            
+        };
+
+</script>
