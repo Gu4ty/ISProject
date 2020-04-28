@@ -104,7 +104,13 @@ namespace ISProject.Areas.Customer.Controllers
         [Authorize(Roles=SD.SellerUser)]
         public async Task<IActionResult> Create()
         {
-            var list = JsonConvert.DeserializeObject<List<ProductsAuctionViewModel>>(TempData["selectedProducts"].ToString());
+            var list = new List<ProductsAuctionViewModel>();
+            try{
+                list = JsonConvert.DeserializeObject<List<ProductsAuctionViewModel>>(TempData["selectedProducts"].ToString());
+            }
+            catch{
+                return RedirectToAction("Index", "Seller");
+            }
 
             double total = 0;
             foreach(var item in list){
