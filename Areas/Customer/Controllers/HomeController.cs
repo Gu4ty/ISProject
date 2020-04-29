@@ -31,14 +31,19 @@ namespace ISProject.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            var products = new List<ProductSale>();
 
             if(claim != null)
             {
                 var cnt = _db.ShoppingCart.Where(u => u.UserId == claim.Value).ToList().Count;
                 HttpContext.Session.SetInt32(SD.ssShoppingCartCount, cnt);
+                products = await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).Where(s => s.Units > 0 && s.SellerId != claim.Value).ToListAsync();
+            }
+            else{
+                products = await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).Where(s => s.Units > 0).ToListAsync();
             }
 
-            return View(await _db.ProductSale.Include(s => s.Product).Include(s => s.Seller).Where(s => s.Units > 0).ToListAsync());
+            return View(products);
         }
 
 
