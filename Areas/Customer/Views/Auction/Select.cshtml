@@ -1,0 +1,57 @@
+@model IList<ISProject.Models.ViewModels.ProductsAuctionViewModel>
+
+@{
+    ViewData["Title"] = "Select";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class ="row">
+    <div class = "col-6">
+        <h2 class= "text-info">Products available for Auction</h2>
+    </div>
+    <div class = "col-6 text-right">
+        <a asp-area="Customer" asp-controller="Seller" asp-action="Index" class="btn btn-info"> Back </a>
+    </div>
+</div>
+
+
+@if(Model.Count() > 0){
+    <form method="post" asp-action="Select">
+        <h6>Select the amount for each product you want to auction. If the quantity of a product is 0 it will not be added to the auction</h6><br />
+        @for(int i = 0; i < Model.Count(); ++i)
+        {
+            @Html.HiddenFor(x => x[i].ProductSale)
+            @Html.HiddenFor(x => x[i].ProductSale.Id)
+            @Html.HiddenFor(x => x[i].ProductSale.Units)
+            @Html.HiddenFor(x => x[i].ProductSale.Price)
+            @Html.HiddenFor(x => x[i].ProductSale.Seller)
+            @Html.HiddenFor(x => x[i].ProductSale.SellerId)
+            <div class="container col-12">
+                <div class="form-group row">
+                    <div class="col-7 text-left">
+                        <h4 class="text-primary"><strong>@Model[i].ProductSale.Product.Name</strong></h4>
+                        <h4><small>@Model[i].ProductSale.Product.Description</small></h4>
+                    </div>
+                    <div class="col-5 text-right row">
+                        <div class="col-6 text-md-right" style="padding-top:5px;">
+                            <h6 style="color: maroon"><strong>@Html.DisplayFor(modelItem => Model[i].ProductSale.Price)</strong></h6>
+                            <small class="text-muted">Quantity available: @Model[i].ProductSale.Units</small>
+                        </div>
+                        <div class="col-6 text-right">
+                            <label asp-for="@Model[i].Quantity"><small class="text-muted">Quantity for auction:</small></label>
+                            <input type="number" asp-for="@Model[i].Quantity" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Add to Auction</button>
+        </div>
+    </form>
+    
+}
+else{
+    <p>You have no products available...</p>
+}

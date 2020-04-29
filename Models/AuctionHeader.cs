@@ -26,10 +26,12 @@ namespace ISProject.Models
         public DateTime EndDate { get; set; }
 
         [Required]
+        [Range(0.01, int.MaxValue, ErrorMessage = "Price should be greater than $0")]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public double CurrentPrice { get; set; }
 
         [Required]
+        [Range(0.01, int.MaxValue, ErrorMessage = "Price should be greater than $0")]
         [DisplayFormat(DataFormatString = "{0:C}")]
         public double PriceStep { get; set; }
 
