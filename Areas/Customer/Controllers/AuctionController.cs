@@ -123,6 +123,7 @@ namespace ISProject.Areas.Customer.Controllers
             var auction = new AuctionViewModel(){
                 Products = (List<ProductsAuctionViewModel>)list,
                 AuctionHeader = new AuctionHeader(){
+                    Seen = false,
                     BeginDate = DateTime.Now,
                     EndDate = DateTime.Now,
                     CurrentPrice = Math.Round((double)total, 2),
@@ -145,6 +146,7 @@ namespace ISProject.Areas.Customer.Controllers
 
             if(ModelState.IsValid){
                 AuctionHeader auctionHeader = new AuctionHeader(){
+                    Seen = false,
                     SellerId = claim.Value,
                     User = user,
                     BeginDate = auction.AuctionHeader.BeginDate,

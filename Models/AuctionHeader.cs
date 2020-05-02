@@ -25,6 +25,8 @@ namespace ISProject.Models
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
+        public bool Seen { get; set; }
+
         [Required]
         [Range(0.01, int.MaxValue, ErrorMessage = "Price should be greater than $0")]
         [DisplayFormat(DataFormatString = "{0:C}")]
