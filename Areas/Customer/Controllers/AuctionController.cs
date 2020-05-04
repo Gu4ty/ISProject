@@ -159,6 +159,8 @@ namespace ISProject.Areas.Customer.Controllers
 
                 foreach(var item in auction.Products){
                     var productSale = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSale.Id).FirstOrDefaultAsync();
+                    productSale.Units -= item.Quantity;
+
                     var product = await _db.Product.Where(p => p.Id == productSale.ProductId).FirstOrDefaultAsync();
                     var auctionProduct = new AuctionProduct(){
                         ProductId = product.Id,
