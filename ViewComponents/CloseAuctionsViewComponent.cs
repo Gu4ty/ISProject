@@ -48,17 +48,21 @@ namespace ISProject.ViewComponents
 
             if(winner == null)
             {
+                
                 var aproducts = await _db.AuctionProduct.Where(p => p.AuctionId == auction.Id).ToListAsync();
 
                 foreach(AuctionProduct ap in aproducts)
                 {
-                    ProductSale psale = await _db.ProductSale.Where(ps => ps.ProductId == ap.ProductId && ps.SellerId == auction.SellerId).FirstAsync();
-
-                    psale.Units += ap.Quantity;
-                    _db.ProductSale.Update(psale);
-                    // _db.AuctionProduct.Remove(ap);
+                
+                    ProductSale psale = await _db.ProductSale.Where(ps => ps.ProductId == ap.ProductId && ps.SellerId == auction.SellerId).FirstOrDefaultAsync();
+                    if(psale != null){
+                        psale.Units += ap.Quantity;
+                        _db.ProductSale.Update(psale);
+                    }
+                    
                 }
 
+                
                 await NotiApi.SendNotiAuction(_db,"Your auction was succefully ignored", auction.SellerId, auction.Id); 
                 auction.Seen = true;
                 _db.AuctionHeader.Update(auction);
@@ -68,6 +72,15 @@ namespace ISProject.ViewComponents
                 //winner
                 await NotiApi.SendNotiAuction(_db,"Congrats! You win the auction " + auction.Id.ToString() + ".", winner.UserId, auction.Id); 
                 await NotiApi.SendNotiAuction(_db,"Your auction was succefully closed", auction.SellerId, auction.Id);
+                
+                //Sending Notificaiton to all the losers
+                var losers = await _db.AuctionUser.Where(u => u.AuctionId == auction.Id && u.LastPriceOffered < auction.CurrentPrice).ToListAsync();
+                foreach(var l in losers)
+                {
+                    await NotiApi.SendNotiAuction(_db,"You lose the auction " + auction.Id.ToString() + ".",l.UserId,auction.Id);
+                }
+
+
                 auction.Seen = true;
                 _db.AuctionHeader.Update(auction);
             }
