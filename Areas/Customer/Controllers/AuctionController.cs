@@ -184,18 +184,48 @@ namespace ISProject.Areas.Customer.Controllers
 
         }
         
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string callBack, string status)
         {
             var currentDate = DateTime.Now;
-            List<AuctionItemViewModel> auItems = new List<AuctionItemViewModel>();
-            var auctions = await _db.AuctionHeader.Where(a => a.EndDate >= currentDate && a.BeginDate <= currentDate).Include(a=> a.User).ToListAsync();
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var auItems = new AuctionStatusViewModel();
+            auItems.CallBack = callBack;
+            auItems.Status = status;
+            var auctions = await _db.AuctionHeader.Include(a => a.User).ToListAsync();
+
+            if(callBack == SD.BidedAuctions){
+                var newAuctions = new List<AuctionHeader>();
+                var user_auctions = await _db.AuctionUser.Where(a => a.UserId == claim.Value).ToListAsync();
+                foreach(var a in auctions){
+                    if(UserParticipate(a.Id,user_auctions))
+                        newAuctions.Add(a);
+                }
+                auctions = newAuctions;
+            }
+            if(callBack == SD.CreatedAuctions){
+                auctions = await _db.AuctionHeader.Where(a => a.SellerId == claim.Value).Include(a => a.User).ToListAsync();
+            }
           
+            var activeAuctions = new List<AuctionItemViewModel>();
+            var pastAuctions = new List<AuctionItemViewModel>();
+            var upcomingAuctions = new List<AuctionItemViewModel>();
             foreach(var a in auctions){
                 var item = new AuctionItemViewModel();
                 item.AuctionHeader = a;
                 item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id ).Include(a=> a.Product).ToListAsync();
-                auItems.Add(item);
+                if(a.BeginDate > currentDate)
+                    upcomingAuctions.Add(item);
+                if(a.BeginDate <= currentDate && a.EndDate >= currentDate)
+                    activeAuctions.Add(item);
+                if(a.EndDate < currentDate)
+                    pastAuctions.Add(item);
             }
+
+            auItems.ActiveAuctions = activeAuctions;
+            auItems.PastAuctions = pastAuctions;
+            auItems.UpcomingAuctions = upcomingAuctions;
             
             return View(auItems);
         
@@ -237,7 +267,7 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string status, string callBack)
         {
             var auction = await _db.AuctionHeader.Where(a => a.Id == id).Include(a => a.User).FirstOrDefaultAsync();
             if(auction == null)
