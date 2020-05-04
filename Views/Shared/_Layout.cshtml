@@ -43,8 +43,19 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        <li>
-                                <a class="nav-link" asp-area="Customer" asp-controller="Auction" asp-action="Index">Auctions</a>
+                        <li class="nav-item dropdown text-white-50">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropDownAuctionLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Auctions
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropDownAuctionLink">
+                                <a class="dropdown-item">Upcoming auctions</a>
+                                <a class="dropdown-item">Active auctions</a>
+                                <a class="dropdown-item">Past auctions</a>
+                                <a class="dropdown-item">Bided auctions</a>
+                                @if(User.IsInRole(SD.SellerUser)){
+                                    <a class="dropdown-item">My auctions</a>
+                                }
+                            </div>
                         </li>
 
                         @if(User.IsInRole(SD.SellerUser)){
