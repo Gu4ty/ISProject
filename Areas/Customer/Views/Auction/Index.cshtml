@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ISProject.Models.ViewModels.AuctionItemViewModel>
 
-<br /> 
+@* <br /> 
 
  @if(User.Identity.IsAuthenticated) 
 {
@@ -16,12 +16,10 @@
             </ul>
         </nav>
    
-}
+} *@
 
 @if(Model.Count() > 0)
 {
-    
-
     @foreach(var item in Model)
     {
         <div class="border border-info rounded col-12" style="margin-bottom:10px; margin-top:10px; padding:10px">
@@ -32,30 +30,31 @@
                             <label class="text-primary" style="font-size:21px; color:maroon">@(item.AuctionHeader.User.Name) is auctioning one or more products</label>
                         </div>
                         <div class="col-4 text-right" style="color:maroon">
-                            <h4>Current Price: @Html.DisplayFor(modelItem => item.AuctionHeader.CurrentPrice)</h4>
+                            <h4>Price: @Html.DisplayFor(modelItem => item.AuctionHeader.CurrentPrice)</h4>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="row col-12 text-justify">
-                
-                <ul class="list-group">
+                <h5>Total of products: @item.AuctionProduct.Count()</h5>
+                @* <ul class="list-group">
                     @foreach (var p in item.AuctionProduct)
                     {
                         <li class="list-group-item">
                             @p.Product.Name
                         </li>
                     }
-                <ul>
+                <ul> *@
             </div>
             <br>
             <div class="row col-12 text-justify">
-                
                 <div class="col-4 text-left" style="color:maroon">
-                    <h5>End Date: @item.AuctionHeader.EndDate</h5>
+                    <h6>Begin Date: @item.AuctionHeader.BeginDate</h6>
                 </div>
-
+                <div class="col-4 text-left" style="color:maroon">
+                    <h6>End Date: @item.AuctionHeader.EndDate</h6>
+                </div>
 
                 <div class="col-md-3 col-sm-12 offset-md-9 text-center">
                     <a asp-action="Details" class="btn btn-success form-control" asp-route-id="@item.AuctionHeader.Id">Details</a>

@@ -49,7 +49,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropDownAuctionLink">
                                 <a class="dropdown-item">Upcoming auctions</a>
-                                <a class="dropdown-item">Active auctions</a>
+                                <a class="dropdown-item" asp-area="Customer" asp-controller="Auction">Active auctions</a>
                                 <a class="dropdown-item">Past auctions</a>
                                 <a class="dropdown-item">Bided auctions</a>
                                 @if(User.IsInRole(SD.SellerUser)){
