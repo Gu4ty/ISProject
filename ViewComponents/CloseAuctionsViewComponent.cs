@@ -71,7 +71,7 @@ namespace ISProject.ViewComponents
             {
                 //winner
                 await NotiApi.SendNotiAuction(_db,"Congrats! You win the auction " + auction.Id.ToString() + ".", winner.UserId, auction.Id); 
-                await NotiApi.SendNotiAuction(_db,"Your auction was succefully closed", auction.SellerId, auction.Id);
+                await NotiApi.SendNotiAuction(_db,"Your auction was succefully closed, end value was of $" + auction.CurrentPrice.ToString("F2"), auction.SellerId, auction.Id);
                 
                 //Sending Notificaiton to all the losers
                 var losers = await _db.AuctionUser.Where(u => u.AuctionId == auction.Id && u.LastPriceOffered < auction.CurrentPrice).ToListAsync();
