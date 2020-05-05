@@ -11,14 +11,11 @@ namespace ISProject.Models.ViewModels
         
         public AuctionStatusViewModel()
         {
-            UpcomingAuctions = new List<AuctionItemViewModel>();
-            ActiveAuctions = new List<AuctionItemViewModel>();
-            PastAuctions = new List<AuctionItemViewModel>();
+            Auctions = new List<AuctionItemViewModel>();
         }
 
-        public List<AuctionItemViewModel> UpcomingAuctions { get; set; }
-        public List<AuctionItemViewModel> ActiveAuctions { get; set; }
-        public List<AuctionItemViewModel> PastAuctions { get; set; }
+        public List<AuctionItemViewModel> Auctions { get; set; }
+
 
         public string CallBack { get; set; } 
         public string Status { get; set; } 

@@ -208,24 +208,21 @@ namespace ISProject.Areas.Customer.Controllers
                 auctions = await _db.AuctionHeader.Where(a => a.SellerId == claim.Value).Include(a => a.User).ToListAsync();
             }
           
-            var activeAuctions = new List<AuctionItemViewModel>();
-            var pastAuctions = new List<AuctionItemViewModel>();
-            var upcomingAuctions = new List<AuctionItemViewModel>();
+            var filterAuctions = new List<AuctionItemViewModel>();
+
             foreach(var a in auctions){
                 var item = new AuctionItemViewModel();
                 item.AuctionHeader = a;
                 item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id ).Include(a=> a.Product).ToListAsync();
-                if(a.BeginDate > currentDate)
-                    upcomingAuctions.Add(item);
-                if(a.BeginDate <= currentDate && a.EndDate >= currentDate)
-                    activeAuctions.Add(item);
-                if(a.EndDate < currentDate)
-                    pastAuctions.Add(item);
+                if(a.BeginDate > currentDate && status == SD.UpcomingStatus)
+                    filterAuctions.Add(item);
+                if(a.BeginDate <= currentDate && a.EndDate >= currentDate && status == SD.ActiveStatus)
+                    filterAuctions.Add(item);
+                if(a.EndDate < currentDate && status == SD.PastStatus)
+                    filterAuctions.Add(item);
             }
 
-            auItems.ActiveAuctions = activeAuctions;
-            auItems.PastAuctions = pastAuctions;
-            auItems.UpcomingAuctions = upcomingAuctions;
+            auItems.Auctions = filterAuctions;
             
             return View(auItems);
         
