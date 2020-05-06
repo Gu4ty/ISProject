@@ -52,7 +52,10 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropDownAuctionLink">
                                 <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.AllAuctions" asp-route-status="@SD.ActiveStatus">All auctions</a>
-                                <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.BidedAuctions" asp-route-status="@SD.ActiveStatus">Bided auctions</a>
+                                @if(User.Identity.IsAuthenticated)
+                                {
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.BidedAuctions" asp-route-status="@SD.ActiveStatus">Bided auctions</a>
+                                }
                                 @if(User.IsInRole(SD.SellerUser)){
                                     <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.CreatedAuctions" asp-route-status="@SD.ActiveStatus">My auctions</a>
                                 }
