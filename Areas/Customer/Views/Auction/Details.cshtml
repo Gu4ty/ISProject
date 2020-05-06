@@ -1,4 +1,5 @@
-﻿@model  ISProject.Models.ViewModels.AuctionItemViewModel
+﻿@using ISProject.Utils
+@model  ISProject.Models.ViewModels.AuctionItemViewModel
 @{
     ViewData["Title"] = "Auction Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -122,9 +123,19 @@
             
                 @if(@Model.AuctionUser==null)
                 {   
-                    <div class="col-7 text-left">
-                        <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
-                    </div>
+                    @if(@Model.Status == SD.UpcomingStatus)
+                    {
+                        <div class="col-7 text-left">
+                            <span class="text-info"><i class="fa fa-calendar" aria-hidden="true"></i> This auction will start on @Model.AuctionHeader.BeginDate </span> 
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-7 text-left">
+                            <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
+                        </div>
+                        
+                    }
                 }
                 else{
                     
