@@ -241,41 +241,6 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> FilterByUser()
-        {
-        
-            var auctions = await _db.AuctionHeader.Include(a=> a.User).ToListAsync();
-            List<AuctionItemViewModel> auItems = new List<AuctionItemViewModel>();
-
-
-            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var id = claim.Value;
-
-            var user_auctions = await _db.AuctionUser.Where(a=> a.UserId == id ).ToListAsync();
-
-            var view_auction = new List<AuctionHeader>();
-
-            foreach(var a in auctions)
-            {
-                if(UserParticipate(a.Id,user_auctions))
-                    view_auction.Add(a);
-            }
-
-            foreach(var a in view_auction){
-                    var item = new AuctionItemViewModel();
-                    item.AuctionHeader = a;
-                    item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id).Include(a=> a.Product).ToListAsync();
-                    auItems.Add(item);
-                    
-            }
-
-            return View("../Auction/Index", auItems);
-           
-            
-        }
-
-        [Authorize]
         public async Task<IActionResult> Details(int id, string status, string callBack)
         {
             var auction = await _db.AuctionHeader.Where(a => a.Id == id).Include(a => a.User).FirstOrDefaultAsync();
