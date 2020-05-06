@@ -63,11 +63,12 @@
             <li class="list-group-item d-flex justify-content-between">
                 <div>
                     <h6 class="my-0">Current Price: </h6>
-                    @if(Model.IsSelf || (Model.AuctionUser!=null && Model.AuctionUser.LastPriceOffered == Model.AuctionHeader.CurrentPrice)){
-                        <small style="color:green">@Html.DisplayFor(modelItem => Model.AuctionHeader.CurrentPrice)</small>
+                    @if((Model.AuctionUser!=null && Model.AuctionUser.LastPriceOffered == Model.AuctionHeader.CurrentPrice)){   
+                        <small style="color:green">@Html.DisplayFor(modelItem => Model.AuctionHeader.CurrentPrice)</small>   
+                    
                     }
                     else{
-                        <small style="color:maroon">@Html.DisplayFor(modelItem => Model.AuctionHeader.CurrentPrice)</small>
+                       <small style="color:maroon">@Html.DisplayFor(modelItem => Model.AuctionHeader.CurrentPrice)</small>  
                     }
                   
                 </div>
@@ -78,10 +79,24 @@
                     <div>
                         
                         @if(Model.AuctionUser.LastPriceOffered == Model.AuctionHeader.CurrentPrice){
+                            @if(Model.Status != SD.PastStatus)
+                            {
                             <h6 style="color:green" class="my-0">You are the current buyer</h6>
+                            }
+                            else
+                            {
+                            <small style="color:green"><i class="fas fa-check-circle"></i> You won this auction</small>
+                            }
                         }
                         else{
-                            <h6 style="color:maroon" class="my-0">You are not the current buyer.... Your bid is of $@(Model.AuctionUser.LastPriceOffered.ToString("F2"))</h6>
+                            @if(Model.Status != SD.PastStatus)
+                            {
+                                <h6 style="color:maroon" class="my-0">You are not the current buyer.... Your bid is of $@(Model.AuctionUser.LastPriceOffered.ToString("F2"))</h6>
+                            }
+                            else
+                            {
+                             <small style="color:maroon"><i class="fa fa-ban" aria-hidden="true"></i>  You lost this auction</small>
+                            }
                         }
                     
                     </div>
@@ -130,6 +145,8 @@
         <div class="col-8 offset-2">
             <div class="row">
                 
+                @if(Model.Status!= SD.PastStatus)
+                {
                     @if(@Model.AuctionUser==null)
                     {   
                         @if(@Model.Status == SD.UpcomingStatus)
@@ -161,7 +178,13 @@
                         </div>
                         
                     }
-                
+                }
+                else
+                {
+                    <div class="col-7 text-left">
+                        <span class="text-danger"><i class="fa fa-calendar" aria-hidden="true"></i> This auction has ended</span> 
+                    </div>
+                }
             </div>
         </div>
     </div>
