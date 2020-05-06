@@ -188,6 +188,16 @@ namespace ISProject.Areas.Customer.Controllers
         
         public async Task<IActionResult> Index(string callBack, string status)
         {
+            if(!User.Identity.IsAuthenticated && callBack != SD.AllAuctions)
+            {
+                return NotFound();
+            }
+
+            if(User.IsInRole(SD.CustomerUser) && callBack==SD.CreatedAuctions )
+            {
+                return NotFound();
+            }
+
             var currentDate = DateTime.Now;
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -288,7 +298,9 @@ namespace ISProject.Areas.Customer.Controllers
                 ViewBag.Bid=false;
 
             vm.AuctionUser = await _db.AuctionUser.FirstOrDefaultAsync(a => a.UserId == claim.Value && a.AuctionId==id);
-            
+            vm.Status = status;
+            vm.CallBack = callBack;
+
             return View(vm);
 
 
@@ -371,7 +383,7 @@ namespace ISProject.Areas.Customer.Controllers
             
             if(auction.CurrentPrice < a_user.LastPriceOffered)
             {
-                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==auction.CurrentPrice);
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=>a.AuctionId == auction.Id && a.LastPriceOffered==auction.CurrentPrice);
                 
                 if(outbided_user.UserId != claim.Value)
                     await NotiApi.SendNotiAuction(_db,"You got outbided, check the auction for more details",outbided_user.UserId,auction.Id); 
@@ -425,7 +437,7 @@ namespace ISProject.Areas.Customer.Controllers
             
             if(auction.CurrentPrice < a_user.LastPriceOffered)
             {
-                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==auction.CurrentPrice);
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=>a.AuctionId == auction.Id && a.LastPriceOffered==auction.CurrentPrice);
                 
                 if(outbided_user.UserId != claim.Value)
                     await NotiApi.SendNotiAuction(_db,"You got outbided, check the auction for more details",outbided_user.UserId,auction.Id); 
