@@ -300,6 +300,7 @@ namespace ISProject.Areas.Customer.Controllers
             vm.AuctionUser = await _db.AuctionUser.FirstOrDefaultAsync(a => a.UserId == claim.Value && a.AuctionId==id);
             vm.Status = status;
             vm.CallBack = callBack;
+            vm.IsSelf = claim.Value == auction.User.Id;
 
             return View(vm);
 

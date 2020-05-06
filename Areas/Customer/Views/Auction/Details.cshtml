@@ -48,15 +48,22 @@
             <li class="list-group-item d-flex justify-content-between">
                 <div>
                     <h6 class="my-0">User who is auctioning: </h6>
-                    <small>@Model.AuctionHeader.User.Name</small><br>
-                  
+                    @if(!Model.IsSelf)
+                    {    
+                        <small>@Model.AuctionHeader.User.Name</small>
+                    }
+                    else
+                    {
+                        <small class="text-success">Yourself</small><br>
+                    }
+
                 </div>
             </li>
 
             <li class="list-group-item d-flex justify-content-between">
                 <div>
                     <h6 class="my-0">Current Price: </h6>
-                    @if(Model.AuctionUser!=null && Model.AuctionUser.LastPriceOffered == Model.AuctionHeader.CurrentPrice){
+                    @if(Model.IsSelf || (Model.AuctionUser!=null && Model.AuctionUser.LastPriceOffered == Model.AuctionHeader.CurrentPrice)){
                         <small style="color:green">@Html.DisplayFor(modelItem => Model.AuctionHeader.CurrentPrice)</small>
                     }
                     else{
@@ -117,46 +124,48 @@
 </div>
 
 
-<div class="col-12">
-    <div class="col-8 offset-2">
-        <div class="row">
-            
-                @if(@Model.AuctionUser==null)
-                {   
-                    @if(@Model.Status == SD.UpcomingStatus)
-                    {
-                        <div class="col-7 text-left">
-                            <span class="text-info"><i class="fa fa-calendar" aria-hidden="true"></i> This auction will start on @Model.AuctionHeader.BeginDate </span> 
-                        </div>
+@if(!Model.IsSelf)
+{
+    <div class="col-12">
+        <div class="col-8 offset-2">
+            <div class="row">
+                
+                    @if(@Model.AuctionUser==null)
+                    {   
+                        @if(@Model.Status == SD.UpcomingStatus)
+                        {
+                            <div class="col-7 text-left">
+                                <span class="text-info"><i class="fa fa-calendar" aria-hidden="true"></i> This auction will start on @Model.AuctionHeader.BeginDate </span> 
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-7 text-left">
+                                <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
+                            </div>
+                            
+                        }
                     }
-                    else
-                    {
-                        <div class="col-7 text-left">
-                            <button value="Join Auction" onclick="openForm()" id="placeOrder" class="btn btn-primary">Join Auction</button>
+                    else{
+                        
+                        <div class="col-5">
+                            <button type="button" class="btn btn-primary" id = "btnQuickBid"> Quick bid </button>
+                            <!-- The Quick Modal -->
+                            <div class="modal fade" id="quickModal" role="dialog" data-url='@Url.Action("QuickBid",new { id = @Model.AuctionHeader.Id })'> </div>
+                        </div>
+
+                        <div class="col-7 text-right">
+                            <button type="button" class="btn btn-primary" id = "btncustomBid"> Custom Bid </button>
+                            <!-- The Custom Modal -->
+                            <div class="modal fade" id="customModal" role="dialog" data-url='@Url.Action("CustomBid",new { id = @Model.AuctionHeader.Id })'> </div>
                         </div>
                         
                     }
-                }
-                else{
-                    
-                    <div class="col-5">
-                        <button type="button" class="btn btn-primary" id = "btnQuickBid"> Quick bid </button>
-                        <!-- The Quick Modal -->
-                        <div class="modal fade" id="quickModal" role="dialog" data-url='@Url.Action("QuickBid",new { id = @Model.AuctionHeader.Id })'> </div>
-                    </div>
-
-                    <div class="col-7 text-right">
-                        <button type="button" class="btn btn-primary" id = "btncustomBid"> Custom Bid </button>
-                        <!-- The Custom Modal -->
-                        <div class="modal fade" id="customModal" role="dialog" data-url='@Url.Action("CustomBid",new { id = @Model.AuctionHeader.Id })'> </div>
-                    </div>
-                    
-                }
-            
+                
+            </div>
         </div>
     </div>
-</div>
-
+}
 
 
 
