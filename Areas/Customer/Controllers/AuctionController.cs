@@ -340,7 +340,7 @@ namespace ISProject.Areas.Customer.Controllers
             _db.AuctionUser.Add(a_user);
             _db.SaveChanges();
 
-            return RedirectToAction("Details",new{id = id});
+            return RedirectToAction("Details",new{id = id, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
             
         }
 
@@ -397,7 +397,7 @@ namespace ISProject.Areas.Customer.Controllers
 
             _db.SaveChanges();
 
-            return RedirectToAction("Details",new{id = qb.AuctionId});
+            return RedirectToAction("Details",new{id = qb.AuctionId, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
                 
         }
        
@@ -451,7 +451,7 @@ namespace ISProject.Areas.Customer.Controllers
 
             _db.SaveChanges();
 
-            return RedirectToAction("Details",new{id = cb.AuctionId});
+            return RedirectToAction("Details",new {id = cb.AuctionId, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
                 
         }
         
