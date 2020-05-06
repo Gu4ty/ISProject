@@ -46,8 +46,20 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        <li>
-                                <a class="nav-link" asp-area="Customer" asp-controller="Auction" asp-action="Index">Auctions</a>
+                        <li class="nav-item dropdown text-white-50">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropDownAuctionLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Auctions
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropDownAuctionLink">
+                                <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.AllAuctions" asp-route-status="@SD.ActiveStatus">All auctions</a>
+                                @if(User.Identity.IsAuthenticated)
+                                {
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.BidedAuctions" asp-route-status="@SD.ActiveStatus">Bided auctions</a>
+                                }
+                                @if(User.IsInRole(SD.SellerUser)){
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.CreatedAuctions" asp-route-status="@SD.ActiveStatus">My auctions</a>
+                                }
+                            </div>
                         </li>
 
                         @if(User.IsInRole(SD.SellerUser)){

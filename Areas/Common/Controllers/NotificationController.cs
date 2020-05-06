@@ -172,6 +172,13 @@ namespace ISProject.Controllers
                         AuctionHeaderID = n.AuctionHeaderID,
                         AuctionProduct = products,
                     };
+
+                    var auction = await _db.AuctionHeader.FirstOrDefaultAsync(a => a.Id == n.AuctionHeaderID);
+                    string status = SD.ActiveStatus;
+                    if(DateTime.Compare(DateTime.Now,auction.EndDate) >=0)
+                        status = SD.PastStatus;
+                    
+                    na.Status = status;
                     nvm.NotiAuction.Add(na);
                     n.Seen = true;
                 }

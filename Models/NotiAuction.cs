@@ -11,7 +11,11 @@ namespace ISProject.Models
         [ForeignKey("AuctionHeaderID")]
         public AuctionHeader AuctionHeader { get; set; } 
 
-        public List<AuctionProduct> AuctionProduct   { get; set; }  
+        public List<AuctionProduct> AuctionProduct   { get; set; }
+
+        public string Status { get; set; }
+
+       
         
     }
 }

@@ -277,7 +277,7 @@
                 </div>
 
                 <div class="col-md-3 col-sm-12 offset-md-9 text-center">
-                    <a asp-area="Customer" asp-controller="Auction" asp-action="Details" asp-route-id="@item.AuctionHeaderID" class="btn btn-success form-control">Check Auction</a>
+                    <a asp-area="Customer" asp-controller="Auction" asp-action="Details" asp-route-status="@item.Status" asp-route-callBack="@SD.AllAuctions" asp-route-id="@item.AuctionHeaderID" class="btn btn-success form-control">Check Auction</a>
                 </div>
                 
                 

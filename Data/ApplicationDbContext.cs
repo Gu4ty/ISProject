@@ -105,6 +105,19 @@ namespace ISProject.Data
                             SellerId = (i*10 + 2).ToString()
                         };   
                     }
+                    else if(i==1) //Seeding an upcoming auction
+                    {
+                        ah = new AuctionHeader()
+                        {
+                            BeginDate = DateTime.Now.AddHours(5),
+                            CurrentPrice = i,
+                            EndDate = DateTime.Now.AddHours(i+10),
+                            Id = i*10 + 5,
+                            PriceStep = i,
+                            SellerId = (i*10 + 2).ToString()
+                        };
+                        
+                    }
                     else
                     {
                         ah = new AuctionHeader()
@@ -116,6 +129,7 @@ namespace ISProject.Data
                             PriceStep = i,
                             SellerId = (i*10 + 2).ToString()
                         };
+
                     }
 
                     var ap = new AuctionProduct()
@@ -135,7 +149,7 @@ namespace ISProject.Data
                         Quantity = (i+1)/2,
                     };
 
-                    if(i!= 5){ // The auction 5 does not contain an auctionUser
+                    if(i!= 5 && i!=1){ // The auction 5 and 1 does not contain an auctionUser
                         
                         if(i==3) // Auction 3 has two auctionUser
                         {

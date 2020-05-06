@@ -186,19 +186,55 @@ namespace ISProject.Areas.Customer.Controllers
 
         }
         
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string callBack, string status)
         {
+            if(!User.Identity.IsAuthenticated && callBack != SD.AllAuctions)
+            {
+                return NotFound();
+            }
 
-            var auctions = await _db.AuctionHeader.Include(a=> a.User).ToListAsync();
-            List<AuctionItemViewModel> auItems = new List<AuctionItemViewModel>();
+            if(User.IsInRole(SD.CustomerUser) && callBack==SD.CreatedAuctions )
+            {
+                return NotFound();
+            }
+
+            var currentDate = DateTime.Now;
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var auItems = new AuctionStatusViewModel();
+            auItems.CallBack = callBack;
+            auItems.Status = status;
+            var auctions = await _db.AuctionHeader.Include(a => a.User).ToListAsync();
+
+            if(callBack == SD.BidedAuctions){
+                var newAuctions = new List<AuctionHeader>();
+                var user_auctions = await _db.AuctionUser.Where(a => a.UserId == claim.Value).ToListAsync();
+                foreach(var a in auctions){
+                    if(UserParticipate(a.Id,user_auctions))
+                        newAuctions.Add(a);
+                }
+                auctions = newAuctions;
+            }
+            if(callBack == SD.CreatedAuctions){
+                auctions = await _db.AuctionHeader.Where(a => a.SellerId == claim.Value).Include(a => a.User).ToListAsync();
+            }
           
+            var filterAuctions = new List<AuctionItemViewModel>();
+
             foreach(var a in auctions){
                 var item = new AuctionItemViewModel();
                 item.AuctionHeader = a;
                 item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id ).Include(a=> a.Product).ToListAsync();
-                auItems.Add(item);
-                
+                if(a.BeginDate > currentDate && status == SD.UpcomingStatus)
+                    filterAuctions.Add(item);
+                if(a.BeginDate <= currentDate && a.EndDate >= currentDate && status == SD.ActiveStatus)
+                    filterAuctions.Add(item);
+                if(a.EndDate < currentDate && status == SD.PastStatus)
+                    filterAuctions.Add(item);
             }
+
+            auItems.Auctions = filterAuctions;
             
             return View(auItems);
         
@@ -240,10 +276,10 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string status, string callBack)
         {
-            var auction = await _db.AuctionHeader.Where(a => a.Id == id).Include(a=> a.User).FirstOrDefaultAsync();
-            if(auction==null)
+            var auction = await _db.AuctionHeader.Where(a => a.Id == id).Include(a => a.User).FirstOrDefaultAsync();
+            if(auction == null)
                 return NotFound();
             
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -252,18 +288,20 @@ namespace ISProject.Areas.Customer.Controllers
             var vm = new AuctionItemViewModel();
             vm.AuctionHeader = auction;
             
-            
-            vm.AuctionProduct = await _db.AuctionProduct.Where(a => a.AuctionId == auction.Id).Include(a=> a.Product).ToListAsync();
+            vm.AuctionProduct = await _db.AuctionProduct.Where(a => a.AuctionId == auction.Id).Include(a => a.Product).ToListAsync();
 
-            var a_user = await _db.AuctionUser.Where(a => a.UserId==claim.Value && a.AuctionId == id).FirstOrDefaultAsync();
+            var a_user = await _db.AuctionUser.Where(a => a.UserId == claim.Value && a.AuctionId == id).FirstOrDefaultAsync();
             
             if(a_user != null)
                 ViewBag.Bid=true;
             else
                 ViewBag.Bid=false;
 
-            vm.AuctionUser = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.UserId==claim.Value && a.AuctionId==id);
-            
+            vm.AuctionUser = await _db.AuctionUser.FirstOrDefaultAsync(a => a.UserId == claim.Value && a.AuctionId==id);
+            vm.Status = status;
+            vm.CallBack = callBack;
+            vm.IsSelf = claim.Value == auction.User.Id;
+
             return View(vm);
 
 
@@ -288,8 +326,10 @@ namespace ISProject.Areas.Customer.Controllers
 
             if(au.CurrentPrice < a_user.LastPriceOffered)
             {
-                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==au.CurrentPrice);
-                await NotiApi.SendNotiAuction(_db,"You were outbided, check the auction for more details",outbided_user.UserId,au.Id); 
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a => a.AuctionId == au.Id && a.LastPriceOffered == au.CurrentPrice);
+                if(outbided_user != null){
+                    await NotiApi.SendNotiAuction(_db,"You were outbided, check the auction for more details",outbided_user.UserId,au.Id); 
+                }
                 await NotiApi.SendNotiAuction(_db,"You bid for $"+a_user.LastPriceOffered.ToString("F2")+" in an auction, check the auction for more details",a_user.UserId,au.Id);
 
                 au.CurrentPrice = Math.Max(au.CurrentPrice, a_user.LastPriceOffered);
@@ -300,7 +340,7 @@ namespace ISProject.Areas.Customer.Controllers
             _db.AuctionUser.Add(a_user);
             _db.SaveChanges();
 
-            return RedirectToAction("Details",new{id = id});
+            return RedirectToAction("Details",new{id = id, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
             
         }
 
@@ -344,7 +384,7 @@ namespace ISProject.Areas.Customer.Controllers
             
             if(auction.CurrentPrice < a_user.LastPriceOffered)
             {
-                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==auction.CurrentPrice);
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=>a.AuctionId == auction.Id && a.LastPriceOffered==auction.CurrentPrice);
                 
                 if(outbided_user.UserId != claim.Value)
                     await NotiApi.SendNotiAuction(_db,"You got outbided, check the auction for more details",outbided_user.UserId,auction.Id); 
@@ -357,7 +397,7 @@ namespace ISProject.Areas.Customer.Controllers
 
             _db.SaveChanges();
 
-            return RedirectToAction("Details",new{id = qb.AuctionId});
+            return RedirectToAction("Details",new{id = qb.AuctionId, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
                 
         }
        
@@ -398,7 +438,7 @@ namespace ISProject.Areas.Customer.Controllers
             
             if(auction.CurrentPrice < a_user.LastPriceOffered)
             {
-                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=> a.LastPriceOffered==auction.CurrentPrice);
+                var outbided_user = await _db.AuctionUser.FirstOrDefaultAsync(a=>a.AuctionId == auction.Id && a.LastPriceOffered==auction.CurrentPrice);
                 
                 if(outbided_user.UserId != claim.Value)
                     await NotiApi.SendNotiAuction(_db,"You got outbided, check the auction for more details",outbided_user.UserId,auction.Id); 
@@ -411,7 +451,7 @@ namespace ISProject.Areas.Customer.Controllers
 
             _db.SaveChanges();
 
-            return RedirectToAction("Details",new{id = cb.AuctionId});
+            return RedirectToAction("Details",new {id = cb.AuctionId, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
                 
         }
         
