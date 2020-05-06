@@ -10,7 +10,10 @@
     <div class="auction-filter-list list-inline text-center">
         <a class="filter ml-1 mr-1" asp-action="Index" asp-route-callBack="@Model.CallBack" asp-route-status="@SD.PastStatus">Past Auctions</a>
         <a class="filter ml-1 mr-1" asp-action="Index" asp-route-callBack="@Model.CallBack" asp-route-status="@SD.ActiveStatus">Active Auctions</a>
-        <a class="filter ml-1 mr-1" asp-action="Index" asp-route-callBack="@Model.CallBack" asp-route-status="@SD.UpcomingStatus">Upcoming Auctions</a>
+        @if(Model.CallBack != SD.BidedAuctions)
+        {
+            <a class="filter ml-1 mr-1" asp-action="Index" asp-route-callBack="@Model.CallBack" asp-route-status="@SD.UpcomingStatus">Upcoming Auctions</a>
+        }
     </div>
 
     <br /><br />
