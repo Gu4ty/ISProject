@@ -74,7 +74,7 @@
                 </div>
             </li>
 
-            @if(Model.AuctionUser!=null){
+            @if(Model.AuctionUser != null){
                 <li class="list-group-item d-flex justify-content-between">
                     <div>
                         
@@ -185,6 +185,23 @@
                         <span class="text-danger"><i class="fa fa-calendar" aria-hidden="true"></i> This auction has ended</span> 
                     </div>
                 }
+            </div>
+        </div>
+    </div>
+}
+else{
+    <div class="col-12">
+        <div class="col-8 offset-2">
+            <div class="row">
+                <div class="col-5">
+                </div>
+                    
+                <div class="col-7 text-right">
+                    @if(@Model.Status == SD.UpcomingStatus){
+                        <a class="btn btn-primary">Edit</a>
+                    }
+                    <a class="btn btn-danger">Delete</a>
+                </div>
             </div>
         </div>
     </div>

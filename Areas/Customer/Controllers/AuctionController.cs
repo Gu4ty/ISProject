@@ -135,7 +135,6 @@ namespace ISProject.Areas.Customer.Controllers
             return View(auction);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AuctionViewModel auction)
@@ -268,10 +267,7 @@ namespace ISProject.Areas.Customer.Controllers
             vm.IsSelf = claim.Value == auction.User.Id;
 
             return View(vm);
-
-
         }
-
         
         [Authorize]
         public async Task<IActionResult> JoinAuction(int id)
@@ -308,8 +304,6 @@ namespace ISProject.Areas.Customer.Controllers
             return RedirectToAction("Details",new{id = id, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
             
         }
-
-
       
         [Authorize]
         public async Task<IActionResult> QuickBid(int id) //get
@@ -462,7 +456,6 @@ namespace ISProject.Areas.Customer.Controllers
             // _db.AuctionHeader.Remove(auction);
             _db.SaveChanges();
         } 
-
     }
 }
 
