@@ -159,6 +159,8 @@ namespace ISProject.Areas.Customer.Controllers
 
                 foreach(var item in auction.Products){
                     var productSale = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == item.ProductSale.Id).FirstOrDefaultAsync();
+                    productSale.Units -= item.Quantity;
+
                     var product = await _db.Product.Where(p => p.Id == productSale.ProductId).FirstOrDefaultAsync();
                     var auctionProduct = new AuctionProduct(){
                         ProductId = product.Id,
@@ -448,6 +450,40 @@ namespace ISProject.Areas.Customer.Controllers
             
             return false;
         }
+
+        private async void Close(AuctionHeader auction)
+        {
+            var winner = await _db.AuctionUser.FirstOrDefaultAsync(u => u.AuctionId == auction.Id && u.LastPriceOffered == auction.CurrentPrice);
+
+            if(winner == null)
+            {
+                var aproducts = await _db.AuctionProduct.Where(p => p.AuctionId == auction.Id).ToListAsync();
+
+                foreach(AuctionProduct ap in aproducts)
+                {
+                    ProductSale psale = await _db.ProductSale.Where(ps => ps.ProductId == ap.ProductId && ps.SellerId == auction.SellerId).FirstAsync();
+
+                    psale.Units += ap.Quantity;
+                    _db.ProductSale.Update(psale);
+                    // _db.AuctionProduct.Remove(ap);
+                }
+
+                await NotiApi.SendNotiAuction(_db,"Your auction was succefully ignored", auction.SellerId, auction.Id); 
+                auction.Seen = true;
+                _db.AuctionHeader.Update(auction);
+            }
+            else
+            {
+                //winner
+                await NotiApi.SendNotiAuction(_db,"Congrats! You win the auction " + auction.Id.ToString() + ".", winner.UserId, auction.Id); 
+                await NotiApi.SendNotiAuction(_db,"Your auction was succefully closed", auction.SellerId, auction.Id);
+                auction.Seen = true;
+                _db.AuctionHeader.Update(auction);
+            }
+            
+            // _db.AuctionHeader.Remove(auction);
+            _db.SaveChanges();
+        } 
 
     }
 }

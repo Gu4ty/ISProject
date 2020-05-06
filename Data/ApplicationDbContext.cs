@@ -91,15 +91,32 @@ namespace ISProject.Data
                 //Seeding Auctions
                 if(i%2 != 0)
                 {
-                    var ah = new AuctionHeader()
+                    AuctionHeader ah;
+                    
+                    if(i==3 || i==5) // Seeding two Ended Auctions
                     {
-                        BeginDate = DateTime.Now,
-                        CurrentPrice = i+3,
-                        EndDate = DateTime.Now.AddHours(i+10),
-                        Id = i*10 + 5,
-                        PriceStep = i,
-                        SellerId = (i*10 + 2).ToString()
-                    };
+                        ah = new AuctionHeader()
+                        {
+                            BeginDate = DateTime.Now,
+                            CurrentPrice = i+3,
+                            EndDate = DateTime.Now,
+                            Id = i*10 + 5,
+                            PriceStep = i,
+                            SellerId = (i*10 + 2).ToString()
+                        };   
+                    }
+                    else
+                    {
+                        ah = new AuctionHeader()
+                        {
+                            BeginDate = DateTime.Now,
+                            CurrentPrice = i+3,
+                            EndDate = DateTime.Now.AddHours(i+10),
+                            Id = i*10 + 5,
+                            PriceStep = i,
+                            SellerId = (i*10 + 2).ToString()
+                        };
+                    }
 
                     var ap = new AuctionProduct()
                     {
@@ -118,13 +135,32 @@ namespace ISProject.Data
                         Quantity = (i+1)/2,
                     };
 
-                    var auser= new AuctionUser()
-                    {
-                        Id=i*10 +7,
-                        AuctionId = i*10 +5,
-                        UserId = (i*10 + 1).ToString(),
-                        LastPriceOffered = i+3
-                    };
+                    if(i!= 5){ // The auction 5 does not contain an auctionUser
+                        
+                        if(i==3) // Auction 3 has two auctionUser
+                        {
+                            var auser2= new AuctionUser()
+                            {
+                                Id=i*10000000 +7,
+                                AuctionId = i*10 +5,
+                                UserId = ((i+1)*10 + 1).ToString(),
+                                LastPriceOffered = i+1
+                            };
+                            
+                            modelBuilder.Entity<AuctionUser>()
+                                .HasData(auser2); 
+                        }
+
+                        var auser= new AuctionUser()
+                        {
+                            Id=i*10 +7,
+                            AuctionId = i*10 +5,
+                            UserId = (i*10 + 1).ToString(),
+                            LastPriceOffered = i+3
+                        };
+                        modelBuilder.Entity<AuctionUser>()
+                            .HasData(auser); 
+                    }
 
                     modelBuilder.Entity<AuctionHeader>()
                         .HasData(ah);
@@ -135,8 +171,7 @@ namespace ISProject.Data
                     modelBuilder.Entity<AuctionProduct>()
                         .HasData(ap1);
 
-                    modelBuilder.Entity<AuctionUser>()
-                        .HasData(auser); 
+                    
                         
                 }
 
