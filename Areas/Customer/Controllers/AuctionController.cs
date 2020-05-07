@@ -436,7 +436,8 @@ namespace ISProject.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(AuctionItemViewModel vm){
+        public async Task<IActionResult> Edit(AuctionItemViewModel vm)
+        {
             if(ModelState.IsValid){
                 var auction = await _db.AuctionHeader.Where(a => a.Id == vm.AuctionHeader.Id).FirstOrDefaultAsync();
                 auction.EndDate = vm.AuctionHeader.EndDate;
@@ -455,6 +456,40 @@ namespace ISProject.Areas.Customer.Controllers
             return RedirectToAction("Details", new{ id = vm.AuctionHeader.Id, status = vm.Status, callBack = vm.CallBack});
         }
         
+        [Authorize(Roles = SD.SellerUser)]
+        public async Task<IActionResult> Delete(int id, string status, string callBack)
+        {
+            var auction = await _db.AuctionHeader.Include(a => a.User).Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(auction != null){
+                var currentDate = DateTime.Now;
+                NotiApi.SendNotification(_db, auction.SellerId, "You have succesfully deleted one of your auctions", currentDate);
+
+                var products = await _db.AuctionProduct.Where(a => a.AuctionId == id).ToListAsync();
+                foreach(var ap in products)
+                {
+                    ProductSale psale = await _db.ProductSale.Where(ps => ps.ProductId == ap.ProductId && ps.SellerId == auction.SellerId).FirstAsync();
+                    psale.Units += ap.Quantity;
+                    _db.ProductSale.Update(psale);
+                }
+                var users = await _db.AuctionUser.Where(a => a.AuctionId == id).ToListAsync();
+                if(users != null)
+                {
+                    var msg = "The auction created by " + auction.User.Name + ", which had a total of "
+                                + products.Count().ToString() + " products and in which you were participating, was cancelled.";
+                    foreach(var user in users){
+                        NotiApi.SendNotification(_db, user.UserId, msg, currentDate);
+                    }
+                    _db.AuctionUser.RemoveRange(users);
+                }
+                _db.AuctionProduct.RemoveRange(products);
+                _db.AuctionHeader.Remove(auction);
+
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index", new{ status = status, callBack = callBack});
+            }
+            return NotFound();
+        }
+
         private bool UserParticipate(int auction_id, List<AuctionUser> auctions)
         {
             foreach(var a in auctions)
