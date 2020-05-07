@@ -413,6 +413,47 @@ namespace ISProject.Areas.Customer.Controllers
             return RedirectToAction("Details",new {id = cb.AuctionId, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
                 
         }
+
+        [Authorize(Roles=SD.SellerUser)]
+        public async Task<IActionResult> Edit(int id, string status, string callBack)
+        {
+            if(status != SD.UpcomingStatus){
+                return NotFound();
+            }
+
+            var auction = await _db.AuctionHeader.Include(a => a.User).Where(a => a.Id == id).FirstOrDefaultAsync();
+            var products = await _db.AuctionProduct.Include(a => a.Product).Where(a => a.AuctionId == id).ToListAsync();
+
+            var vm = new AuctionItemViewModel(){
+                AuctionHeader = auction,
+                AuctionProduct = products,
+                Status = status,
+                CallBack = callBack
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AuctionItemViewModel vm){
+            if(ModelState.IsValid){
+                var auction = await _db.AuctionHeader.Where(a => a.Id == vm.AuctionHeader.Id).FirstOrDefaultAsync();
+                auction.EndDate = vm.AuctionHeader.EndDate;
+                auction.CurrentPrice = vm.AuctionHeader.CurrentPrice;
+                auction.PriceStep = vm.AuctionHeader.PriceStep;
+                await _db.SaveChangesAsync();
+                
+                return RedirectToAction("Details", new{ id = auction.Id, status = vm.Status, callBack = vm.CallBack});    
+            }
+            foreach(var modelState in ViewData.ModelState.Values){
+                foreach(ModelError error in modelState.Errors){
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+
+            return RedirectToAction("Details", new{ id = vm.AuctionHeader.Id, status = vm.Status, callBack = vm.CallBack});
+        }
         
         private bool UserParticipate(int auction_id, List<AuctionUser> auctions)
         {
