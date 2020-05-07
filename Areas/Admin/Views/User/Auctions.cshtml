@@ -80,7 +80,7 @@
                     
                     @if(Model.CallBack == SD.CreatedAuctions && Model.Status != SD.PastStatus){
                         <div class="col-3 offset-9 text-center">
-                            <a class="btn btn-danger form-control" asp-action="DeleteAuction" asp-route-id="@item.AuctionHeader.Id" asp-route-callBack="@Model.CallBack" asp-route-status="@Model.Status">Delete</a>
+                            <a class="btn btn-danger form-control" onclick="return validateDelete()" asp-action="DeleteAuction" asp-route-id="@item.AuctionHeader.Id" asp-route-userId="@Model.UserId" asp-route-callBack="@Model.CallBack" asp-route-status="@Model.Status">Delete</a>
                         </div>
                     }
                     
@@ -98,3 +98,13 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        function validateDelete(){
+            return confirm("Are you sure you want to delete this auction? You won't be able to undo this action.");
+        }
+    </script>
+}

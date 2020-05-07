@@ -358,5 +358,45 @@ namespace ISProject.Areas.Admin.Controllers
             }
             return View(vm);
         }
+
+        [Authorize(Roles = SD.ManagerUser)]
+        public async Task<IActionResult> DeleteAuction(int id, string userId, string callBack,string status)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var auction = await _db.AuctionHeader.Include(a => a.User).Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(auction == null){
+                return NotFound();
+            }
+
+            var currentDate = DateTime.Now;
+            var adminMsg = "You have succesfully deleted one of " + auction.User.Name + " auctions.";
+            NotiApi.SendNotification(_db, claim.Value, adminMsg, currentDate);
+            NotiApi.SendNotification(_db, auction.SellerId, "One of your auctions was deleted by an admin of the application", currentDate);
+
+            var products = await _db.AuctionProduct.Where(a => a.AuctionId == id).ToListAsync();
+            foreach(var ap in products)
+            {
+                ProductSale psale = await _db.ProductSale.Where(ps => ps.ProductId == ap.ProductId && ps.SellerId == auction.SellerId).FirstAsync();
+                psale.Units += ap.Quantity;
+                _db.ProductSale.Update(psale);
+            }
+            var users = await _db.AuctionUser.Where(a => a.AuctionId == id).ToListAsync();
+            if(users != null)
+            {
+                var msg = "The auction created by " + auction.User.Name + ", which had a total of "
+                            + products.Count().ToString() + " products and in which you were participating, was cancelled.";
+                foreach(var user in users){
+                    NotiApi.SendNotification(_db, user.UserId, msg, currentDate);
+                }
+                _db.AuctionUser.RemoveRange(users);
+            }
+            _db.AuctionProduct.RemoveRange(products);
+            _db.AuctionHeader.Remove(auction);
+
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Auctions", new{ id = userId, status = status, callBack = callBack});
+        }
     }
 }
