@@ -135,7 +135,6 @@ namespace ISProject.Areas.Customer.Controllers
             return View(auction);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AuctionViewModel auction)
@@ -241,41 +240,6 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> FilterByUser()
-        {
-        
-            var auctions = await _db.AuctionHeader.Include(a=> a.User).ToListAsync();
-            List<AuctionItemViewModel> auItems = new List<AuctionItemViewModel>();
-
-
-            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            var id = claim.Value;
-
-            var user_auctions = await _db.AuctionUser.Where(a=> a.UserId == id ).ToListAsync();
-
-            var view_auction = new List<AuctionHeader>();
-
-            foreach(var a in auctions)
-            {
-                if(UserParticipate(a.Id,user_auctions))
-                    view_auction.Add(a);
-            }
-
-            foreach(var a in view_auction){
-                    var item = new AuctionItemViewModel();
-                    item.AuctionHeader = a;
-                    item.AuctionProduct = await _db.AuctionProduct.Where(ap => ap.AuctionId == a.Id).Include(a=> a.Product).ToListAsync();
-                    auItems.Add(item);
-                    
-            }
-
-            return View("../Auction/Index", auItems);
-           
-            
-        }
-
-        [Authorize]
         public async Task<IActionResult> Details(int id, string status, string callBack)
         {
             var auction = await _db.AuctionHeader.Where(a => a.Id == id).Include(a => a.User).FirstOrDefaultAsync();
@@ -303,10 +267,7 @@ namespace ISProject.Areas.Customer.Controllers
             vm.IsSelf = claim.Value == auction.User.Id;
 
             return View(vm);
-
-
         }
-
         
         [Authorize]
         public async Task<IActionResult> JoinAuction(int id)
@@ -343,8 +304,6 @@ namespace ISProject.Areas.Customer.Controllers
             return RedirectToAction("Details",new{id = id, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
             
         }
-
-
       
         [Authorize]
         public async Task<IActionResult> QuickBid(int id) //get
@@ -454,7 +413,83 @@ namespace ISProject.Areas.Customer.Controllers
             return RedirectToAction("Details",new {id = cb.AuctionId, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
                 
         }
+
+        [Authorize(Roles=SD.SellerUser)]
+        public async Task<IActionResult> Edit(int id, string status, string callBack)
+        {
+            if(status != SD.UpcomingStatus){
+                return NotFound();
+            }
+
+            var auction = await _db.AuctionHeader.Include(a => a.User).Where(a => a.Id == id).FirstOrDefaultAsync();
+            var products = await _db.AuctionProduct.Include(a => a.Product).Where(a => a.AuctionId == id).ToListAsync();
+
+            var vm = new AuctionItemViewModel(){
+                AuctionHeader = auction,
+                AuctionProduct = products,
+                Status = status,
+                CallBack = callBack
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AuctionItemViewModel vm)
+        {
+            if(ModelState.IsValid){
+                var auction = await _db.AuctionHeader.Where(a => a.Id == vm.AuctionHeader.Id).FirstOrDefaultAsync();
+                auction.EndDate = vm.AuctionHeader.EndDate;
+                auction.CurrentPrice = vm.AuctionHeader.CurrentPrice;
+                auction.PriceStep = vm.AuctionHeader.PriceStep;
+                await _db.SaveChangesAsync();
+                
+                return RedirectToAction("Details", new{ id = auction.Id, status = vm.Status, callBack = vm.CallBack});    
+            }
+            foreach(var modelState in ViewData.ModelState.Values){
+                foreach(ModelError error in modelState.Errors){
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+
+            return RedirectToAction("Details", new{ id = vm.AuctionHeader.Id, status = vm.Status, callBack = vm.CallBack});
+        }
         
+        [Authorize(Roles = SD.SellerUser)]
+        public async Task<IActionResult> Delete(int id, string status, string callBack)
+        {
+            var auction = await _db.AuctionHeader.Include(a => a.User).Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(auction != null){
+                var currentDate = DateTime.Now;
+                NotiApi.SendNotification(_db, auction.SellerId, "You have succesfully deleted one of your auctions", currentDate);
+
+                var products = await _db.AuctionProduct.Where(a => a.AuctionId == id).ToListAsync();
+                foreach(var ap in products)
+                {
+                    ProductSale psale = await _db.ProductSale.Where(ps => ps.ProductId == ap.ProductId && ps.SellerId == auction.SellerId).FirstAsync();
+                    psale.Units += ap.Quantity;
+                    _db.ProductSale.Update(psale);
+                }
+                var users = await _db.AuctionUser.Where(a => a.AuctionId == id).ToListAsync();
+                if(users != null)
+                {
+                    var msg = "The auction created by " + auction.User.Name + ", which had a total of "
+                                + products.Count().ToString() + " products and in which you were participating, was cancelled.";
+                    foreach(var user in users){
+                        NotiApi.SendNotification(_db, user.UserId, msg, currentDate);
+                    }
+                    _db.AuctionUser.RemoveRange(users);
+                }
+                _db.AuctionProduct.RemoveRange(products);
+                _db.AuctionHeader.Remove(auction);
+
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index", new{ status = status, callBack = callBack});
+            }
+            return NotFound();
+        }
+
         private bool UserParticipate(int auction_id, List<AuctionUser> auctions)
         {
             foreach(var a in auctions)
@@ -497,7 +532,6 @@ namespace ISProject.Areas.Customer.Controllers
             // _db.AuctionHeader.Remove(auction);
             _db.SaveChanges();
         } 
-
     }
 }
 

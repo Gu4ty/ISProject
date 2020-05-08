@@ -23,6 +23,7 @@ namespace ISProject.Models
         public virtual AuctionHeader AuctionHeader { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public double LastPriceOffered { get; set; }
 
     }

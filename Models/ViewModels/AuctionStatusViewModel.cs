@@ -19,6 +19,6 @@ namespace ISProject.Models.ViewModels
 
         public string CallBack { get; set; } 
         public string Status { get; set; } 
-
+        public string UserId { get; set; }
     } 
 }

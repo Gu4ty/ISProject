@@ -1,0 +1,110 @@
+@model ISProject.Models.ViewModels.AuctionStatusViewModel
+@using ISProject.Utils
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="auction-filter-list list-inline text-center">
+        <a class="filter ml-1 mr-1" asp-action="Auctions" asp-route-id="@Model.UserId" asp-route-callBack="@Model.CallBack" asp-route-status="@SD.PastStatus">Past Auctions</a>
+        <a class="filter ml-1 mr-1" asp-action="Auctions" asp-route-id="@Model.UserId" asp-route-callBack="@Model.CallBack" asp-route-status="@SD.ActiveStatus">Active Auctions</a>
+        @if(Model.CallBack != SD.BidedAuctions)
+        {
+            <a class="filter ml-1 mr-1" asp-action="Auctions" asp-route-id="@Model.UserId" asp-route-callBack="@Model.CallBack" asp-route-status="@SD.UpcomingStatus">Upcoming Auctions</a>
+        }
+    </div>
+
+    <br /><br />
+
+    @if(Model.Auctions.Count() > 0){
+        <div class="col-12">
+            <div class="row offset-5">
+                <h3 class="text-success"> @Model.Status Auctions </h3>
+            </div>
+
+            @foreach (var item in Model.Auctions)
+            {
+                <div class="border border-info rounded col-12" style="margin-bottom: 10px; margin-top: 10px; padding: 10px">
+                    <div class="row offset-2 col-12 text-justify">
+                        <div class="col-4 text-left">
+                            <h6>Begin Date: @item.AuctionHeader.BeginDate</h6>
+                        </div>
+                        <div class="col-4 text-left">
+                            <h6>End Date: @item.AuctionHeader.EndDate</h6>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-5 offset-1">
+                            <div class="row">
+                                <h6 class="d-flex justify-content-between align-items-center mb-3">
+                                    @if(Model.CallBack == SD.BidedAuctions){
+                                        <span class="text-info">Created by: @item.AuctionHeader.User.Name</span>
+                                    }
+                                </h6>
+                            </div>
+                            
+                            <div class="row my-1">
+                                <h6>Minimum outbid: @Html.DisplayFor(modelItem => item.AuctionHeader.PriceStep)</h6>
+                            </div>
+                            <div class="row my-1">
+                                <h6>Price: @Html.DisplayFor(modelItem => item.AuctionHeader.CurrentPrice)</h6>
+                            </div>
+                            @if(Model.CallBack == SD.BidedAuctions){
+                                <div class="row my-1">
+                                    <h6>Highest bid this user made: @Html.DisplayFor(modelItem => item.AuctionUser.LastPriceOffered)</h6>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="col-5 offset-1">
+                            <h6 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-info">Products in auction:</span>
+                            </h6>
+                            <ul class="list-group mb-3">
+                                @foreach(var prod in item.AuctionProduct)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="my-0">@prod.Product.Name</h6>
+                                        </div>
+                                        <small class="text-muted">Quantity: @prod.Quantity</small>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    @if(Model.CallBack == SD.CreatedAuctions && Model.Status != SD.PastStatus){
+                        <div class="col-3 offset-9 text-center">
+                            <a class="btn btn-danger form-control" onclick="return validateDelete()" asp-action="DeleteAuction" asp-route-id="@item.AuctionHeader.Id" asp-route-userId="@Model.UserId" asp-route-callBack="@Model.CallBack" asp-route-status="@Model.Status">Delete</a>
+                        </div>
+                    }
+                    
+                </div>
+            }
+        </div>
+    }
+    else{
+        <h4>There are no @Model.Status Auctions...</h4>
+    }
+    <br />
+    <div class="col-12 row">
+        <div class="col-2 offset-5">
+            <a class="btn btn-primary form-control" asp-action="Details" asp-route-id="@Model.UserId"> Go Back </a>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        function validateDelete(){
+            return confirm("Are you sure you want to delete this auction? You won't be able to undo this action.");
+        }
+    </script>
+}

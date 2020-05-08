@@ -1,0 +1,152 @@
+@model ISProject.Models.ViewModels.AuctionItemViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Edit" method="post">
+    <br />
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-dark text-light ml-0 row container">
+                <div class="col-6">Edit Auction</div>
+                <div class="col-6 text-right">
+                    <a asp-action="Details" asp-route-id="@Model.AuctionHeader.Id" asp-route-status="@Model.Status" asp-route-callBack="@Model.CallBack" class="btn btn-outline-info btn-sm">Back</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-6 pb-4">
+                            <div class="row">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-info">Auction Details:</span>
+                                </h4>
+                            </div>
+                            @Html.HiddenFor(x => x.AuctionHeader.Id)
+                            @Html.HiddenFor(x => x.AuctionHeader.User)
+                            @Html.HiddenFor(x => x.AuctionHeader.SellerId)
+                            @Html.HiddenFor(x => x.Status)
+                            @Html.HiddenFor(x => x.CallBack)
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>Date to begin:</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="@Model.AuctionHeader.BeginDate" id="beginDate" type="text" class="form-control" readonly style="background-color: #fff" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>Date to end:</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="@Model.AuctionHeader.EndDate" id="endDate" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>Initial Price:</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="@Model.AuctionHeader.CurrentPrice" id="initPrice" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>Minimum outbid:</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="@Model.AuctionHeader.PriceStep" id="step" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-5 offset-1">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-info">Products for the auction:</span>
+                            </h4>
+                            <ul class="list-group mb-3">
+                                @foreach(var item in Model.AuctionProduct)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="my-0">@item.Product.Name</h6>
+                                        </div>
+                                        <span class="text-muted">Quantity: @item.Quantity</span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-4 offset-8">
+                        <button value="Apply" type="submit" onclick="return validateInput()" class="btn btn-success form-control">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+@section Scripts{
+    <script>
+        $(function (){
+            $("#endDate").datepicker({ minDate : 0, maxDate : "+1M"});
+        });
+
+
+        function validateInput(){
+            var bDate = document.getElementById("beginDate").value;
+            var eDate = document.getElementById("endDate").value;
+            var price = document.getElementById("initPrice").value;
+            var step = document.getElementById("step").value;
+
+            if(bDate.toString() == ''){
+                alert("Please enter a date to begin the auction.")
+                return false;
+            }
+            if(eDate.toString() == ''){
+                alert("Please enter a date to end the auction.")
+                return false;
+            }
+            if(price.toString() == ''){
+                alert("Please enter the initial price for the auction.")
+                return false;
+            }
+            if(step.toString() == ''){
+                alert("Please enter the minimum outbid for the auction.")
+                return false;
+            }
+
+            if(price < 0.01){
+                alert("The price field must be at least $0.01 .")
+                return false;
+            }
+            if(step < 0.01){
+                alert("The price field must be at least $0.01 .")
+                return false;
+            }
+
+            var beginDt = new Date(bDate);
+            var endDt = new Date(eDate);
+
+            beginDt.setHours(0, 0, 0, 0);
+            endDt.setHours(0, 0, 0, 0);
+            if(beginDt > endDt){
+                alert("The begining of the auction can't happen after its ending. Please, select valid dates.")
+                return false;
+            }
+
+            return true;
+
+        }
+    </script>
+}

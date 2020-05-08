@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using ISProject.Models;
 using ISProject.Models.ViewModels;
 using ISProject.Data;
-using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 using ISProject.Utils;
 
 namespace ISProject.Areas.Admin.Controllers
@@ -313,6 +313,90 @@ namespace ISProject.Areas.Admin.Controllers
             user.LockoutEnd = DateTime.Now;
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Auctions(string id, string callBack,string status)
+        {
+            var user = await _db.User.Where(u => u.Id == id).FirstOrDefaultAsync();
+            if(user == null){
+                return NotFound();
+            }
+            
+            var vm = new AuctionStatusViewModel();
+            vm.UserId = user.Id;
+            vm.CallBack = callBack;
+            vm.Status = status;
+            var auctions = new List<AuctionHeader>();
+
+            if(callBack == SD.CreatedAuctions)
+            {
+                auctions = await _db.AuctionHeader.Include(a => a.User).Where(a => a.SellerId == user.Id).ToListAsync();
+            }
+            else{
+                var aUsers = await _db.AuctionUser.Where(u => u.UserId == user.Id).ToListAsync();
+                foreach(var a in aUsers){
+                    var auction = await _db.AuctionHeader.Include(au => au.User).Where(au => au.Id == a.AuctionId).FirstOrDefaultAsync();
+                    auctions.Add(auction);
+                }
+            }
+
+            var currentDate = DateTime.Now;
+            foreach(var item in auctions){
+                var products = await _db.AuctionProduct.Include(a => a.Product).Where(a => a.AuctionId == item.Id).ToListAsync();
+                var itemVM = new AuctionItemViewModel(){
+                    AuctionHeader = item,
+                    AuctionProduct = products,
+                    CallBack = callBack
+                };
+                itemVM.AuctionUser = await _db.AuctionUser.Include(u => u.User).Where(u => u.AuctionId == item.Id && u.UserId == user.Id).FirstOrDefaultAsync();
+                if(currentDate < item.BeginDate && status == SD.UpcomingStatus)
+                    vm.Auctions.Add(itemVM);
+                if(currentDate >= item.BeginDate && currentDate <= item.EndDate && status == SD.ActiveStatus)
+                    vm.Auctions.Add(itemVM);
+                if(currentDate > item.EndDate && status == SD.PastStatus)
+                    vm.Auctions.Add(itemVM);
+            }
+            return View(vm);
+        }
+
+        [Authorize(Roles = SD.ManagerUser)]
+        public async Task<IActionResult> DeleteAuction(int id, string userId, string callBack,string status)
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var auction = await _db.AuctionHeader.Include(a => a.User).Where(a => a.Id == id).FirstOrDefaultAsync();
+            if(auction == null){
+                return NotFound();
+            }
+
+            var currentDate = DateTime.Now;
+            var adminMsg = "You have succesfully deleted one of " + auction.User.Name + " auctions.";
+            NotiApi.SendNotification(_db, claim.Value, adminMsg, currentDate);
+            NotiApi.SendNotification(_db, auction.SellerId, "One of your auctions was deleted by an admin of the application", currentDate);
+
+            var products = await _db.AuctionProduct.Where(a => a.AuctionId == id).ToListAsync();
+            foreach(var ap in products)
+            {
+                ProductSale psale = await _db.ProductSale.Where(ps => ps.ProductId == ap.ProductId && ps.SellerId == auction.SellerId).FirstAsync();
+                psale.Units += ap.Quantity;
+                _db.ProductSale.Update(psale);
+            }
+            var users = await _db.AuctionUser.Where(a => a.AuctionId == id).ToListAsync();
+            if(users != null)
+            {
+                var msg = "The auction created by " + auction.User.Name + ", which had a total of "
+                            + products.Count().ToString() + " products and in which you were participating, was cancelled.";
+                foreach(var user in users){
+                    NotiApi.SendNotification(_db, user.UserId, msg, currentDate);
+                }
+                _db.AuctionUser.RemoveRange(users);
+            }
+            _db.AuctionProduct.RemoveRange(products);
+            _db.AuctionHeader.Remove(auction);
+
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Auctions", new{ id = userId, status = status, callBack = callBack});
         }
     }
 }
