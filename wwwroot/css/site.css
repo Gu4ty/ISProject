@@ -12,6 +12,15 @@ a {
   color: #0366d6;
 }
 
+.disabled{
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  background-color: #818181;
+  border-color: #818181;
+}
+
 .notification {
   color: white;
   text-decoration: none;
