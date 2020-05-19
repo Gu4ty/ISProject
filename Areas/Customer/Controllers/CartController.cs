@@ -145,7 +145,8 @@ namespace ISProject.Areas.Customer.Controllers
                     Count = item.Count,
                     Price = ps.Price,
                     Name = ps.Product.Name,
-                    Description = ps.Product.Description
+                    Description = ps.Product.Description,
+                    AmountLeft = ps.Units
                 };
 
                 orderDetailsList.Add(orderDetails);

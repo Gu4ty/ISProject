@@ -65,7 +65,7 @@
                         <h6 class="my-0">@item.Name</h6>
                         <small class="text-muted">Quantity: @item.Count</small><br>
                         <small class="text-muted">Price: @Html.DisplayFor(modelItem => item.Price)</small><br>
-                        <small class="text-muted">Items remaining to this date: @item.ProductSale.Units</small>
+                        <small class="text-muted">Items remaining to this date: @(item.AmountLeft-item.Count)</small>
                     </div>
                     <span class="text-muted">$@((item.Price * item.Count).ToString("F2"))</span>
                     @{total += item.Price * item.Count; }
