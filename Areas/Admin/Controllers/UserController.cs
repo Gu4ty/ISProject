@@ -246,6 +246,19 @@ namespace ISProject.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _db.User.FindAsync(id);
+
+            var currentDate = DateTime.Now;
+            var auctions = await _db.AuctionHeader.Where(a => a.SellerId == user.Id 
+                                        && a.BeginDate <= currentDate && a.EndDate >= currentDate)
+                                        .ToListAsync();
+            var msg = "The auction created by " + user.Name + ", in which you were participating, was cancelled.";
+            foreach(var item in auctions){
+                var users = await _db.AuctionUser.Where(a => a.AuctionId == item.Id).ToListAsync();
+                foreach(var u in users){
+                    NotiApi.SendNotification(_db, u.UserId, msg, currentDate);
+                }
+            }
+
             _db.User.Remove(user);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
