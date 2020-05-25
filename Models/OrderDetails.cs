@@ -25,7 +25,7 @@ namespace ISProject.Models
         public int Count { get; set; }
 
 
-        //Name, Description and Price are properties we can find in ProductSale
+        //Name, Description, Amount of product left and Price are properties we can find in ProductSale
         //However, this properties can be changed after the user decided to buy
         //the product, and we don't want this properties to change
         public string Name { get; set; }
@@ -33,6 +33,7 @@ namespace ISProject.Models
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:C}")]
+        public int AmountLeft { get; set; }
         public double Price { get; set; }
 
     }

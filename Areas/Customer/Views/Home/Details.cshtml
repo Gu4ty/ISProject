@@ -61,9 +61,17 @@
                 <div class="col-md-4">
                     <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
                 </div>
-                <div class="col-md-4">
-                    <button type="submit" id="btnAddToCart" onclick="return validateInput(@Model.ProductSale.Units);" value="Add to Cart" class="btn btn-primary form-control">Add to Cart</button>
-                </div>
+                @if(Model.UserId != Model.ProductSale.SellerId){
+                    <div class="col-md-4">
+                        <button type="submit" id="btnAddToCart" onclick="return validateInput(@Model.ProductSale.Units);" value="Add to Cart" class="btn btn-primary form-control">Add to Cart</button>
+                    </div>
+                }
+                else{
+                    <div class="col-md-4">
+                        <button type="button" class="btn disabled">Add to Cart</button>
+                    </div>
+                }
+                
             </div>
         </div>
     </div>
