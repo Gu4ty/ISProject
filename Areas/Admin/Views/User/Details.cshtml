@@ -30,7 +30,7 @@
             <div class="col-9">
                 <div class="form-group row">
                     <div class="col-3">
-                        @Html.DisplayNameFor(model => model.Name)
+                        <strong>@Html.DisplayNameFor(model => model.Name)</strong>
                     </div>
                     <div class="col-5">
                         @Html.DisplayFor(model => model.Name)
@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-3">
-                        @Html.DisplayNameFor(model => model.UserName)
+                        <strong>@Html.DisplayNameFor(model => model.UserName)</strong>
                     </div>
                     <div class="col-5">
                         @Html.DisplayFor(model => model.UserName)
@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-3">
-                        @Html.DisplayNameFor(model => model.Email)
+                        <strong>@Html.DisplayNameFor(model => model.Email)</strong>
                     </div>
                     <div class="col-5">
                         @Html.DisplayFor(model => model.Email)
@@ -54,7 +54,7 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-3">
-                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                        <strong>@Html.DisplayNameFor(model => model.PhoneNumber)</strong>
                     </div>
                     <div class="col-5">
                         @Html.DisplayFor(model => model.PhoneNumber)
@@ -73,7 +73,7 @@
                         <a class="btn btn-outline-success" asp-action="Auctions" asp-route-id="@Model.Id" asp-route-callBack="@SD.CreatedAuctions" asp-route-status="@SD.ActiveStatus">Created Auctions</a>
                     </div>
                     <div class= "form-group">
-                        <a class="btn btn-outline-success" asp-action="SellsDetails" asp-route-id="@Model.Id">Sells</a>
+                        <a class="btn btn-outline-success" asp-action="SellsDetails" asp-route-id="@Model.Id">Products for Sale</a>
                     </div>
                 }
             </div>

@@ -68,7 +68,8 @@ namespace ISProject.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var ps = await _db.ProductSale.Where(seller => seller.SellerId == id).ToListAsync();
+            var ps = await _db.ProductSale.Include(p => p.Product).Where(seller => seller.SellerId == id).ToListAsync();
+            ViewBag.Id = id;
             return View(ps);
         }
         
