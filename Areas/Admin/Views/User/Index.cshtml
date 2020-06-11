@@ -41,12 +41,12 @@
                             @Html.DisplayFor(modelItem => item.PhoneNumber)
                         </td>
                         
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
                         <td>Regular</td>
+                        <td>
+                            <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
                         <td>
                             @if(item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
                             {
@@ -74,12 +74,12 @@
                         @Html.DisplayFor(modelItem => item.PhoneNumber)
                     </td>
                     
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
                     <td>Seller</td>
+                    <td>
+                        <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
                     <td>
                         @if(item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
                             {

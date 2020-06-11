@@ -6,93 +6,86 @@
     ViewData["Title"] = "Details";
 }
 
+
 <h1>Details</h1>
 
-<div>
-    @if(Model as Seller != null){
-        <h4>Seller</h4>
-    } else {
-        <h4>Customer</h4>
-    }
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailConfirmed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EmailConfirmed)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumberConfirmed)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccessFailedCount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccessFailedCount)
-        </dd>
+<div class="col-12 row">
+    <div class="col-9">
         @if(Model as Seller != null){
-            <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => (model as Seller).Rating)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => (model as Seller).Rating)
-            </dd>
-            <dt class = "col-sm-2">
-            Sells:
-            </dt>
-            <dd class = "col-sm-10">
-                <a asp-action="SellsDetails" asp-route-id="@Model.Id">Sells</a>
-            </dd>
-            <dt class = "col-sm-2">
-            Created auctions:
-            </dt>
-            <dd class = "col-sm-10">
-                <a asp-action="Auctions" asp-route-id="@Model.Id" asp-route-callBack="@SD.CreatedAuctions" asp-route-status="@SD.ActiveStatus">Created Auctions</a>
-            </dd>
+            <h4>Seller</h4>
+        } 
+        else{
+            <h4>Customer</h4>
         }
-        <dt class = "col-sm-2">
-        Buys:
-        </dt>
-        <dd class = "col-sm-10">
-            <a asp-action="BuysDetails" asp-route-id="@Model.Id">Shopping History</a>
-        </dd>
-        <dt class = "col-sm-2">
-        Bided Auctions:
-        </dt>
-        <dd class = "col-sm-10">
-            <a asp-action="Auctions" asp-route-id="@Model.Id" asp-route-callBack="@SD.BidedAuctions" asp-route-status="@SD.ActiveStatus">Bided Auctions</a>
-        </dd>
-    </dl>
+    </div>
+    <div class="text-right">
+        <a class="btn btn-info" asp-action="Index"> Back to List </a>
+    </div>
 </div>
+    
+<hr />
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-9">
+                <div class="form-group row">
+                    <div class="col-3">
+                        <strong>@Html.DisplayNameFor(model => model.Name)</strong>
+                    </div>
+                    <div class="col-5">
+                        @Html.DisplayFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <strong>@Html.DisplayNameFor(model => model.UserName)</strong>
+                    </div>
+                    <div class="col-5">
+                        @Html.DisplayFor(model => model.UserName)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <strong>@Html.DisplayNameFor(model => model.Email)</strong>
+                    </div>
+                    <div class="col-5">
+                        @Html.DisplayFor(model => model.Email)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <strong>@Html.DisplayNameFor(model => model.PhoneNumber)</strong>
+                    </div>
+                    <div class="col-5">
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </div>                
+                </div>
+            </div>
+            <div class="col-3">            
+                <div class= "form-group">
+                    <a class="btn btn-outline-success" asp-action="BuysDetails" asp-route-id="@Model.Id">Shopping History</a>
+                </div>
+                <div class= "form-group">
+                    <a class="btn btn-outline-success" asp-action="Auctions" asp-route-id="@Model.Id" asp-route-callBack="@SD.BidedAuctions" asp-route-status="@SD.ActiveStatus">Bided Auctions</a>
+                </div>
+                @if(Model as Seller != null){
+                    <div class= "form-group">
+                        <a class="btn btn-outline-success" asp-action="Auctions" asp-route-id="@Model.Id" asp-route-callBack="@SD.CreatedAuctions" asp-route-status="@SD.ActiveStatus">Created Auctions</a>
+                    </div>
+                    <div class= "form-group">
+                        <a class="btn btn-outline-success" asp-action="SellsDetails" asp-route-id="@Model.Id">Products for Sale</a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <a class="btn btn-primary col-2 offset-2" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        </div>
+    </div>
 </div>
+
+
+
+
+    
+        
