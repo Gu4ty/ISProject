@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using ISProject.Data;
+using ISProject.Utils;
 using ISProject.Models;
 using ISProject.Models.ViewModels;
-using System.Security.Claims;
-using ISProject.Utils;
-using Microsoft.AspNetCore.Identity;
 
 namespace ISProject.Controllers
 {
