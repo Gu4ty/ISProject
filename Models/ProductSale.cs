@@ -33,5 +33,8 @@ namespace ISProject.Models
         
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
+
+        public string Image { get; set; }
+
     }
 }
