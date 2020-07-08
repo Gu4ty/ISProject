@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -95,11 +95,27 @@ namespace ISProject.Areas.Customer.Controllers
 
                 if(files.Count > 0){
                     //files has been uploaded
+                    
+                    var uploads = Path.Combine(webRootPath, "images");
+                    var extension = Path.GetExtension(files[0].FileName);
+
+                    using (var filesStream = new FileStream(Path.Combine(uploads, prodFromDB.Id + extension), FileMode.Create)){
+                        files[0].CopyTo(filesStream);
+                    }
+                    prodFromDB.Image = @"/images/" + prodFromDB.Id + extension;
+
                 }
                 else{
-                    // no file was uploaded
+                    // no file was uploaded, so use default
+
+                    var uploads = Path.Combine(webRootPath, @"images/" + SD.DefaultProductImage);
+                    System.IO.File.Copy(uploads, webRootPath + @"/images/" + prodFromDB.Id + ".png");
+                    prodFromDB.Image = @"/images/" + prodFromDB.Id + ".png";
+
                 }
-                
+
+                await _db.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             
