@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using ISProject.Models;
 using ISProject.Models.ViewModels;
 using ISProject.Data;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using ISProject.Utils;
 
 namespace ISProject.Areas.Customer.Controllers
@@ -19,10 +20,15 @@ namespace ISProject.Areas.Customer.Controllers
     public class SellerController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public SellerController(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public SellerController(ApplicationDbContext db, IWebHostEnvironment hostingEnvironment)
         {
-            _db=db;
+            _db = db;
+            _hostingEnvironment = hostingEnvironment;
         }
+
+
         [Authorize(Roles=SD.SellerUser)]
         public async Task<IActionResult> Index()
         {
@@ -79,6 +85,20 @@ namespace ISProject.Areas.Customer.Controllers
                 model.ProductSale.Product = product;
                 _db.ProductSale.Add(model.ProductSale);
                 await _db.SaveChangesAsync();
+
+                // Work on the image saving
+
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+
+                var prodFromDB = await _db.ProductSale.FindAsync(model.ProductSale.Id);
+
+                if(files.Count > 0){
+                    //files has been uploaded
+                }
+                else{
+                    // no file was uploaded
+                }
                 
                 return RedirectToAction(nameof(Index));
             }
