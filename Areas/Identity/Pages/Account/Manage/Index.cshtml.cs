@@ -182,6 +182,11 @@ namespace ISProject.Areas.Identity.Pages.Account.Manage
                     // return RedirectToPage();
                 }
             }
+            else if(Input.Password != null && Input.ConfirmPassword != null)
+            {
+                ModelState.AddModelError(string.Empty, "Please insert old password in order to change it");
+                return Page();
+            }
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
