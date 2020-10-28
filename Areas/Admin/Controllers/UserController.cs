@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using ISProject.Models;
 using ISProject.Models.ViewModels;
 using ISProject.Data;
 using ISProject.Utils;
+
 
 namespace ISProject.Areas.Admin.Controllers
 {
@@ -141,7 +143,6 @@ namespace ISProject.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id, [Bind("Name,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] User user)
         {
             string role = Request.Form["rdUserRole"].ToString();
-            Console.WriteLine(role);
 
             if (id != user.Id)
             {
@@ -157,17 +158,25 @@ namespace ISProject.Areas.Admin.Controllers
                     {
                         if(await _db.Seller.FindAsync(id) == null)
                         {   
-                            // Console.WriteLine("customer to seller");
                             _db.User.Remove(userBd);
                             await _db.SaveChangesAsync();
                             
-                            Console.WriteLine(userBd.Id);
                             userBd.UserName = user.UserName;
                             userBd.Email = user.Email;
                             userBd.PhoneNumber = user.PhoneNumber;
                             userBd.AccessFailedCount = user.AccessFailedCount;
                             Seller sel = CreateSellerFromUser(userBd);
+                            sel.PhoneNumber = userBd.PhoneNumber;
                             _db.Seller.Add(sel);
+
+                            var seller_role = await _db.Roles.FirstOrDefaultAsync(r => r.Name == SD.SellerUser);
+                            var seller_role_id = seller_role.Id;
+
+                            _db.UserRoles.Add( new IdentityUserRole<string>(){
+                                                RoleId = seller_role_id,
+                                                UserId = sel.Id});
+
+                            await _db.SaveChangesAsync();
                         }
                         else
                         {
@@ -182,12 +191,10 @@ namespace ISProject.Areas.Admin.Controllers
                     {
                         if(await _db.Seller.FindAsync(id) != null)
                         {   
-                            // Console.WriteLine("seller to costumer");
                             Seller sel = await _db.Seller.FindAsync(id);
                             _db.Seller.Remove(sel);
                             await _db.SaveChangesAsync();
 
-                            // Console.WriteLine(sel.Id);
 
                             User us = CreateUserFromSeller(sel);
                             us.UserName = user.UserName;
