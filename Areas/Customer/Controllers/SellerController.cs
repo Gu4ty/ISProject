@@ -94,7 +94,7 @@ namespace ISProject.Areas.Customer.Controllers
                 var prodFromDB = await _db.ProductSale.FindAsync(model.ProductSale.Id);
 
                 if(files.Count > 0){
-                    //files has been uploaded
+                    //files have been uploaded
                     
                     var uploads = Path.Combine(webRootPath, "images");
                     var extension = Path.GetExtension(files[0].FileName);
@@ -157,7 +157,7 @@ namespace ISProject.Areas.Customer.Controllers
         [Authorize(Roles=SD.SellerUser)]
 
         public async Task<IActionResult> Details(int id){
-            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstAsync();
+            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstOrDefaultAsync();
             if(ps != null){
                 return View(ps);
             }
@@ -167,7 +167,7 @@ namespace ISProject.Areas.Customer.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(ProductSale model){
-            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == model.Id).FirstAsync();
+            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == model.Id).FirstOrDefaultAsync();
             if(ps != null){
                 ps.Price = model.Price;
                 ps.Units = model. Units;
