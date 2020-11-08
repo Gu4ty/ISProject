@@ -10,7 +10,7 @@
 <br />
 
 <form method="post">
-    <div class="row">
+    <div class="row col-12">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         @Html.HiddenFor(x => x.ProductSale)
         @Html.HiddenFor(x => x.ProductSale.Units)
@@ -19,7 +19,7 @@
         @Html.HiddenFor(x => x.UserId)
         @Html.HiddenFor(x => x.ProductSale.Seller)
         @Html.HiddenFor(x => x.ProductSale.SellerId)
-        <div class="col-md-8">
+        <div class="col-8">
             <div class="form-group row">
                 <div class="col-md-4">
                     <label asp-for="ProductSale.Product.Name" class="text-info font-weight-bold"></label>
@@ -74,6 +74,9 @@
                 
             </div>
         </div>
+        <div class="col-3 offset-1">
+            <img src="@Model.ProductSale.Image" alt="Image" width="100%" style="border-radius:5px; border: 1px solid #bbb9b9;">
+        </div>   
     </div>
 </form>
 

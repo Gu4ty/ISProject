@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using ISProject.Models;
 using ISProject.Models.ViewModels;
 using ISProject.Data;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using ISProject.Utils;
 
 namespace ISProject.Areas.Customer.Controllers
@@ -19,10 +20,15 @@ namespace ISProject.Areas.Customer.Controllers
     public class SellerController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public SellerController(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+
+        public SellerController(ApplicationDbContext db, IWebHostEnvironment hostingEnvironment)
         {
-            _db=db;
+            _db = db;
+            _hostingEnvironment = hostingEnvironment;
         }
+
+
         [Authorize(Roles=SD.SellerUser)]
         public async Task<IActionResult> Index()
         {
@@ -79,7 +85,37 @@ namespace ISProject.Areas.Customer.Controllers
                 model.ProductSale.Product = product;
                 _db.ProductSale.Add(model.ProductSale);
                 await _db.SaveChangesAsync();
-                
+
+                // Work on the image saving
+
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                var files = HttpContext.Request.Form.Files;
+
+                var prodFromDB = await _db.ProductSale.FindAsync(model.ProductSale.Id);
+
+                if(files.Count > 0){
+                    //files have been uploaded
+                    
+                    var uploads = Path.Combine(webRootPath, "images");
+                    var extension = Path.GetExtension(files[0].FileName);
+
+                    using (var filesStream = new FileStream(Path.Combine(uploads, prodFromDB.Id + extension), FileMode.Create)){
+                        files[0].CopyTo(filesStream);
+                    }
+                    prodFromDB.Image = @"/images/" + prodFromDB.Id + extension;
+
+                }
+                else{
+                    // no file was uploaded, so use default
+
+                    var uploads = Path.Combine(webRootPath, @"images/" + SD.DefaultProductImage);
+                    System.IO.File.Copy(uploads, webRootPath + @"/images/" + prodFromDB.Id + ".png");
+                    prodFromDB.Image = @"/images/" + prodFromDB.Id + ".png";
+
+                }
+
+                await _db.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             
@@ -121,7 +157,7 @@ namespace ISProject.Areas.Customer.Controllers
         [Authorize(Roles=SD.SellerUser)]
 
         public async Task<IActionResult> Details(int id){
-            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstAsync();
+            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstOrDefaultAsync();
             if(ps != null){
                 return View(ps);
             }
@@ -131,7 +167,7 @@ namespace ISProject.Areas.Customer.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(ProductSale model){
-            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == model.Id).FirstAsync();
+            ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == model.Id).FirstOrDefaultAsync();
             if(ps != null){
                 ps.Price = model.Price;
                 ps.Units = model. Units;

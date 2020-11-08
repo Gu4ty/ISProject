@@ -72,7 +72,8 @@ namespace ISProject.Data
                         ProductId= i*10,
                         SellerId=(i*10 + 2).ToString(),
                         Units= i + 1,
-                        Price = (i + 15) / 2
+                        Price = (i + 15) / 2,
+                        Image = @"/images/default.png"
                     });
                 
                 

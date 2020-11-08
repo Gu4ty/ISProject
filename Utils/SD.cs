@@ -16,5 +16,7 @@ namespace ISProject.Utils
         public const string PastStatus = "Past";
 
         public const string ssShoppingCartCount = "ssCartCount";
+
+        public const string DefaultProductImage = "default.png";
     }
 }
