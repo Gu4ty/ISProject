@@ -270,7 +270,7 @@ namespace ISProject.Areas.Customer.Controllers
         }
         
         [Authorize]
-        public async Task<IActionResult> JoinAuction(int id)
+        public async Task<IActionResult> JoinAuction(int id, string callBack)
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
@@ -301,7 +301,7 @@ namespace ISProject.Areas.Customer.Controllers
             _db.AuctionUser.Add(a_user);
             _db.SaveChanges();
 
-            return RedirectToAction("Details",new{id = id, status = SD.ActiveStatus, callBack = SD.BidedAuctions});
+            return RedirectToAction("Details",new{id = id, status = SD.ActiveStatus, callBack = callBack});
             
         }
       

@@ -261,7 +261,7 @@ else if(@Model.Status != SD.PastStatus){
             else{
                 var r = Math.round(Math.random() * 1000);
                 if(r % 2 == 0 || r % 3 == 0){
-                   window.location.href = '@Url.Action("JoinAuction",new { id = @Model.AuctionHeader.Id })';
+                   window.location.href = '@Url.Action("JoinAuction",new { id = @Model.AuctionHeader.Id, callBack = @Model.CallBack })';
                    
                    
                 }
