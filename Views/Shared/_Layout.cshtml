@@ -52,13 +52,13 @@
                                 {
                                     <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.BidedAuctions" asp-route-status="@SD.ActiveStatus">Bided auctions</a>
                                 }
-                                @if(User.IsInRole(SD.SellerUser)){
+                                @if(User.IsInRole(SD.SellerUser) || User.IsInRole(SD.ManagerUser)){
                                     <a class="dropdown-item" asp-area="Customer" asp-controller="Auction" asp-action="Index" asp-route-callBack="@SD.CreatedAuctions" asp-route-status="@SD.ActiveStatus">My auctions</a>
                                 }
                             </div>
                         </li>
 
-                        @if(User.IsInRole(SD.SellerUser)){
+                        @if(User.IsInRole(SD.SellerUser) || User.IsInRole(SD.ManagerUser)){
                             <li>
                                 <a class="nav-link" asp-area="Customer" asp-controller="Seller" asp-action="Index">My Products</a>
                             </li>
