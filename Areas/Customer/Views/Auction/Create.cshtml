@@ -151,8 +151,8 @@ else
 
             beginDt.setHours(0, 0, 0, 0);
             endDt.setHours(0, 0, 0, 0);
-            if(beginDt > endDt){
-                alert("The begining of the auction can't happen after its ending. Please, select valid dates.")
+            if(beginDt >= endDt){
+                alert("The auction should last at least 24 hours. Please, select valid dates.")
                 return false;
             }
 
