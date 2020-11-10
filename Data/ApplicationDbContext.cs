@@ -216,7 +216,7 @@ namespace ISProject.Data
             }
 
             //Adding an Admin
-            RegisterUser(modelBuilder,"21123111111",SD.ManagerUser,"admin");
+            RegisterSeller(modelBuilder,"21123111111",SD.ManagerUser,"admin");
         #endregion
                
 

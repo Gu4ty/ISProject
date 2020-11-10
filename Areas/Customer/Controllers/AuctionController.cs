@@ -26,7 +26,7 @@ namespace ISProject.Areas.Customer.Controllers
             _db=db;
         }
 
-        [Authorize(Roles=SD.SellerUser)]
+        [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Select()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -101,7 +101,7 @@ namespace ISProject.Areas.Customer.Controllers
             return View(newprodAuctionList);  
         }
 
-        [Authorize(Roles=SD.SellerUser)]
+        [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Create()
         {
             var list = new List<ProductsAuctionViewModel>();

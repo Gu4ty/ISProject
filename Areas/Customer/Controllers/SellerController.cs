@@ -29,7 +29,7 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
 
-        [Authorize(Roles=SD.SellerUser)]
+        [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Index()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -41,7 +41,7 @@ namespace ISProject.Areas.Customer.Controllers
         }
 
         //GET - Create
-        [Authorize(Roles=SD.SellerUser)]
+        [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Create()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -128,7 +128,7 @@ namespace ISProject.Areas.Customer.Controllers
 
 
         //GET - Create Product
-        [Authorize(Roles=SD.SellerUser)]
+        [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public IActionResult CreateProduct()
         {
             return View();
@@ -154,8 +154,8 @@ namespace ISProject.Areas.Customer.Controllers
             }
             return View(model);            
         }
-        [Authorize(Roles=SD.SellerUser)]
-
+        
+        [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Details(int id){
             ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstOrDefaultAsync();
             if(ps != null){

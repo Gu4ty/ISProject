@@ -89,7 +89,7 @@ namespace ISProject.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 dynamic user;
-                if(role == SD.SellerUser){
+                if(role == SD.SellerUser || role == SD.ManagerUser){
                     user = new Seller{
                         UserName = Input.Email, 
                         Email = Input.Email,
