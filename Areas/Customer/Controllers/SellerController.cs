@@ -155,10 +155,19 @@ namespace ISProject.Areas.Customer.Controllers
             return View(model);            
         }
         
+        
         [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Details(int id){
+            
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
             ProductSale ps = await _db.ProductSale.Include(p => p.Product).Where(p => p.Id == id).FirstOrDefaultAsync();
             if(ps != null){
+                if(ps.SellerId != claim.Value){
+                    return LocalRedirect("/Identity/Account/AccessDenied");
+                }
+                
                 return View(ps);
             }
             return RedirectToAction(nameof(Index));

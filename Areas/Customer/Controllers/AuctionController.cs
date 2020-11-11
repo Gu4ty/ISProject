@@ -414,7 +414,7 @@ namespace ISProject.Areas.Customer.Controllers
                 
         }
 
-        [Authorize(Roles=SD.SellerUser)]
+        [Authorize(Roles=SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Edit(int id, string status, string callBack)
         {
             if(status != SD.UpcomingStatus){
@@ -456,7 +456,7 @@ namespace ISProject.Areas.Customer.Controllers
             return RedirectToAction("Details", new{ id = vm.AuctionHeader.Id, status = vm.Status, callBack = vm.CallBack});
         }
         
-        [Authorize(Roles = SD.SellerUser)]
+        [Authorize(Roles = SD.SellerUser + "," + SD.ManagerUser)]
         public async Task<IActionResult> Delete(int id, string status, string callBack)
         {
             var auction = await _db.AuctionHeader.Include(a => a.User).Where(a => a.Id == id).FirstOrDefaultAsync();
