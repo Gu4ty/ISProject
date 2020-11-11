@@ -117,5 +117,17 @@ namespace ISProject.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public async Task<IActionResult> Remove(int id)
+        {
+            var ps = await _db.ProductSale.Where(s => s.Id == id).FirstOrDefaultAsync();
+            var ps_on_shoping_carts = await _db.ShoppingCart.Where(s => s.ProductSaleID == id).ToListAsync();
+
+            _db.ProductSale.Remove(ps);
+            _db.ShoppingCart.RemoveRange(ps_on_shoping_carts);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

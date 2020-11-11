@@ -1,3 +1,5 @@
+@using ISProject.Utils;
+
 @model ISProject.Models.ShoppingCart
 
 @{
@@ -69,6 +71,11 @@
                 else{
                     <div class="col-md-4">
                         <button type="button" class="btn disabled">Add to Cart</button>
+                    </div>
+                }
+                @if(User.IsInRole(SD.ManagerUser)){
+                    <div class="col-2 text-right">
+                        <a asp-action="Remove" class="btn btn-outline-danger" asp-area="Customer" asp-controller="Home" asp-route-id="@Model.ProductSaleID">Delete</a>
                     </div>
                 }
                 
